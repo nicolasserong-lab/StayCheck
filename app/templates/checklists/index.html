@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}Checklists Dinámicos - StayCheck{% endblock %}
+
+{% block content %}
+<div class="row mb-4 align-items-center">
+    <div class="col-12 col-md-6">
+        <h2 class="fw-bold"><i class="bi bi-card-checklist text-success"></i> Checklists</h2>
+        <p class="text-muted">Administra las plantillas de tareas operacionales.</p>
+    </div>
+    <div class="col-12 col-md-6 text-md-end mt-3 mt-md-0">
+        <a href="{{ url_for('checklists.create') }}" class="btn btn-success rounded-pill fw-semibold">
+            <i class="bi bi-plus-lg"></i> Nuevo Checklist
+        </a>
+        <a href="{{ url_for('dashboard.index') }}" class="btn btn-outline-secondary rounded-pill ms-2">
+            Volver
+        </a>
+    </div>
+</div>
+
+<div class="card border-0 shadow-sm rounded-4">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th class="ps-4">Título de Plantilla</th>
+                        <th class="d-none d-md-table-cell">Descripción</th>
+                        <th class="text-center d-none d-sm-table-cell">Items</th>
+                        <th>Estado</th>
+                        <th class="text-end pe-4">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for chk in checklists %}
+                    <tr>
+                        <td class="ps-4 fw-semibold">{{ chk.titulo }}</td>
+                        <td class="d-none d-md-table-cell text-muted">{{ chk.descripcion }}</td>
+                        <td class="text-center d-none d-sm-table-cell">
+                            <span class="badge bg-light text-dark border">{{ chk.items|length }}</span>
+                        </td>
+                        <td>
+                            {% if chk.estado == 'Activo' %}
+                                <span class="badge bg-success">Activo</span>
+                            {% else %}
+                                <span class="badge bg-secondary">Inactivo</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-end pe-4">
+                            <a href="{{ url_for('checklists.edit', id=chk.id) }}" class="btn btn-sm btn-outline-primary rounded-pill">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <form action="{{ url_for('checklists.delete', id=chk.id) }}" method="POST" class="d-inline" onsubmit="return confirm('¿Estás seguro de eliminar este checklist?');">
+                                <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    {% if not checklists %}
+                    <tr>
+                        <td colspan="5" class="text-center py-4 text-muted">No hay plantillas de checklist registradas.</td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

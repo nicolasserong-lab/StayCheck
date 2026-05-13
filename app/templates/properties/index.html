@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block title %}Gestión de Propiedades - StayCheck{% endblock %}
+
+{% block content %}
+<div class="row mb-4 align-items-center">
+    <div class="col-12 col-md-6">
+        <h2 class="fw-bold"><i class="bi bi-building text-primary"></i> Propiedades</h2>
+        <p class="text-muted">Administra los departamentos, casas y hoteles.</p>
+    </div>
+    <div class="col-12 col-md-6 text-md-end mt-3 mt-md-0">
+        <a href="{{ url_for('properties.create') }}" class="btn btn-primary rounded-pill fw-semibold">
+            <i class="bi bi-plus-lg"></i> Nueva Propiedad
+        </a>
+        <a href="{{ url_for('dashboard.index') }}" class="btn btn-outline-secondary rounded-pill ms-2">
+            Volver
+        </a>
+    </div>
+</div>
+
+<div class="card border-0 shadow-sm rounded-4">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th class="ps-4">Nombre / Identificador</th>
+                        <th class="d-none d-md-table-cell">Dirección</th>
+                        <th class="d-none d-sm-table-cell">Tipo</th>
+                        <th>Estado</th>
+                        <th class="text-end pe-4">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for prop in properties %}
+                    <tr>
+                        <td class="ps-4 fw-semibold">{{ prop.nombre }}</td>
+                        <td class="d-none d-md-table-cell text-muted">{{ prop.direccion }}</td>
+                        <td class="d-none d-sm-table-cell">{{ prop.tipo }}</td>
+                        <td>
+                            {% if prop.estado == 'Activa' %}
+                                <span class="badge bg-success">Activa</span>
+                            {% else %}
+                                <span class="badge bg-secondary">Inactiva</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-end pe-4">
+                            <a href="{{ url_for('properties.edit', id=prop.id) }}" class="btn btn-sm btn-outline-primary rounded-pill">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <form action="{{ url_for('properties.delete', id=prop.id) }}" method="POST" class="d-inline" onsubmit="return confirm('¿Estás seguro de eliminar esta propiedad? Se perderá el historial asociado.');">
+                                <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    {% if not properties %}
+                    <tr>
+                        <td colspan="5" class="text-center py-4 text-muted">No hay propiedades registradas.</td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

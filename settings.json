@@ -1,0 +1,1 @@
+{"google_sheet_id": "TU_SPREADSHEET_ID_AQUI", "google_credentials_json": "{\n  \"type\": \"service_account\",\n  \"project_id\": \"TU_PROJECT_ID\",\n  \"private_key\": \"-----BEGIN PRIVATE KEY-----\\n...CLAVE_PRIVADA_AQUI...\\n-----END PRIVATE KEY-----\\n\",\n  \"client_email\": \"TU_EMAIL_SERVICIO@PROYECTO.iam.gserviceaccount.com\"\n}"}

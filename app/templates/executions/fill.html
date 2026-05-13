@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block title %}Completar Checklist - StayCheck{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="bg-white p-4 rounded-4 shadow-sm border-start border-{{ 'warning' if is_edit else 'success' }} border-4 mb-4">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <h2 class="fw-bold mb-1">{{ 'Editando:' if is_edit else '' }} {{ checklist.titulo }}</h2>
+                    <p class="text-muted mb-0"><i class="bi bi-building"></i> {{ property.nombre }}</p>
+                    <p class="text-muted small"><i class="bi bi-geo-alt"></i> {{ property.direccion or 'Sin dirección' }}</p>
+                </div>
+                <span class="badge bg-{{ 'warning' if is_edit else 'success' }}-subtle text-{{ 'warning' if is_edit else 'success' }} rounded-pill px-3 py-2">
+                    {{ 'Modo Edición' if is_edit else 'En Progreso' }}
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form method="POST">
+    {% if task_id %}
+    <input type="hidden" name="task_id" value="{{ task_id }}">
+    {% endif %}
+    <div class="row">
+        <div class="col-12 col-lg-8 mx-auto">
+            <div class="card border-0 shadow-sm rounded-4 mb-4">
+                <div class="card-body p-4">
+                    {% for item in checklist.items %}
+                    {% set existing_val = execution.responses.get(item.id|string) or execution.responses.get(item.id) if execution and execution.responses else '' %}
+                    <div class="mb-4 pb-3 border-bottom last-child-no-border">
+                        <label class="form-label fw-bold d-block mb-3">{{ loop.index }}. {{ item.texto }}</label>
+                        
+                        {% if item.tipo_respuesta == 'checkbox' %}
+                        <div class="d-flex gap-3">
+                            <div class="form-check form-check-inline custom-check-btn">
+                                <input class="form-check-input d-none" type="radio" name="item_{{ item.id }}" id="item_{{ item.id }}_si" value="Sí" required
+                                       {{ 'checked' if existing_val == 'Sí' else '' }}>
+                                <label class="form-check-label btn btn-outline-success rounded-pill px-4" for="item_{{ item.id }}_si">Sí</label>
+                            </div>
+                            <div class="form-check form-check-inline custom-check-btn">
+                                <input class="form-check-input d-none" type="radio" name="item_{{ item.id }}" id="item_{{ item.id }}_no" value="No" required
+                                       {{ 'checked' if existing_val == 'No' else '' }}>
+                                <label class="form-check-label btn btn-outline-danger rounded-pill px-4" for="item_{{ item.id }}_no">No</label>
+                            </div>
+                        </div>
+                        {% elif item.tipo_respuesta == 'texto' %}
+                        <input type="text" class="form-control bg-light rounded-3" name="item_{{ item.id }}" required placeholder="Escribe aquí..." value="{{ existing_val }}">
+                        {% elif item.tipo_respuesta == 'numero' %}
+                        <input type="number" class="form-control bg-light rounded-3" name="item_{{ item.id }}" required placeholder="0" value="{{ existing_val }}">
+                        {% elif item.tipo_respuesta == 'observaciones' %}
+                        <textarea class="form-control bg-light rounded-3" name="item_{{ item.id }}" rows="3" placeholder="Detalles adicionales...">{{ existing_val }}</textarea>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                    
+                    <div class="mt-4">
+                        <label for="observations" class="form-label fw-bold">Observaciones Finales (Opcional)</label>
+                        <textarea class="form-control bg-light rounded-3" id="observations" name="observations" rows="4" placeholder="Algún comentario general sobre la propiedad o el proceso...">{{ execution.observations if execution else '' }}</textarea>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="d-grid gap-2 mb-5">
+                <button type="submit" class="btn btn-{{ 'warning' if is_edit else 'success' }} btn-lg rounded-pill fw-bold shadow-sm">
+                    <i class="bi bi-{{ 'save' if is_edit else 'check-circle-fill' }} me-2"></i> 
+                    {{ 'Actualizar y Sincronizar' if is_edit else 'Finalizar y Guardar Checklist' }}
+                </button>
+                <a href="{{ url_for('dashboard.index') }}" class="btn btn-link text-muted" onclick="return confirm('¿Seguro que quieres salir? Se perderán los avances no guardados.')">
+                    Cancelar ejecución
+                </a>
+            </div>
+        </div>
+    </div>
+</form>
+
+<style>
+.last-child-no-border:last-child {
+    border-bottom: 0 !important;
+}
+.custom-check-btn input:checked + label.btn-outline-success {
+    background-color: #198754;
+    color: white;
+}
+.custom-check-btn input:checked + label.btn-outline-danger {
+    background-color: #dc3545;
+    color: white;
+}
+</style>
+{% endblock %}

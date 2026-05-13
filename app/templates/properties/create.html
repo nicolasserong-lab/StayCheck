@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Crear Propiedad - StayCheck{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h2 class="fw-bold"><i class="bi bi-plus-square text-primary"></i> Nueva Propiedad</h2>
+        <p class="text-muted">Registra un nuevo departamento u hotel en el sistema.</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12 col-md-8 col-lg-6">
+        <div class="card border-0 shadow-sm rounded-4">
+            <div class="card-body p-4">
+                <form method="POST">
+                    <div class="mb-3">
+                        <label for="nombre" class="form-label">Nombre / Identificador</label>
+                        <input type="text" class="form-control bg-light" id="nombre" name="nombre" required placeholder="Ej. Dpto 504 - Edificio B">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="direccion" class="form-label">Dirección (Opcional)</label>
+                        <input type="text" class="form-control bg-light" id="direccion" name="direccion" placeholder="Av. Providencia 1234">
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="tipo" class="form-label">Tipo de Propiedad</label>
+                        <select class="form-select bg-light" id="tipo" name="tipo" required>
+                            <option value="Departamento" selected>Departamento (Airbnb/Rent)</option>
+                            <option value="Hotel">Habitación de Hotel</option>
+                            <option value="Casa">Casa</option>
+                            <option value="Cabaña">Cabaña</option>
+                            <option value="Otro">Otro</option>
+                        </select>
+                    </div>
+                    
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary rounded-pill fw-semibold px-4">Guardar Propiedad</button>
+                        <a href="{{ url_for('properties.index') }}" class="btn btn-outline-secondary rounded-pill px-4">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

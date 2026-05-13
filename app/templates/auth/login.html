@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Iniciar Sesión - StayCheck{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center align-items-center mt-md-5 pt-md-4" style="min-height: 80vh;">
+    <div class="col-12 col-md-6 col-lg-4">
+        <div class="text-center mb-4">
+            <h1 class="display-5 text-primary fw-bold"><i class="bi bi-check2-square"></i> StayCheck</h1>
+            <p class="text-muted">Gestión de Checklists Operacionales</p>
+        </div>
+        
+        <div class="card border-0 shadow-sm rounded-4 login-card">
+            <div class="card-body p-4 p-md-5">
+                <h4 class="card-title text-center mb-4 fw-bold">Iniciar Sesión</h4>
+                
+                <form method="POST" action="{{ url_for('auth.login') }}">
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Nombre de Usuario</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-end-0"><i class="bi bi-person"></i></span>
+                            <input type="text" class="form-control bg-light border-start-0" id="username" name="username" required placeholder="tu_usuario">
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="password" class="form-label">Contraseña</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-end-0"><i class="bi bi-lock"></i></span>
+                            <input type="password" class="form-control bg-light border-start-0" id="password" name="password" required placeholder="••••••••">
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg rounded-pill fw-semibold">Ingresar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

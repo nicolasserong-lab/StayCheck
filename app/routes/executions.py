@@ -1,0 +1,173 @@
+from flask import Blueprint, render_template, redirect, url_for, flash, request
+from flask_login import login_required, current_user
+from app.routes.users import admin_required
+from app.models.property import get_all_properties_by_admin, get_property_by_id
+from app.models.checklist import get_all_checklists_by_admin, get_checklist_by_id
+from app.models.execution import add_execution, save_execution_responses, get_execution_by_id, get_all_executions_by_admin
+from app.models.user import get_user_by_id
+from app.services.google_sheets import sync_execution_to_sheet
+
+executions_bp = Blueprint('executions', __name__)
+
+@executions_bp.route('/history')
+@login_required
+def history():
+    # Si es operador, redirigir a su historial personal
+    if current_user.is_operator():
+        return redirect(url_for('executions.my_history'))
+        
+    # El Admin ve solo sus reportes
+    executions = get_all_executions_by_admin(current_user.id)
+    history_data = []
+    for ex in executions:
+        prop = get_property_by_id(ex.property_id)
+        chk = get_checklist_by_id(ex.checklist_id)
+        user = get_user_by_id(ex.user_id)
+        history_data.append({
+            'execution': ex,
+            'property': prop,
+            'checklist': chk,
+            'user': user
+        })
+    return render_template('executions/history.html', history=history_data)
+
+@executions_bp.route('/my-history')
+@login_required
+def my_history():
+    from app.models.execution import Execution
+    # Filtrar solo las ejecuciones realizadas por el usuario actual
+    executions = Execution.query.filter_by(user_id=current_user.id).order_by(Execution.fecha.desc(), Execution.hora.desc()).all()
+    history_data = []
+    for ex in executions:
+        prop = get_property_by_id(ex.property_id)
+        chk = get_checklist_by_id(ex.checklist_id)
+        history_data.append({
+            'execution': ex,
+            'property': prop,
+            'checklist': chk
+        })
+    return render_template('executions/my_history.html', history=history_data)
+
+@executions_bp.route('/edit/<id>', methods=['GET', 'POST'])
+@login_required
+def edit(id):
+    execution = get_execution_by_id(id)
+    if not execution:
+        flash('Ejecución no encontrada.', 'danger')
+        return redirect(url_for('dashboard.index'))
+    
+    # Solo el autor o su admin pueden editar
+    if execution.user_id != current_user.id and current_user.id != execution.admin_id:
+        flash('No tienes permiso para editar este reporte.', 'danger')
+        return redirect(url_for('dashboard.index'))
+    
+    prop = get_property_by_id(execution.property_id)
+    chk = get_checklist_by_id(execution.checklist_id)
+    
+    if request.method == 'POST':
+        responses = {}
+        for item in chk.items:
+            val = request.form.get(f'item_{item.id}')
+            responses[item.id] = val
+        
+        observations = request.form.get('observations', '')
+        save_execution_responses(id, responses, observations)
+        
+        # Re-sincronizar con Google Sheets para actualizar el registro existente
+        sync_execution_to_sheet(execution, prop, chk, current_user)
+        
+        flash('Reporte actualizado y sincronizado exitosamente.', 'success')
+        return redirect(url_for('executions.my_history'))
+    
+    return render_template('executions/fill.html', execution=execution, property=prop, checklist=chk, is_edit=True)
+
+@executions_bp.route('/detail/<id>')
+@login_required
+def detail(id):
+    ex = get_execution_by_id(id)
+    if not ex or (current_user.rol == 'admin' and ex.admin_id != current_user.id):
+        flash('Ejecución no encontrada o sin acceso.', 'danger')
+        return redirect(url_for('dashboard.index'))
+    
+    prop = get_property_by_id(ex.property_id)
+    chk = get_checklist_by_id(ex.checklist_id)
+    user = get_user_by_id(ex.user_id)
+    
+    return render_template('executions/detail.html', execution=ex, property=prop, checklist=chk, user=user)
+
+@executions_bp.route('/select-property')
+@login_required
+def select_property():
+    # Si es operador, solo ve las propiedades que se le asignaron específicamente
+    if current_user.is_operator():
+        properties = [p for p in current_user.assigned_properties if p.estado == 'Activa']
+    else:
+        # El admin sigue viendo todas sus propiedades
+        owner_id = current_user.id
+        properties = [p for p in get_all_properties_by_admin(owner_id) if p.estado == 'Activa']
+        
+    return render_template('executions/select_property.html', properties=properties)
+
+@executions_bp.route('/select-checklist/<property_id>')
+@login_required
+def select_checklist(property_id):
+    prop = get_property_by_id(property_id)
+    owner_id = current_user.admin_id if current_user.is_operator() else current_user.id
+    
+    if not prop or prop.admin_id != owner_id:
+        flash('Propiedad no encontrada.', 'danger')
+        return redirect(url_for('dashboard.index'))
+    
+    checklists = [c for c in get_all_checklists_by_admin(owner_id) if c.estado == 'Activo']
+    return render_template('executions/select_checklist.html', property=prop, checklists=checklists)
+
+@executions_bp.route('/start/<property_id>/<checklist_id>', methods=['POST'])
+@login_required
+def start(property_id, checklist_id):
+    # El reporte hereda el admin_id del usuario actual
+    owner_id = current_user.admin_id if current_user.is_operator() else current_user.id
+    execution = add_execution(property_id, checklist_id, current_user.id, owner_id)
+    
+    # Si viene de una tarea asignada, pasar el task_id
+    task_id = request.form.get('task_id')
+    return redirect(url_for('executions.fill', id=execution.id, task_id=task_id))
+
+@executions_bp.route('/fill/<id>', methods=['GET', 'POST'])
+@login_required
+def fill(id):
+    execution = get_execution_by_id(id)
+    task_id = request.args.get('task_id') # Viene del redirect de start
+    
+    if not execution:
+        flash('Ejecución no encontrada.', 'danger')
+        return redirect(url_for('dashboard.index'))
+    
+    prop = get_property_by_id(execution.property_id)
+    chk = get_checklist_by_id(execution.checklist_id)
+    
+    if request.method == 'POST':
+        responses = {}
+        for item in chk.items:
+            val = request.form.get(f'item_{item.id}')
+            responses[item.id] = val
+        
+        observations = request.form.get('observations', '')
+        save_execution_responses(id, responses, observations)
+        
+        # Sincronización automática con Google Sheets
+        sync_execution_to_sheet(execution, prop, chk, current_user)
+        
+        # Si había una tarea asociada, marcarla como completada
+        submitted_task_id = request.form.get('task_id')
+        if submitted_task_id:
+            from app.models.task import Task
+            from app.extensions import db
+            task = Task.query.get(submitted_task_id)
+            if task:
+                task.status = 'Completada'
+                db.session.commit()
+        
+        flash('Checklist finalizado exitosamente y sincronizado con la nube.', 'success')
+        return redirect(url_for('dashboard.index'))
+    
+    return render_template('executions/fill.html', execution=execution, property=prop, checklist=chk, task_id=task_id)

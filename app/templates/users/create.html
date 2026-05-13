@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}Crear Usuario - StayCheck{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h2 class="fw-bold"><i class="bi bi-person-plus text-warning"></i> Nuevo Usuario</h2>
+        <p class="text-muted">Crea un nuevo administrador u operador.</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12 col-md-8 col-lg-6">
+        <div class="card border-0 shadow-sm rounded-4">
+            <div class="card-body p-4">
+                <form method="POST">
+                    <div class="mb-3">
+                        <label for="nombre" class="form-label">Nombre Completo</label>
+                        <input type="text" class="form-control bg-light" id="nombre" name="nombre" required placeholder="Ej. Juan Pérez">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Nombre de Usuario</label>
+                        <input type="text" class="form-control bg-light" id="username" name="username" required placeholder="Ej. juan_perez">
+                        <div class="form-text">Este nombre será usado para iniciar sesión.</div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Rol que se asignará</label>
+                        {% if current_user.is_superadmin() %}
+                            <div class="alert alert-info py-2 small">
+                                <i class="bi bi-info-circle"></i> Estás creando una cuenta de <strong>Administrador</strong> para un nuevo cliente.
+                            </div>
+                        {% else %}
+                            <div class="alert alert-info py-2 small">
+                                <i class="bi bi-info-circle"></i> Estás creando una cuenta de <strong>Operador</strong> para tu equipo.
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="password" class="form-label">Contraseña</label>
+                        <input type="password" class="form-control bg-light" id="password" name="password" required placeholder="••••••••">
+                    </div>
+
+                    {% if not current_user.is_superadmin() %}
+                    <div class="mb-4">
+                        <label class="form-label fw-bold"><i class="bi bi-geo-alt text-warning"></i> Asignar Propiedades</label>
+                        <div class="card bg-light border-0 p-3" style="max-height: 200px; overflow-y: auto;">
+                            {% if properties %}
+                                {% for prop in properties %}
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" name="assigned_properties" value="{{ prop.id }}" id="prop_{{ prop.id }}">
+                                    <label class="form-check-label" for="prop_{{ prop.id }}">
+                                        {{ prop.nombre }} <span class="text-muted small">({{ prop.tipo }})</span>
+                                    </label>
+                                </div>
+                                {% endfor %}
+                            {% else %}
+                                <p class="text-muted small mb-0">No tienes propiedades creadas para asignar.</p>
+                            {% endif %}
+                        </div>
+                        <div class="form-text">Selecciona las propiedades que este operador tendrá permitidas.</div>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-warning rounded-pill fw-semibold px-4">Guardar Usuario</button>
+                        <a href="{{ url_for('users.index') }}" class="btn btn-outline-secondary rounded-pill px-4">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

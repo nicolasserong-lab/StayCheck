@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+
+{% block title %}Editar Checklist - StayCheck{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h2 class="fw-bold"><i class="bi bi-pencil-square text-success"></i> Editar Checklist</h2>
+        <p class="text-muted">Modifica la plantilla dinámica existente.</p>
+    </div>
+</div>
+
+<form method="POST">
+    <div class="row">
+        <div class="col-12 col-lg-5 mb-4">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-header bg-white border-0 pt-4 pb-0">
+                    <h5 class="fw-bold">1. Información General</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="titulo" class="form-label">Título de la Tarea</label>
+                        <input type="text" class="form-control bg-light" id="titulo" name="titulo" value="{{ chk.titulo }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="descripcion" class="form-label">Descripción</label>
+                        <textarea class="form-control bg-light" id="descripcion" name="descripcion" rows="3">{{ chk.descripcion }}</textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="estado" class="form-label">Estado de la Plantilla</label>
+                        <select class="form-select bg-light" id="estado" name="estado" required>
+                            <option value="Activo" {% if chk.estado == 'Activo' %}selected{% endif %}>Activo (Visible para Operadores)</option>
+                            <option value="Inactivo" {% if chk.estado == 'Inactivo' %}selected{% endif %}>Inactivo (Oculto)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-7 mb-4">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-header bg-white border-0 pt-4 pb-0 d-flex justify-content-between align-items-center">
+                    <h5 class="fw-bold mb-0">2. Constructor de Items</h5>
+                    <button type="button" class="btn btn-sm btn-outline-success rounded-pill" onclick="agregarItem()">
+                        <i class="bi bi-plus"></i> Añadir Fila
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div id="items-container">
+                        <div class="item-row row g-2 align-items-end mb-3 d-none" id="item-template">
+                            <div class="col-7 col-md-8">
+                                <label class="form-label small text-muted mb-1">Pregunta / Tarea</label>
+                                <input type="text" class="form-control item-texto" disabled>
+                            </div>
+                            <div class="col-4 col-md-3">
+                                <label class="form-label small text-muted mb-1">Tipo</label>
+                                <select class="form-select item-tipo" disabled>
+                                    <option value="checkbox">Checkbox (Sí/No)</option>
+                                    <option value="texto">Texto Corto</option>
+                                    <option value="numero">Número</option>
+                                    <option value="observaciones">Observación Larga</option>
+                                </select>
+                            </div>
+                            <div class="col-1 col-md-1 text-end">
+                                <button type="button" class="btn btn-outline-danger btn-sm rounded-circle" onclick="eliminarItem(this)">
+                                    <i class="bi bi-x"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="items-list">
+                        {% for item in chk.items %}
+                        <div class="item-row row g-2 align-items-end mb-3">
+                            <div class="col-7 col-md-8">
+                                <label class="form-label small text-muted mb-1">Pregunta / Tarea</label>
+                                <input type="text" class="form-control item-texto" name="item_texto[]" value="{{ item.texto }}" required>
+                            </div>
+                            <div class="col-4 col-md-3">
+                                <label class="form-label small text-muted mb-1">Tipo</label>
+                                <select class="form-select item-tipo" name="item_tipo[]">
+                                    <option value="checkbox" {% if item.tipo_respuesta == 'checkbox' %}selected{% endif %}>Checkbox (Sí/No)</option>
+                                    <option value="texto" {% if item.tipo_respuesta == 'texto' %}selected{% endif %}>Texto Corto</option>
+                                    <option value="numero" {% if item.tipo_respuesta == 'numero' %}selected{% endif %}>Número</option>
+                                    <option value="observaciones" {% if item.tipo_respuesta == 'observaciones' %}selected{% endif %}>Observación Larga</option>
+                                </select>
+                            </div>
+                            <div class="col-1 col-md-1 text-end">
+                                <button type="button" class="btn btn-outline-danger btn-sm rounded-circle" onclick="eliminarItem(this)">
+                                    <i class="bi bi-x"></i>
+                                </button>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    
+                    <div id="empty-state" class="text-center py-4 text-muted {% if chk.items %}d-none{% endif %}">
+                        <i class="bi bi-list-task fs-1"></i>
+                        <p class="mb-0">No hay tareas en esta plantilla.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Acciones -->
+    <div class="row">
+        <div class="col-12 text-end">
+            <a href="{{ url_for('checklists.index') }}" class="btn btn-outline-secondary rounded-pill px-4">Cancelar</a>
+            <button type="submit" class="btn btn-success rounded-pill fw-semibold px-4 ms-2">Actualizar Plantilla</button>
+        </div>
+    </div>
+</form>
+
+<script>
+    function agregarItem() {
+        document.getElementById('empty-state').classList.add('d-none');
+        const template = document.getElementById('item-template');
+        const clon = template.cloneNode(true);
+        
+        clon.id = '';
+        clon.classList.remove('d-none');
+        
+        const inputTexto = clon.querySelector('.item-texto');
+        inputTexto.name = 'item_texto[]';
+        inputTexto.disabled = false;
+        inputTexto.required = true;
+
+        const selectTipo = clon.querySelector('.item-tipo');
+        selectTipo.name = 'item_tipo[]';
+        selectTipo.disabled = false;
+
+        document.getElementById('items-list').appendChild(clon);
+    }
+
+    function eliminarItem(btn) {
+        btn.closest('.item-row').remove();
+        if (document.getElementById('items-list').children.length === 0) {
+            document.getElementById('empty-state').classList.remove('d-none');
+        }
+    }
+</script>
+{% endblock %}

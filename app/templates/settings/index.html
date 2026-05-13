@@ -1,0 +1,250 @@
+{% extends "base.html" %}
+
+{% block title %}Configuración Cloud | StayCheck{% endblock %}
+
+{% block content %}
+<style>
+    :root {
+        --sc-blue: #0052cc;
+        --sc-dark: #172b4d;
+        --sc-bg: #f4f5f7;
+        --sc-border: #dfe1e6;
+    }
+
+    body {
+        background-color: #ffffff;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+        color: var(--sc-dark);
+    }
+
+    .settings-wrapper {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .header-section {
+        border-bottom: 2px solid var(--sc-bg);
+        margin-bottom: 30px;
+        padding-bottom: 15px;
+    }
+
+    .card-clean {
+        background: #ffffff;
+        border: 1px solid var(--sc-border);
+        border-radius: 12px;
+        padding: 25px;
+        height: 100%;
+    }
+
+    .manual-bg {
+        background-color: var(--sc-bg);
+        border: none;
+    }
+
+    .step-container {
+        display: flex;
+        margin-bottom: 25px;
+    }
+
+    .step-num {
+        background: var(--sc-blue);
+        color: white;
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        margin-right: 15px;
+        flex-shrink: 0;
+    }
+
+    .step-title {
+        font-weight: 700;
+        font-size: 1.1rem;
+        margin-bottom: 10px;
+        color: var(--sc-dark);
+    }
+
+    .step-body {
+        font-size: 14px;
+        line-height: 1.6;
+        color: #42526e;
+    }
+
+    .step-body p, .step-body ul, .step-body ol {
+        margin-bottom: 10px;
+    }
+
+    /* Formulario */
+    .form-label-custom {
+        font-weight: 700;
+        font-size: 12px;
+        text-transform: uppercase;
+        color: #6b778c;
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    .form-input-custom {
+        border: 2px solid var(--sc-bg);
+        border-radius: 8px;
+        padding: 12px;
+        width: 100%;
+        font-size: 14px;
+        margin-bottom: 20px;
+    }
+
+    .form-input-custom:focus {
+        border-color: var(--sc-blue);
+        outline: none;
+    }
+
+    .btn-save {
+        background: var(--sc-blue);
+        color: white;
+        border: none;
+        padding: 15px;
+        border-radius: 8px;
+        font-weight: 700;
+        width: 100%;
+        transition: 0.2s;
+    }
+
+    .btn-save:hover {
+        background: #0047b3;
+    }
+
+    .critical-alert {
+        background: #ffebec;
+        border-left: 4px solid #de350b;
+        padding: 20px;
+        border-radius: 4px;
+    }
+
+    code {
+        background: #ebecf0;
+        padding: 2px 5px;
+        border-radius: 3px;
+        color: #de350b;
+        font-size: 13px;
+    }
+
+    @media (max-width: 991px) {
+        .mobile-order-1 { order: 1; }
+        .mobile-order-2 { order: 2; }
+        .card-clean { padding: 20px; }
+    }
+</style>
+
+<div class="settings-wrapper">
+    <div class="header-section">
+        <h2 class="fw-bold mb-1">Configuración de Google Drive / Sheets</h2>
+        <p class="text-muted">Sincroniza tus registros con la nube de forma privada.</p>
+    </div>
+
+    <div class="row g-4">
+        <!-- FORMULARIO (DERECHA EN DESKTOP, PRIMERO EN MÓVIL) -->
+        <div class="col-12 col-lg-5 mobile-order-1">
+            <div class="card-clean shadow-sm">
+                <h5 class="fw-bold mb-4"><i class="bi bi-gear-fill"></i> Panel de Conexión</h5>
+                <form method="POST">
+                    <label class="form-label-custom">JSON de Credenciales</label>
+                    <textarea class="form-input-custom font-monospace" name="google_credentials_json" 
+                              rows="10" placeholder='Pega aquí el contenido de tu archivo .json'>{{ current_user.google_json if current_user.google_json else '' }}</textarea>
+                    
+                    <label class="form-label-custom">Spreadsheet ID</label>
+                    <input type="text" class="form-input-custom" name="google_sheet_id" 
+                           value="{{ current_user.google_sheet_id if current_user.google_sheet_id else '' }}" 
+                           placeholder="Ej: 1aBCdeFGHijkLMN...">
+
+                    <button type="submit" class="btn btn-save">
+                        Guardar Configuración
+                    </button>
+                </form>
+                <div class="text-center mt-3">
+                    <a href="{{ url_for('dashboard.index') }}" class="text-secondary small text-decoration-none">
+                        <i class="bi bi-arrow-left"></i> Volver al Panel
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- MANUAL (IZQUIERDA EN DESKTOP, SEGUNDO EN MÓVIL) -->
+        <div class="col-12 col-lg-7 mobile-order-2">
+            <div class="card-clean manual-bg">
+                
+                <!-- PASO 1 -->
+                <div class="step-container">
+                    <div class="step-num">1</div>
+                    <div class="step-body">
+                        <div class="step-title">PASO 1: Crear tu "Llave" en Google Cloud (Gratis)</div>
+                        <p>Google necesita saber que StayCheck tiene permiso para escribir en tus hojas.</p>
+                        <ul>
+                            <li>Ve a <a href="https://console.cloud.google.com/" target="_blank">Google Cloud Console</a>.</li>
+                            <li>Si no tienes un proyecto, haz clic en "Seleccionar un proyecto" arriba a la izquierda y luego en "Proyecto Nuevo". Ponle de nombre <code>StayCheck-Project</code>.</li>
+                            <li>En el buscador de arriba, escribe "Google Sheets API" y haz clic en el resultado. Presiona el botón azul <strong>HABILITAR</strong>.</li>
+                            <li>Haz lo mismo con "Google Drive API": búscala y presiona <strong>HABILITAR</strong>.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- PASO 2 -->
+                <div class="step-container">
+                    <div class="step-num">2</div>
+                    <div class="step-body">
+                        <div class="step-title">PASO 2: Crear la "Cuenta de Servicio"</div>
+                        <p>Esta es una identidad digital que usará el sistema.</p>
+                        <ul>
+                            <li>En el menú lateral izquierdo de Google Cloud, ve a <strong>IAM y administración > Cuentas de servicio</strong>.</li>
+                            <li>Haz clic en <strong>+ CREAR CUENTA DE SERVICIO</strong> (arriba).</li>
+                            <li>Ponle nombre <code>staycheck-worker</code> y dale a Crear y Continuar.</li>
+                            <li>En "Seleccionar un rol", elige <strong>Básico > Editor</strong> (esto permite que pueda escribir). Dale a Listo.</li>
+                            <li>Ahora verás tu cuenta en una lista. Verás un correo que termina en <code>@...gserviceaccount.com</code>. <strong>CÓPIALO</strong>, lo necesitaremos en el paso 4.</li>
+                            <li>Haz clic en los tres puntitos <strong>...</strong> a la derecha de esa cuenta y elige <strong>Administrar claves</strong>.</li>
+                            <li>Haz clic en <strong>AGREGAR CLAVE > Crear clave nueva</strong>. Elige formato <strong>JSON</strong> y dale a Crear.</li>
+                            <li>Se descargará un archivo .json a tu computadora. Ábrelo con el Bloc de notas o VS Code.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- PASO 3 -->
+                <div class="step-container">
+                    <div class="step-num">3</div>
+                    <div class="step-body">
+                        <div class="step-title">PASO 3: Configurar en StayCheck</div>
+                        <p>Ahora llevamos esos datos al sistema que construimos.</p>
+                        <ul>
+                            <li>Inicia sesión en StayCheck como Administrador.</li>
+                            <li>Ve a esta sección de Configuración.</li>
+                            <li><strong>JSON de Credenciales:</strong> Abre el archivo que descargaste en el paso anterior, copia TODO su contenido y pégalo tal cual en el cuadro de texto grande.</li>
+                            <li><strong>Spreadsheet ID:</strong> Crea una hoja de cálculo nueva en tu Google Drive. Mira la URL en tu navegador:</li>
+                            <li>Si la URL es: <code>.../d/1aBCdeFGHijkLMN/edit</code>, el ID es lo que está entre <code>/d/</code> y <code>/edit/</code>.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- PASO 4 -->
+                <div class="step-container mb-0">
+                    <div class="step-num bg-danger">4</div>
+                    <div class="step-body">
+                        <div class="step-title text-danger">PASO 4: El paso más importante (Permiso de acceso)</div>
+                        <div class="critical-alert text-dark">
+                            <p class="mb-2"><strong>Incluso con la llave, Google no deja que nadie entre a tu hoja si no lo invitas.</strong></p>
+                            <ol class="mb-0">
+                                <li>Abre tu hoja de Google Sheets.</li>
+                                <li>Haz clic en el botón azul <strong>Compartir</strong> (arriba a la derecha).</li>
+                                <li>Pega el correo de la cuenta de servicio que copiaste en el Paso 2 (el que termina en <code>gserviceaccount.com</code>).</li>
+                                <li>Asegúrate de que esté en modo <strong>Editor</strong> y dale a Enviar.</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}Detalle de Ejecución - StayCheck{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12 col-md-8 mx-auto">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <a href="{{ url_for('executions.history') }}" class="btn btn-link text-muted p-0 text-decoration-none">
+                <i class="bi bi-arrow-left"></i> Volver al historial
+            </a>
+            <span class="badge bg-success rounded-pill px-3">Sincronizado <i class="bi bi-cloud-check"></i></span>
+        </div>
+        
+        <div class="card border-0 shadow-sm rounded-4 mb-4">
+            <div class="card-header bg-white border-0 pt-4 px-4">
+                <h3 class="fw-bold mb-0">{{ checklist.titulo if checklist else 'Checklist Eliminado' }}</h3>
+                <p class="text-muted mb-0">Completado por <strong>{{ user.nombre if user else 'Usuario eliminado' }}</strong></p>
+            </div>
+            <div class="card-body p-4">
+                <div class="row g-3 mb-4">
+                    <div class="col-6 col-md-3">
+                        <label class="small text-muted d-block">Fecha</label>
+                        <span class="fw-semibold">{{ execution.fecha }}</span>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <label class="small text-muted d-block">Hora</label>
+                        <span class="fw-semibold">{{ execution.hora }}</span>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <label class="small text-muted d-block">Propiedad</label>
+                        <span class="fw-semibold"><i class="bi bi-building"></i> {{ property.nombre if property else 'Eliminada' }}</span>
+                    </div>
+                </div>
+
+                <h5 class="fw-bold border-bottom pb-2 mb-3">Respuestas del Checklist</h5>
+                
+                <div class="list-group list-group-flush mb-4">
+                    {% if checklist %}
+                        {% for item in checklist.items %}
+                        <div class="list-group-item px-0 py-3 border-0 border-bottom">
+                            <div class="row">
+                                <div class="col-8">
+                                    <p class="mb-0 fw-semibold">{{ item.texto }}</p>
+                                </div>
+                                <div class="col-4 text-end">
+                                    {% set resp = execution.responses.get(item.id|string) or execution.responses.get(item.id) %}
+                                    {% if resp == 'Sí' %}
+                                        <span class="text-success fw-bold"><i class="bi bi-check-circle"></i> {{ resp }}</span>
+                                    {% elif resp == 'No' %}
+                                        <span class="text-danger fw-bold"><i class="bi bi-x-circle"></i> {{ resp }}</span>
+                                    {% else %}
+                                        <span class="text-primary">{{ resp or 'N/A' }}</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-muted italic">La plantilla original de este checklist fue eliminada.</p>
+                    {% endif %}
+                </div>
+
+                <div class="bg-light p-3 rounded-3">
+                    <label class="small text-muted d-block fw-bold mb-1">Observaciones del Operador</label>
+                    <p class="mb-0">{{ execution.observations or 'Sin observaciones adicionales.' }}</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="text-center">
+            <button onclick="window.print()" class="btn btn-outline-secondary rounded-pill px-4">
+                <i class="bi bi-printer"></i> Imprimir Reporte
+            </button>
+        </div>
+    </div>
+</div>
+
+<style>
+@media print {
+    .btn, .navbar, .alert { display: none !important; }
+    .card { border: 1px solid #ddd !important; shadow: none !important; }
+}
+</style>
+{% endblock %}

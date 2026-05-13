@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}Editar Usuario - StayCheck{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h2 class="fw-bold"><i class="bi bi-pencil text-warning"></i> Editar Usuario</h2>
+        <p class="text-muted">Modifica los datos y accesos del usuario.</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12 col-md-8 col-lg-6">
+        <div class="card border-0 shadow-sm rounded-4">
+            <div class="card-body p-4">
+                <form method="POST">
+                    <div class="mb-3">
+                        <label for="nombre" class="form-label">Nombre Completo</label>
+                        <input type="text" class="form-control bg-light" id="nombre" name="nombre" value="{{ user.nombre }}" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Nombre de Usuario</label>
+                        <input type="text" class="form-control bg-light" id="username" name="username" value="{{ user.username }}" required>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Rol del Sistema</label>
+                            <input type="text" class="form-control bg-light" value="{{ user.rol|capitalize }}" readonly disabled>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="estado" class="form-label">Estado</label>
+                            <select class="form-select bg-light" id="estado" name="estado" required {% if user.id == current_user.id %}disabled{% endif %}>
+                                <option value="Activo" {% if user.estado == 'Activo' %}selected{% endif %}>Activo</option>
+                                <option value="Inactivo" {% if user.estado == 'Inactivo' %}selected{% endif %}>Inactivo</option>
+                            </select>
+                            {% if user.id == current_user.id %}
+                                <input type="hidden" name="estado" value="{{ user.estado }}">
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="password" class="form-label">Nueva Contraseña (Opcional)</label>
+                        <input type="password" class="form-control bg-light" id="password" name="password" placeholder="Dejar en blanco para no cambiar">
+                    </div>
+
+                    {% if user.rol == 'operator' %}
+                    <div class="mb-4">
+                        <label class="form-label fw-bold"><i class="bi bi-geo-alt text-warning"></i> Propiedades Asignadas</label>
+                        <div class="card bg-light border-0 p-3" style="max-height: 200px; overflow-y: auto;">
+                            {% if properties %}
+                                {% for prop in properties %}
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" name="assigned_properties" value="{{ prop.id }}" id="prop_{{ prop.id }}"
+                                           {% if prop in user.assigned_properties %}checked{% endif %}>
+                                    <label class="form-check-label" for="prop_{{ prop.id }}">
+                                        {{ prop.nombre }} <span class="text-muted small">({{ prop.tipo }})</span>
+                                    </label>
+                                </div>
+                                {% endfor %}
+                            {% else %}
+                                <p class="text-muted small mb-0">No hay propiedades creadas para asignar.</p>
+                            {% endif %}
+                        </div>
+                        <div class="form-text">El operador solo podrá ver y realizar checklists en las propiedades marcadas.</div>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-warning rounded-pill fw-semibold px-4">Actualizar Usuario</button>
+                        <a href="{{ url_for('users.index') }}" class="btn btn-outline-secondary rounded-pill px-4">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

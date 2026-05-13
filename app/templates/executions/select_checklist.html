@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}Seleccionar Checklist - StayCheck{% endblock %}
+
+{% block content %}
+<div class="row mb-4 align-items-center">
+    <div class="col-12 col-md-6">
+        <h2 class="fw-bold"><i class="bi bi-card-checklist text-success"></i> Seleccionar Tarea</h2>
+        <p class="text-muted">Propiedad: <span class="fw-bold text-dark">{{ property.nombre }}</span></p>
+    </div>
+    <div class="col-12 col-md-6 text-md-end">
+        <a href="{{ url_for('executions.select_property') }}" class="btn btn-outline-secondary rounded-pill">
+            <i class="bi bi-arrow-left"></i> Cambiar Propiedad
+        </a>
+    </div>
+</div>
+
+<div class="row g-3">
+    {% for chk in checklists %}
+    <div class="col-12">
+        <div class="card border-0 shadow-sm rounded-4 checklist-option-card">
+            <div class="card-body p-4">
+                <div class="row align-items-center">
+                    <div class="col-12 col-md-8 mb-3 mb-md-0">
+                        <h5 class="fw-bold mb-1">{{ chk.titulo }}</h5>
+                        <p class="text-muted small mb-0">{{ chk.descripcion }}</p>
+                        <div class="mt-2">
+                            <span class="badge bg-light text-dark border"><i class="bi bi-list-task"></i> {{ chk.items|length }} items</span>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4 text-md-end">
+                        <form action="{{ url_for('executions.start', property_id=property.id, checklist_id=chk.id) }}" method="POST">
+                            <button type="submit" class="btn btn-success rounded-pill px-4 fw-semibold w-100 w-md-auto">
+                                Iniciar Checklist <i class="bi bi-play-fill ms-1"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% if not checklists %}
+    <div class="col-12 text-center py-5">
+        <i class="bi bi-journal-x display-4 text-muted mb-3"></i>
+        <h5>No hay checklists activos disponibles.</h5>
+        <p class="text-muted">Contacta al administrador para crear plantillas.</p>
+    </div>
+    {% endif %}
+</div>
+
+<style>
+.checklist-option-card {
+    transition: all 0.2s ease;
+}
+.checklist-option-card:hover {
+    border-left: 5px solid #198754 !important;
+}
+</style>
+{% endblock %}
