@@ -23,9 +23,10 @@ def create():
     if request.method == 'POST':
         titulo = request.form.get('titulo')
         descripcion = request.form.get('descripcion')
+        horas_bloqueo = request.form.get('horas_bloqueo', 24, type=int)
         
         # Asociar al Admin actual
-        chk = add_checklist(titulo, descripcion, current_user.id)
+        chk = add_checklist(titulo, descripcion, current_user.id, horas_bloqueo=horas_bloqueo)
         
         # Procesar items dinámicos
         textos = request.form.getlist('item_texto[]')
@@ -56,8 +57,9 @@ def edit(id):
         titulo = request.form.get('titulo')
         descripcion = request.form.get('descripcion')
         estado = request.form.get('estado')
+        horas_bloqueo = request.form.get('horas_bloqueo', 24, type=int)
         
-        update_checklist(id, titulo, descripcion, estado)
+        update_checklist(id, titulo, descripcion, estado, horas_bloqueo=horas_bloqueo)
         
         # Procesar items dinámicos
         textos = request.form.getlist('item_texto[]')

@@ -1,5 +1,8 @@
 # StayCheck - SaaS Property Management & Checklist Platform
 
+**Estado:** 🚀 En Producción (Live)
+**URL del Proyecto:** [https://staycheck.onrender.com](https://staycheck.onrender.com)
+
 **StayCheck** es una plataforma profesional diseñada para administradores de propiedades, departamentos y hoteles que necesitan un control riguroso sobre sus procesos operativos y de limpieza.
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)

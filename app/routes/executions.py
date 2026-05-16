@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request
 from flask_login import login_required, current_user
+from datetime import datetime, timedelta
 from app.routes.users import admin_required
 from app.models.property import get_all_properties_by_admin, get_property_by_id
 from app.models.checklist import get_all_checklists_by_admin, get_checklist_by_id
@@ -119,7 +120,47 @@ def select_checklist(property_id):
         return redirect(url_for('dashboard.index'))
     
     checklists = [c for c in get_all_checklists_by_admin(owner_id) if c.estado == 'Activo']
-    return render_template('executions/select_checklist.html', property=prop, checklists=checklists)
+    
+    # Lógica de bloqueo de 24 horas para operadores
+    from app.models.execution import Execution
+    lockouts = {}
+    
+    for chk in checklists:
+        # Buscar la última ejecución COMPLETADA de este checklist para esta propiedad por este usuario
+        last_ex = Execution.query.filter_by(
+            property_id=property_id,
+            checklist_id=chk.id,
+            user_id=current_user.id,
+            status='Completado'
+        ).order_by(Execution.fecha.desc(), Execution.hora.desc()).first()
+        
+        if last_ex:
+            # Convertir los strings de la base de datos a objetos datetime
+            try:
+                last_dt = datetime.strptime(f"{last_ex.fecha} {last_ex.hora}", "%Y-%m-%d %H:%M:%S")
+                # Usar el valor configurado en el checklist (chk.horas_bloqueo)
+                next_available = last_dt + timedelta(hours=chk.horas_bloqueo)
+                now = datetime.now()
+                
+                if now < next_available:
+                    remaining = next_available - now
+                    lockouts[chk.id] = {
+                        'is_locked': True,
+                        'seconds_left': int(remaining.total_seconds()),
+                        'next_available': next_available.strftime('%H:%M')
+                    }
+                else:
+                    lockouts[chk.id] = {'is_locked': False}
+            except Exception as e:
+                print(f"Error al procesar fecha: {e}")
+                lockouts[chk.id] = {'is_locked': False}
+        else:
+            lockouts[chk.id] = {'is_locked': False}
+
+    return render_template('executions/select_checklist.html', 
+                           property=prop, 
+                           checklists=checklists, 
+                           lockouts=lockouts)
 
 @executions_bp.route('/start/<property_id>/<checklist_id>', methods=['POST'])
 @login_required
@@ -168,6 +209,55 @@ def fill(id):
                 db.session.commit()
         
         flash('Checklist finalizado exitosamente y sincronizado con la nube.', 'success')
-        return redirect(url_for('dashboard.index'))
+        return redirect(url_for('executions.select_checklist', property_id=execution.property_id))
     
     return render_template('executions/fill.html', execution=execution, property=prop, checklist=chk, task_id=task_id)
+
+@executions_bp.route('/delete/<id>', methods=['POST'])
+@login_required
+def delete(id):
+    from app.models.execution import Execution
+    from app.extensions import db
+    
+    # Solo superadmin o admin pueden eliminar
+    if current_user.rol not in ['superadmin', 'admin']:
+        flash('No tienes permisos para eliminar registros.', 'danger')
+        return redirect(url_for('executions.history'))
+        
+    execution = Execution.query.get(id)
+    if not execution:
+        flash('Registro no encontrado.', 'danger')
+        return redirect(url_for('executions.history'))
+    
+    # Validar que pertenece a este admin (el admin original o el superadmin de esos admins)
+    if current_user.rol == 'admin' and execution.admin_id != current_user.id:
+        flash('No tienes permiso para eliminar este registro.', 'danger')
+        return redirect(url_for('executions.history'))
+        
+    db.session.delete(execution)
+    db.session.commit()
+    
+    flash('Registro de checklist eliminado exitosamente del historial.', 'success')
+    return redirect(url_for('executions.history'))
+
+@executions_bp.route('/cancel/<id>')
+@login_required
+def cancel(id):
+    from app.models.execution import Execution
+    from app.extensions import db
+    
+    execution = Execution.query.get(id)
+    property_id = None
+    
+    if execution:
+        property_id = execution.property_id
+        # Solo borrar si está en estado 'Iniciado' (no completado) y pertenece al usuario
+        if execution.status == 'Iniciado' and execution.user_id == current_user.id:
+            db.session.delete(execution)
+            db.session.commit()
+    
+    # Si tenemos el property_id, regresamos a la selección de checklists de esa propiedad
+    if property_id:
+        return redirect(url_for('executions.select_checklist', property_id=property_id))
+        
+    return redirect(url_for('dashboard.index'))

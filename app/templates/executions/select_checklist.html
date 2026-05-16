@@ -15,26 +15,38 @@
     </div>
 </div>
 
-<div class="row g-3">
+<div class="row g-4">
     {% for chk in checklists %}
-    <div class="col-12">
-        <div class="card border-0 shadow-sm rounded-4 checklist-option-card">
-            <div class="card-body p-4">
-                <div class="row align-items-center">
-                    <div class="col-12 col-md-8 mb-3 mb-md-0">
-                        <h5 class="fw-bold mb-1">{{ chk.titulo }}</h5>
-                        <p class="text-muted small mb-0">{{ chk.descripcion }}</p>
-                        <div class="mt-2">
-                            <span class="badge bg-light text-dark border"><i class="bi bi-list-task"></i> {{ chk.items|length }} items</span>
-                        </div>
+    {% set lockout = lockouts.get(chk.id) %}
+    <div class="col-12 col-md-6 col-xl-4">
+        <div class="card border-0 shadow-sm h-100 dashboard-card rounded-4 {% if lockout.is_locked %}bg-light opacity-75 border-start border-secondary border-4{% else %}border-start border-success border-4{% endif %}">
+            <div class="card-body p-4 d-flex flex-column">
+                <div class="mb-3">
+                    <h5 class="fw-bold mb-1 text-truncate" title="{{ chk.titulo }}">{{ chk.titulo }}</h5>
+                    <p class="text-muted small mb-0 line-clamp-2" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">{{ chk.descripcion }}</p>
+                </div>
+                
+                <div class="mt-auto">
+                    <div class="d-flex align-items-center mb-3">
+                        <span class="badge bg-light text-dark border px-3 py-2 rounded-pill"><i class="bi bi-list-task text-primary"></i> {{ chk.items|length }} items</span>
+                        {% if lockout.is_locked %}
+                        <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle ms-2 px-3 py-2 rounded-pill">
+                            <i class="bi bi-clock-history"></i> <span class="countdown" data-seconds="{{ lockout.seconds_left }}">--:--:--</span>
+                        </span>
+                        {% endif %}
                     </div>
-                    <div class="col-12 col-md-4 text-md-end">
-                        <form action="{{ url_for('executions.start', property_id=property.id, checklist_id=chk.id) }}" method="POST">
-                            <button type="submit" class="btn btn-success rounded-pill px-4 fw-semibold w-100 w-md-auto">
-                                Iniciar Checklist <i class="bi bi-play-fill ms-1"></i>
-                            </button>
-                        </form>
-                    </div>
+                    
+                    {% if lockout.is_locked %}
+                    <button type="button" class="btn btn-secondary rounded-pill fw-semibold w-100 disabled" title="Ya completado hoy">
+                        <i class="bi bi-check-circle-fill me-1"></i> Bloqueado
+                    </button>
+                    {% else %}
+                    <form action="{{ url_for('executions.start', property_id=property.id, checklist_id=chk.id) }}" method="POST">
+                        <button type="submit" class="btn btn-success rounded-pill fw-semibold w-100 shadow-sm">
+                            <i class="bi bi-play-fill me-1"></i> Iniciar Checklist
+                        </button>
+                    </form>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -42,19 +54,39 @@
     {% endfor %}
     {% if not checklists %}
     <div class="col-12 text-center py-5">
-        <i class="bi bi-journal-x display-4 text-muted mb-3"></i>
-        <h5>No hay checklists activos disponibles.</h5>
-        <p class="text-muted">Contacta al administrador para crear plantillas.</p>
+        <div class="bg-white p-5 rounded-4 shadow-sm d-inline-block">
+            <i class="bi bi-journal-x display-4 text-muted mb-3 d-block"></i>
+            <h5 class="fw-bold">No hay checklists activos disponibles.</h5>
+            <p class="text-muted mb-0">Contacta al administrador para crear plantillas.</p>
+        </div>
     </div>
     {% endif %}
 </div>
 
-<style>
-.checklist-option-card {
-    transition: all 0.2s ease;
-}
-.checklist-option-card:hover {
-    border-left: 5px solid #198754 !important;
-}
-</style>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const countdowns = document.querySelectorAll('.countdown');
+    
+    countdowns.forEach(el => {
+        let seconds = parseInt(el.getAttribute('data-seconds'));
+        
+        const updateTimer = () => {
+            if (seconds <= 0) {
+                location.reload(); // Recargar cuando el tiempo expire para habilitar el botón
+                return;
+            }
+            
+            const h = Math.floor(seconds / 3600);
+            const m = Math.floor((seconds % 3600) / 60);
+            const s = seconds % 60;
+            
+            el.textContent = `${h.toString().padStart(2, '0')}h ${m.toString().padStart(2, '0')}m ${s.toString().padStart(2, '0')}s`;
+            seconds--;
+        };
+        
+        updateTimer();
+        setInterval(updateTimer, 1000);
+    });
+});
+</script>
 {% endblock %}

@@ -16,14 +16,21 @@
 <body class="bg-light">
 
     {% if current_user.is_authenticated %}
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm mb-4">
+    <nav class="navbar navbar-expand-lg navbar-dark shadow-sm mb-4 sticky-top">
         <div class="container">
             <a class="navbar-brand fw-bold d-flex align-items-center" href="{{ url_for('dashboard.index') }}">
                 <i class="bi bi-check2-square fs-3 me-2"></i> StayCheck
             </a>
-            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+            
+            <div class="d-flex align-items-center ms-auto">
+                {% if current_user.is_authenticated %}
+                <span class="text-white fw-semibold me-3 d-lg-none"><i class="bi bi-person-circle"></i> {{ current_user.nombre }}</span>
+                {% endif %}
+                <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
@@ -48,7 +55,7 @@
     </nav>
     {% endif %}
 
-    <div class="container pb-5">
+    <div class="container pb-5 animate-fade">
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}
@@ -60,8 +67,80 @@
             {% endif %}
         {% endwith %}
 
-        {% block content %}{% endblock %}
+    {% block content %}{% endblock %}
     </div>
+
+    {% if current_user.is_authenticated %}
+    <!-- Modal de Expiración de Sesión -->
+    <div class="modal fade" id="sessionTimeoutModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+                <div class="modal-body p-5 text-center">
+                    <div class="display-1 text-warning mb-3">
+                        <i class="bi bi-clock-history"></i>
+                    </div>
+                    <h3 class="fw-bold mb-2">¡Su sesión está por expirar!</h3>
+                    <p class="text-muted mb-4">Por motivos de seguridad, su sesión se cerrará automáticamente en breve para proteger su información.</p>
+                    <div class="display-4 fw-bold text-primary mb-4" id="sessionCountdown">01:00</div>
+                    <div class="d-grid gap-2">
+                        <button type="button" class="btn btn-primary btn-lg rounded-pill fw-bold shadow-sm" onclick="location.reload()">
+                            <i class="bi bi-arrow-clockwise"></i> Continuar Sesión
+                        </button>
+                        <a href="{{ url_for('auth.logout') }}" class="btn btn-link text-muted mt-2">Cerrar sesión ahora</a>
+                    </div>
+                </div>
+                <div class="bg-light py-2 small text-center text-muted border-top">
+                    StayCheck Security System
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // Tiempos configurados según el rol (en minutos)
+            const timeoutMinutes = {{ 20 if current_user.rol == 'operador' else 10 }};
+            const timeoutSeconds = timeoutMinutes * 60;
+            const warningSeconds = 60; // Mostrar aviso cuando falte 1 minuto
+            
+            let remainingTime = timeoutSeconds;
+            const countdownEl = document.getElementById('sessionCountdown');
+            const modalElement = document.getElementById('sessionTimeoutModal');
+            let timeoutModal;
+            let modalShown = false;
+
+            // Esperar a que el DOM esté listo para inicializar el modal de Bootstrap
+            document.addEventListener('DOMContentLoaded', function() {
+                timeoutModal = new bootstrap.Modal(modalElement);
+                
+                const timer = setInterval(() => {
+                    remainingTime--;
+
+                    // Si falta 1 minuto o menos, mostrar el contador
+                    if (remainingTime <= warningSeconds) {
+                        if (!modalShown && timeoutModal) {
+                            timeoutModal.show();
+                            modalShown = true;
+                        }
+                        
+                        // Formatear MM:SS
+                        const mins = Math.floor(remainingTime / 60);
+                        const secs = remainingTime % 60;
+                        if (countdownEl) {
+                            countdownEl.innerText = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+                        }
+                    }
+
+                    // Si llega a cero, cerrar sesión
+                    if (remainingTime <= 0) {
+                        clearInterval(timer);
+                        window.location.href = "{{ url_for('auth.logout') }}?timeout=true";
+                    }
+                }, 1000);
+            });
+        })();
+    </script>
+    {% endif %}
 
     <!-- Bootstrap 5 JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

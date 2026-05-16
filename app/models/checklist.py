@@ -21,6 +21,9 @@ class Checklist(db.Model):
     # Nuevo: Cada admin tiene sus propias plantillas
     admin_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     
+    # Nuevo: Bloqueo configurable (en horas)
+    horas_bloqueo = db.Column(db.Integer, default=24)
+    
     items = db.relationship('ChecklistItem', backref='checklist', lazy=True, cascade="all, delete-orphan")
 
 def get_all_checklists_by_admin(admin_id):
@@ -29,18 +32,19 @@ def get_all_checklists_by_admin(admin_id):
 def get_checklist_by_id(chk_id):
     return Checklist.query.get(int(chk_id))
 
-def add_checklist(titulo, descripcion, admin_id, estado="Activo"):
-    chk = Checklist(titulo=titulo, descripcion=descripcion, admin_id=admin_id, estado=estado)
+def add_checklist(titulo, descripcion, admin_id, estado="Activo", horas_bloqueo=24):
+    chk = Checklist(titulo=titulo, descripcion=descripcion, admin_id=admin_id, estado=estado, horas_bloqueo=horas_bloqueo)
     db.session.add(chk)
     db.session.commit()
     return chk
 
-def update_checklist(chk_id, titulo=None, descripcion=None, estado=None):
+def update_checklist(chk_id, titulo=None, descripcion=None, estado=None, horas_bloqueo=None):
     chk = Checklist.query.get(int(chk_id))
     if chk:
         if titulo: chk.titulo = titulo
         if descripcion: chk.descripcion = descripcion
         if estado: chk.estado = estado
+        if horas_bloqueo is not None: chk.horas_bloqueo = horas_bloqueo
         db.session.commit()
         return True
     return False

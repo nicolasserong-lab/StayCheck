@@ -33,6 +33,15 @@
                             <option value="Inactivo" {% if chk.estado == 'Inactivo' %}selected{% endif %}>Inactivo (Oculto)</option>
                         </select>
                     </div>
+                    <div class="mb-3">
+                        <label for="horas_bloqueo" class="form-label">Horas de Bloqueo (Post-envío)</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-white"><i class="bi bi-clock"></i></span>
+                            <input type="number" class="form-control bg-light" id="horas_bloqueo" name="horas_bloqueo" value="{{ chk.horas_bloqueo }}" min="0" required>
+                            <span class="input-group-text bg-white">horas</span>
+                        </div>
+                        <div class="form-text small">Tiempo que el checklist estará desactivado para el operador después de enviarlo.</div>
+                    </div>
                 </div>
             </div>
         </div>

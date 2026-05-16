@@ -24,45 +24,47 @@
             <table class="table table-hover align-middle mb-0">
                 <thead class="table-light">
                     <tr>
-                        <th class="ps-4">Nombre</th>
-                        <th class="d-none d-md-table-cell">Nombre de Usuario</th>
+                        <th class="ps-md-4">Nombre</th>
+                        <th>Nombre de Usuario</th>
                         <th>Rol</th>
-                        <th class="d-none d-sm-table-cell">Estado</th>
-                        <th class="text-end pe-4">Acciones</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for user in users %}
                     <tr>
-                        <td class="ps-4 fw-semibold">{{ user.nombre }}</td>
-                        <td class="d-none d-md-table-cell">{{ user.username }}</td>
-                        <td>
+                        <td class="ps-md-4 fw-semibold" data-label="Nombre">{{ user.nombre }}</td>
+                        <td data-label="Usuario">{{ user.username }}</td>
+                        <td data-label="Rol">
                             {% if user.rol == 'superadmin' %}
-                                <span class="badge bg-dark">Super Admin</span>
+                                <span class="badge bg-dark rounded-pill px-3">Super Admin</span>
                             {% elif user.rol == 'admin' %}
-                                <span class="badge bg-danger">Administrador</span>
+                                <span class="badge bg-danger rounded-pill px-3">Admin</span>
                             {% else %}
-                                <span class="badge bg-primary">Operador</span>
+                                <span class="badge bg-primary rounded-pill px-3">Operador</span>
                             {% endif %}
                         </td>
-                        <td class="d-none d-sm-table-cell">
+                        <td data-label="Estado">
                             {% if user.estado == 'Activo' %}
-                                <span class="badge bg-success">Activo</span>
+                                <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3">Activo</span>
                             {% else %}
-                                <span class="badge bg-secondary">Inactivo</span>
+                                <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle rounded-pill px-3">Inactivo</span>
                             {% endif %}
                         </td>
-                        <td class="text-end pe-4">
-                            <a href="{{ url_for('users.edit', id=user.id) }}" class="btn btn-sm btn-outline-primary rounded-pill">
-                                <i class="bi bi-pencil"></i>
-                            </a>
-                            {% if user.id != current_user.id %}
-                            <form action="{{ url_for('users.delete', id=user.id) }}" method="POST" class="d-inline" onsubmit="return confirm('¿Estás seguro de eliminar este usuario?');">
-                                <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-                            </form>
-                            {% endif %}
+                        <td data-label="Acciones">
+                            <div class="d-flex gap-2">
+                                <a href="{{ url_for('users.edit', id=user.id) }}" class="btn btn-sm btn-outline-primary px-3">
+                                    <i class="bi bi-pencil"></i> <span class="d-md-none">Editar</span>
+                                </a>
+                                {% if user.id != current_user.id %}
+                                <form action="{{ url_for('users.delete', id=user.id) }}" method="POST" class="d-inline" onsubmit="return confirm('¿Estás seguro de eliminar este usuario?');">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger px-3">
+                                        <i class="bi bi-trash"></i> <span class="d-md-none">Eliminar</span>
+                                    </button>
+                                </form>
+                                {% endif %}
+                            </div>
                         </td>
                     </tr>
                     {% endfor %}

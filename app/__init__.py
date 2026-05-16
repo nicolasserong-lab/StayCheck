@@ -1,5 +1,6 @@
-from flask import Flask, redirect, url_for
-from flask_login import LoginManager
+from flask import Flask, redirect, url_for, session
+from flask_login import LoginManager, current_user
+from datetime import timedelta
 from app.config.settings import Config
 from app.extensions import db
 import os
@@ -10,9 +11,19 @@ def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(config_class)
     
-    # Configuración SQLite
-    basedir = os.path.abspath(os.path.dirname(__file__))
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, '..', 'staycheck.db')
+    # Configuración de la Base de Datos (Soporte para SQLite y PostgreSQL)
+    database_url = os.environ.get('DATABASE_URL')
+    
+    if database_url:
+        # Render proporciona 'postgres://', pero SQLAlchemy requiere 'postgresql://'
+        if database_url.startswith('postgres://'):
+            database_url = database_url.replace('postgres://', 'postgresql://', 1)
+        app.config['SQLALCHEMY_DATABASE_URI'] = database_url
+    else:
+        # Fallback para desarrollo local con SQLite
+        basedir = os.path.abspath(os.path.dirname(__file__))
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, '..', 'staycheck.db')
+        
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     db.init_app(app)
@@ -51,6 +62,19 @@ def create_app(config_class=Config):
     app.register_blueprint(executions_bp, url_prefix='/executions')
     app.register_blueprint(settings_bp, url_prefix='/settings')
 
+    @app.before_request
+    def manage_session_timeout():
+        # Hacer que la sesión sea permanente para que respete el Lifetime
+        session.permanent = True
+        
+        # Si el usuario está autenticado, ajustar el tiempo según su rol
+        if current_user.is_authenticated:
+            if current_user.rol == 'operador':
+                app.permanent_session_lifetime = timedelta(minutes=20)
+            else:
+                # SuperAdmin y Admin
+                app.permanent_session_lifetime = timedelta(minutes=10)
+    
     @app.route('/')
     def index():
         return redirect(url_for('dashboard.index'))
@@ -61,17 +85,15 @@ def create_app(config_class=Config):
         from app.models.property import init_db_properties
         from app.models.checklist import init_db_checklists
         
-        db_path = os.path.join(basedir, '..', 'staycheck.db')
-        is_new_db = not os.path.exists(db_path)
-        
         db.create_all()
         
-        if is_new_db:
-            print("Inicializando base de datos por primera vez...")
+        # Verificar si la base de datos está vacía (especialmente para PostgreSQL en Render)
+        if User.query.first() is None:
+            print("Base de datos vacía detectada. Inicializando datos por primera vez...")
             init_db_data()
             init_db_properties()
             init_db_checklists()
         else:
-            print("Base de datos detectada. Respetando persistencia existente.")
+            print("Datos detectados en la base de datos. Respetando persistencia.")
 
     return app
