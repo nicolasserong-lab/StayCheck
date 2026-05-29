@@ -111,7 +111,30 @@ def create_app(config_class=Config):
         from app.models.property import init_db_properties
         from app.models.checklist import init_db_checklists
         
+        # 1. Asegurar que las tablas existan
         db.create_all()
+        
+        # 2. Migración automática (self-healing) para agregar columnas nuevas si ya existía la tabla
+        from sqlalchemy import text
+        for col_name, col_type in [
+            ("idioma", "VARCHAR(5) DEFAULT 'es'"),
+            ("google_json", "TEXT NULL"),
+            ("google_sheet_id", "VARCHAR(100) NULL")
+        ]:
+            try:
+                # Intentar agregar la columna usando sintaxis de PostgreSQL (soporta IF NOT EXISTS)
+                db.session.execute(text(f"ALTER TABLE users ADD COLUMN IF NOT EXISTS {col_name} {col_type};"))
+                db.session.commit()
+            except Exception:
+                db.session.rollback()
+                try:
+                    # Intentar agregar la columna usando sintaxis estándar/SQLite (no soporta IF NOT EXISTS)
+                    db.session.execute(text(f"ALTER TABLE users ADD COLUMN {col_name} {col_type};"))
+                    db.session.commit()
+                except Exception:
+                    db.session.rollback()
+                    # Ya existe o falló, continuar pacíficamente
+                    pass
         
         # Verificar si la base de datos está vacía (especialmente para PostgreSQL en Render)
         if User.query.first() is None:
