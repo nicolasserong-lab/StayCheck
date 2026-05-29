@@ -1,19 +1,19 @@
 {% extends "base.html" %}
 
-{% block title %}Gestión de Propiedades - StayCheck{% endblock %}
+{% block title %}{{ _('Gestión de Propiedades') }} - StayCheck{% endblock %}
 
 {% block content %}
 <div class="row mb-4 align-items-center">
     <div class="col-12 col-md-6">
-        <h2 class="fw-bold"><i class="bi bi-building text-primary"></i> Propiedades</h2>
-        <p class="text-muted">Administra los departamentos, casas y hoteles.</p>
+        <h2 class="fw-bold"><i class="bi bi-building text-primary"></i> {{ _('Propiedades') }}</h2>
+        <p class="text-muted">{{ _('Administra los departamentos, casas y hoteles.') }}</p>
     </div>
     <div class="col-12 col-md-6 text-md-end mt-3 mt-md-0">
         <a href="{{ url_for('properties.create') }}" class="btn btn-primary rounded-pill fw-semibold">
-            <i class="bi bi-plus-lg"></i> Nueva Propiedad
+            <i class="bi bi-plus-lg"></i> {{ _('Nueva Propiedad') }}
         </a>
         <a href="{{ url_for('dashboard.index') }}" class="btn btn-outline-secondary rounded-pill ms-2">
-            Volver
+            {{ _('Volver') }}
         </a>
     </div>
 </div>
@@ -24,11 +24,11 @@
             <table class="table table-hover align-middle mb-0">
                 <thead class="table-light">
                     <tr>
-                        <th class="ps-md-4">Nombre / Identificador</th>
-                        <th>Dirección</th>
-                        <th>Tipo</th>
-                        <th>Estado</th>
-                        <th>Acciones</th>
+                        <th class="ps-md-4">{{ _('Nombre / Identificador') }}</th>
+                        <th>{{ _('Dirección') }}</th>
+                        <th>{{ _('Tipo') }}</th>
+                        <th>{{ _('Estado') }}</th>
+                        <th>{{ _('Acciones') }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -36,22 +36,22 @@
                     <tr>
                         <td class="ps-md-4 fw-semibold" data-label="Propiedad">{{ prop.nombre }}</td>
                         <td data-label="Dirección" class="text-muted">{{ prop.direccion }}</td>
-                        <td data-label="Tipo">{{ prop.tipo }}</td>
+                        <td data-label="Tipo">{{ _(prop.tipo) }}</td>
                         <td data-label="Estado">
                             {% if prop.estado == 'Activa' %}
-                                <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3">Activa</span>
+                                <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3">{{ _('Activa') }}</span>
                             {% else %}
-                                <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle rounded-pill px-3">Inactiva</span>
+                                <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle rounded-pill px-3">{{ _('Inactiva') }}</span>
                             {% endif %}
                         </td>
                         <td data-label="Acciones">
                             <div class="d-flex gap-2">
                                 <a href="{{ url_for('properties.edit', id=prop.id) }}" class="btn btn-sm btn-outline-primary px-3">
-                                    <i class="bi bi-pencil"></i> <span class="d-md-none">Editar</span>
+                                    <i class="bi bi-pencil"></i> <span class="d-md-none">{{ _('Editar') }}</span>
                                 </a>
-                                <form action="{{ url_for('properties.delete', id=prop.id) }}" method="POST" class="d-inline" onsubmit="return confirm('¿Estás seguro de eliminar esta propiedad? Se perderá el historial asociado.');">
+                                <form action="{{ url_for('properties.delete', id=prop.id) }}" method="POST" class="d-inline" onsubmit="return confirm('{{ _('¿Estás seguro de eliminar esta propiedad? Se perderá el historial asociado.') }}');">
                                     <button type="submit" class="btn btn-sm btn-outline-danger px-3">
-                                        <i class="bi bi-trash"></i> <span class="d-md-none">Eliminar</span>
+                                        <i class="bi bi-trash"></i> <span class="d-md-none">{{ _('Eliminar') }}</span>
                                     </button>
                                 </form>
                             </div>
@@ -60,7 +60,7 @@
                     {% endfor %}
                     {% if not properties %}
                     <tr>
-                        <td colspan="5" class="text-center py-4 text-muted">No hay propiedades registradas.</td>
+                        <td colspan="5" class="text-center py-4 text-muted">{{ _('No hay propiedades registradas.') }}</td>
                     </tr>
                     {% endif %}
                 </tbody>

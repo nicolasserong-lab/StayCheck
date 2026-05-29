@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request
+from flask_babel import _
 from flask_login import login_required, current_user
 from werkzeug.security import generate_password_hash
 from functools import wraps
@@ -15,7 +16,7 @@ def admin_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if not current_user.is_admin() and not current_user.is_superadmin():
-            flash('No tienes permisos para acceder a esta área.', 'danger')
+            flash(_('No tienes permisos para acceder a esta área.'), 'danger')
             return redirect(url_for('dashboard.index'))
         return f(*args, **kwargs)
     return decorated_function
@@ -45,7 +46,7 @@ def create():
         password = request.form.get('password')
         
         if get_user_by_username(username):
-            flash('El nombre de usuario ya está en uso.', 'danger')
+            flash(_('El nombre de usuario ya está en uso.'), 'danger')
         else:
             # Lógica jerárquica
             new_user = None
@@ -65,7 +66,7 @@ def create():
                         new_user.assigned_properties.append(prop)
                 db.session.commit()
             
-            flash('Usuario creado exitosamente.', 'success')
+            flash(_('Usuario creado exitosamente.'), 'success')
             return redirect(url_for('users.index'))
             
     return render_template('users/create.html', properties=all_properties)
@@ -76,12 +77,12 @@ def create():
 def edit(id):
     user = get_user_by_id(id)
     if not user:
-        flash('Usuario no encontrado.', 'danger')
+        flash(_('Usuario no encontrado.'), 'danger')
         return redirect(url_for('users.index'))
     
     # Verificación de privacidad
     if not current_user.is_superadmin() and user.admin_id != current_user.id:
-        flash('No tienes permiso para editar este usuario.', 'danger')
+        flash(_('No tienes permiso para editar este usuario.'), 'danger')
         return redirect(url_for('users.index'))
     
     # Obtener propiedades para asignar (solo si el usuario a editar es un operador)
@@ -97,7 +98,7 @@ def edit(id):
         
         existing_user = get_user_by_username(username)
         if existing_user and str(existing_user.id) != str(id):
-            flash('El nombre de usuario ya está en uso.', 'danger')
+            flash(_('El nombre de usuario ya está en uso.'), 'danger')
         else:
             pwd_hash = generate_password_hash(password) if password else None
             update_user(id, nombre, username, user.rol, estado, pwd_hash)
@@ -113,7 +114,7 @@ def edit(id):
                         user.assigned_properties.append(prop)
                 db.session.commit()
                 
-            flash('Usuario actualizado exitosamente.', 'success')
+            flash(_('Usuario actualizado exitosamente.'), 'success')
             return redirect(url_for('users.index'))
             
     return render_template('users/edit.html', user=user, properties=all_properties)
@@ -123,12 +124,12 @@ def edit(id):
 @admin_required
 def delete(id):
     if str(current_user.id) == str(id):
-        flash('No puedes eliminar tu propio usuario activo.', 'danger')
+        flash(_('No puedes eliminar tu propio usuario activo.'), 'danger')
     else:
         if delete_user(id):
-            flash('Usuario eliminado exitosamente.', 'success')
+            flash(_('Usuario eliminado exitosamente.'), 'success')
         else:
-            flash('Usuario no encontrado.', 'danger')
+            flash(_('Usuario no encontrado.'), 'danger')
     return redirect(url_for('users.index'))
 
 @users_bp.route('/profile', methods=['GET', 'POST'])
@@ -142,7 +143,7 @@ def profile():
         # Validar si el username ya existe (y no es el propio)
         existing_user = get_user_by_username(username)
         if existing_user and existing_user.id != current_user.id:
-            flash('El nombre de usuario ya está en uso.', 'danger')
+            flash(_('El nombre de usuario ya está en uso.'), 'danger')
         else:
             current_user.nombre = nombre
             current_user.username = username
@@ -150,7 +151,7 @@ def profile():
                 current_user.set_password(password)
             
             db.session.commit()
-            flash('Tus datos han sido actualizados exitosamente.', 'success')
+            flash(_('Tus datos han sido actualizados exitosamente.'), 'success')
             return redirect(url_for('dashboard.index'))
             
     return render_template('users/profile.html', user=current_user)

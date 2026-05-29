@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 
-{% block title %}Dashboard Administrador - StayCheck{% endblock %}
+{% block title %}{{ _('Dashboard Administrador') }} - StayCheck{% endblock %}
 
 {% block content %}
 <div class="row mb-4">
     <div class="col-12">
-        <h2 class="fw-bold">Panel de Administrador</h2>
-        <p class="text-muted">Bienvenido, {{ current_user.nombre }}. Aquí podrás gestionar todo el sistema.</p>
+        <h2 class="fw-bold">{{ _('Panel de Administrador') }}</h2>
+        <p class="text-muted">{{ _('Bienvenido') }}, {{ current_user.nombre }}. {{ _('Aquí podrás gestionar todo el sistema.') }}</p>
     </div>
 </div>
 
@@ -18,9 +18,9 @@
                 <div class="icon-circle bg-primary-subtle text-primary mb-3 mx-auto">
                     <i class="bi bi-building fs-3"></i>
                 </div>
-                <h5 class="fw-bold">Propiedades</h5>
-                <p class="text-muted small">Gestiona los departamentos y hoteles</p>
-                <a href="{{ url_for('properties.index') }}" class="btn btn-outline-primary btn-sm rounded-pill w-100">Gestionar Propiedades</a>
+                <h5 class="fw-bold">{{ _('Propiedades') }}</h5>
+                <p class="text-muted small">{{ _('Gestiona los departamentos y hoteles') }}</p>
+                <a href="{{ url_for('properties.index') }}" class="btn btn-outline-primary btn-sm rounded-pill w-100">{{ _('Gestionar Propiedades') }}</a>
             </div>
         </div>
     </div>
@@ -32,9 +32,9 @@
                 <div class="icon-circle bg-success-subtle text-success mb-3 mx-auto">
                     <i class="bi bi-card-checklist fs-3"></i>
                 </div>
-                <h5 class="fw-bold">Checklists</h5>
-                <p class="text-muted small">Crea y edita checklists dinámicos</p>
-                <a href="{{ url_for('checklists.index') }}" class="btn btn-outline-success btn-sm rounded-pill w-100">Gestionar Checklists</a>
+                <h5 class="fw-bold">{{ _('Checklists') }}</h5>
+                <p class="text-muted small">{{ _('Crea y edita checklists dinámicos') }}</p>
+                <a href="{{ url_for('checklists.index') }}" class="btn btn-outline-success btn-sm rounded-pill w-100">{{ _('Gestionar Checklists') }}</a>
             </div>
         </div>
     </div>
@@ -46,9 +46,9 @@
                 <div class="icon-circle bg-warning-subtle text-warning mb-3 mx-auto">
                     <i class="bi bi-people fs-3"></i>
                 </div>
-                <h5 class="fw-bold">Usuarios</h5>
-                <p class="text-muted small">Gestiona operadores y accesos</p>
-                <a href="{{ url_for('users.index') }}" class="btn btn-outline-warning btn-sm rounded-pill w-100">Gestionar Usuarios</a>
+                <h5 class="fw-bold">{{ _('Usuarios') }}</h5>
+                <p class="text-muted small">{{ _('Gestiona operadores y accesos') }}</p>
+                <a href="{{ url_for('users.index') }}" class="btn btn-outline-warning btn-sm rounded-pill w-100">{{ _('Gestionar Usuarios') }}</a>
             </div>
         </div>
     </div>
@@ -60,9 +60,9 @@
                 <div class="icon-circle bg-info-subtle text-info mb-3 mx-auto">
                     <i class="bi bi-cloud-arrow-up-fill fs-3"></i>
                 </div>
-                <h5 class="fw-bold">Configuración</h5>
-                <p class="text-muted small">Enlazar Google Drive / Sheets</p>
-                <a href="{{ url_for('settings.index') }}" class="btn btn-outline-info btn-sm rounded-pill w-100">Configurar Cloud</a>
+                <h5 class="fw-bold">{{ _('Configuración') }}</h5>
+                <p class="text-muted small">{{ _('Enlazar Google Drive / Sheets') }}</p>
+                <a href="{{ url_for('settings.index') }}" class="btn btn-outline-info btn-sm rounded-pill w-100">{{ _('Configurar Cloud') }}</a>
             </div>
         </div>
     </div>
@@ -74,10 +74,10 @@
         <div class="card border-0 shadow-sm rounded-4 bg-light">
             <div class="card-body d-flex justify-content-between align-items-center p-4">
                 <div>
-                    <h5 class="fw-bold mb-1">Historial de Operaciones</h5>
-                    <p class="text-muted small mb-0">Revisa los últimos checklists completados en la nube.</p>
+                    <h5 class="fw-bold mb-1">{{ _('Historial de Operaciones') }}</h5>
+                    <p class="text-muted small mb-0">{{ _('Revisa los últimos checklists completados en la nube.') }}</p>
                 </div>
-                <a href="{{ url_for('executions.history') }}" class="btn btn-info text-white rounded-pill btn-sm px-4">Ver Historial</a>
+                <a href="{{ url_for('executions.history') }}" class="btn btn-info text-white rounded-pill btn-sm px-4">{{ _('Ver Historial') }}</a>
             </div>
         </div>
     </div>

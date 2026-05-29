@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}{{ _('Importar Checklist') }} - StayCheck{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h2 class="fw-bold"><i class="bi bi-file-earmark-excel text-success"></i> {{ _('Importar desde Excel') }}</h2>
+        <p class="text-muted">{{ _('Sube un archivo .xlsx para crear un checklist masivamente.') }}</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12 col-lg-8 mx-auto">
+        <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+            <div class="card-header bg-success text-white p-4">
+                <h5 class="mb-0 fw-bold">{{ _('Instrucciones de Carga') }}</h5>
+            </div>
+            <div class="card-body p-4">
+                <div class="alert alert-info border-0 rounded-3">
+                    <i class="bi bi-info-circle-fill me-2"></i>
+                    {{ _('Para que la carga funcione, tu archivo debe seguir el formato de nuestra plantilla.') }}
+                </div>
+                
+                <ol class="list-group list-group-numbered list-group-flush mb-4">
+                    <li class="list-group-item border-0 px-0">{{ _('Descarga la plantilla de ejemplo abajo.') }}</li>
+                    <li class="list-group-item border-0 px-0">{{ _('Completa las columnas:') }} <strong>{{ _('Sección, Tarea, Tipo') }}</strong> {{ _('y') }} <strong>{{ _('Opciones') }}</strong>.</li>
+                    <li class="list-group-item border-0 px-0">{{ _('Tipos válidos:') }} <code>checkbox</code>, <code>texto</code>, <code>numero</code>, <code>select</code>, <code>observaciones</code>.</li>
+                    <li class="list-group-item border-0 px-0">{{ _('Sube el archivo y presiona "Importar".') }}</li>
+                </ol>
+
+                <div class="text-center mb-5">
+                    <a href="{{ url_for('checklists.template') }}" class="btn btn-outline-success rounded-pill px-4">
+                        <i class="bi bi-download me-2"></i> {{ _('Descargar Plantilla Excel') }}
+                    </a>
+                </div>
+
+                <hr class="my-4">
+
+                <form method="POST" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="titulo" class="form-label fw-bold">{{ _('Título del Nuevo Checklist') }}</label>
+                        <input type="text" class="form-control bg-light rounded-3" id="titulo" name="titulo" required placeholder="{{ _('Ej. Limpieza General Semanal') }}">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="descripcion" class="form-label fw-bold">{{ _('Descripción (Opcional)') }}</label>
+                        <textarea class="form-control bg-light rounded-3" id="descripcion" name="descripcion" rows="2" placeholder="{{ _('Detalles sobre este checklist...') }}"></textarea>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="horas_bloqueo" class="form-label fw-bold">{{ _('Horas de Bloqueo') }}</label>
+                        <input type="number" class="form-control bg-light rounded-3" id="horas_bloqueo" name="horas_bloqueo" value="24" min="0">
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="file" class="form-label fw-bold">{{ _('Seleccionar Archivo Excel (.xlsx)') }}</label>
+                        <input class="form-control bg-light" type="file" id="file" name="file" accept=".xlsx" required>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center">
+                        <a href="{{ url_for('checklists.index') }}" class="btn btn-link text-muted text-decoration-none">{{ _('Cancelar') }}</a>
+                        <button type="submit" class="btn btn-success btn-lg rounded-pill px-5 fw-bold shadow-sm">
+                            <i class="bi bi-upload me-2"></i> {{ _('Comenzar Importación') }}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

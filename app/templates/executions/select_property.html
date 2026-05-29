@@ -1,16 +1,16 @@
 {% extends "base.html" %}
 
-{% block title %}Seleccionar Propiedad - StayCheck{% endblock %}
+{% block title %}{{ _('Seleccionar Propiedad') }} - StayCheck{% endblock %}
 
 {% block content %}
 <div class="row mb-4 align-items-center">
     <div class="col-12 col-md-6">
-        <h2 class="fw-bold"><i class="bi bi-building text-primary"></i> Seleccionar Propiedad</h2>
-        <p class="text-muted">¿En qué propiedad vas a trabajar hoy?</p>
+        <h2 class="fw-bold"><i class="bi bi-building text-primary"></i> {{ _('Seleccionar Propiedad') }}</h2>
+        <p class="text-muted">{{ _('¿En qué propiedad vas a trabajar hoy?') }}</p>
     </div>
     <div class="col-12 col-md-6 text-md-end">
         <a href="{{ url_for('dashboard.index') }}" class="btn btn-outline-secondary rounded-pill">
-            <i class="bi bi-arrow-left"></i> Volver al Panel
+            <i class="bi bi-arrow-left"></i> {{ _('Volver al Panel') }}
         </a>
     </div>
 </div>
@@ -29,9 +29,9 @@
                         <small class="text-muted">{{ prop.tipo }}</small>
                     </div>
                 </div>
-                <p class="text-muted small mb-4"><i class="bi bi-map"></i> {{ prop.direccion or 'Sin dirección registrada' }}</p>
+                <p class="text-muted small mb-4"><i class="bi bi-map"></i> {{ prop.direccion or _('Sin dirección registrada') }}</p>
                 <a href="{{ url_for('executions.select_checklist', property_id=prop.id) }}" class="btn btn-primary rounded-pill w-100 fw-semibold">
-                    Seleccionar <i class="bi bi-chevron-right ms-1"></i>
+                    {{ _('Seleccionar') }} <i class="bi bi-chevron-right ms-1"></i>
                 </a>
             </div>
         </div>
@@ -40,8 +40,8 @@
     {% if not properties %}
     <div class="col-12 text-center py-5">
         <i class="bi bi-exclamation-circle display-4 text-muted mb-3"></i>
-        <h5>No hay propiedades activas registradas.</h5>
-        <p class="text-muted">Contacta al administrador para habilitar propiedades.</p>
+        <h5>{{ _('No hay propiedades activas registradas.') }}</h5>
+        <p class="text-muted">{{ _('Contacta al administrador para habilitar propiedades.') }}</p>
     </div>
     {% endif %}
 </div>

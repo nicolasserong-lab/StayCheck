@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request
+from flask_babel import _
 from flask_login import login_required, current_user
 from app.routes.users import admin_required
 from app.extensions import db
@@ -21,7 +22,7 @@ def index():
         current_user.google_json = request.form.get('google_credentials_json', '').strip()
         
         db.session.commit()
-        flash('Configuración de Google Drive/Sheets actualizada.', 'success')
+        flash(_('Configuración de Google Drive/Sheets actualizada.'), 'success')
         return redirect(url_for('settings.index'))
         
     return render_template('settings/index.html')

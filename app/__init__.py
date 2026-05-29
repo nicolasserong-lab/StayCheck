@@ -2,7 +2,8 @@ from flask import Flask, redirect, url_for, session
 from flask_login import LoginManager, current_user
 from datetime import timedelta
 from app.config.settings import Config
-from app.extensions import db
+from app.extensions import db, babel
+from flask import request
 import os
 
 login_manager = LoginManager()
@@ -27,6 +28,23 @@ def create_app(config_class=Config):
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     db.init_app(app)
+    
+    # Configuración de Babel
+    def get_locale():
+        # 1. Si el usuario está logueado, usar su idioma guardado
+        if current_user.is_authenticated and current_user.idioma:
+            return current_user.idioma
+        # 2. Si no, intentar leer de la sesión (para usuarios no logueados que cambian idioma)
+        if 'idioma' in session:
+            return session['idioma']
+        # 3. Por último, lo que diga el navegador o español por defecto
+        return request.accept_languages.best_match(['es', 'en']) or 'es'
+
+    babel.init_app(app, locale_selector=get_locale)
+    
+    # Hacer disponible get_locale en los templates
+    app.jinja_env.globals.update(get_locale=get_locale)
+    
     login_manager.init_app(app)
     login_manager.login_view = 'auth.login'
     login_manager.login_message = 'Por favor inicia sesión para acceder a esta página.'
@@ -43,7 +61,7 @@ def create_app(config_class=Config):
     from app.models.property import Property
     from app.models.checklist import Checklist
     from app.models.execution import Execution
-    from app.models.task import Task
+
 
     # Registro de Blueprints
     from app.routes.auth import auth_bp
@@ -78,6 +96,14 @@ def create_app(config_class=Config):
     @app.route('/')
     def index():
         return redirect(url_for('dashboard.index'))
+
+    @app.route('/sw.js')
+    def serve_sw():
+        return app.send_static_file('js/sw.js')
+
+    @app.route('/manifest.json')
+    def serve_manifest():
+        return app.send_static_file('manifest.json')
 
     # Crear tablas e inicializar datos si es necesario
     with app.app_context():

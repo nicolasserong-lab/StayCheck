@@ -23,6 +23,7 @@ class User(UserMixin, db.Model):
     admin_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)
     
     estado = db.Column(db.String(20), default="Activo")
+    idioma = db.Column(db.String(5), default="es")
     fecha_creacion = db.Column(db.DateTime, default=datetime.utcnow)
     
     # Configuración de Google Cloud (Individual por Administrador)

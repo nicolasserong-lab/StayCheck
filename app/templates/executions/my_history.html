@@ -1,16 +1,16 @@
 {% extends "base.html" %}
 
-{% block title %}Mi Historial - StayCheck{% endblock %}
+{% block title %}{{ _('Mi Historial') }} - StayCheck{% endblock %}
 
 {% block content %}
 <div class="row mb-4 align-items-center">
     <div class="col-12 col-md-8">
-        <h2 class="fw-bold"><i class="bi bi-clock-history text-primary"></i> Mi Historial</h2>
-        <p class="text-muted">Revisa y edita tus checklists completados recientemente.</p>
+        <h2 class="fw-bold"><i class="bi bi-clock-history text-primary"></i> {{ _('Mi Historial') }}</h2>
+        <p class="text-muted">{{ _('Revisa y edita tus checklists completados recientemente.') }}</p>
     </div>
     <div class="col-12 col-md-4 text-md-end">
         <a href="{{ url_for('dashboard.index') }}" class="btn btn-outline-secondary rounded-pill px-4">
-            <i class="bi bi-arrow-left"></i> Volver al Panel
+            <i class="bi bi-arrow-left"></i> {{ _('Volver al Panel') }}
         </a>
     </div>
 </div>
@@ -23,11 +23,11 @@
                     <table class="table table-hover align-middle mb-0">
                         <thead class="table-light">
                             <tr>
-                                <th class="px-4 py-3">Fecha / Hora</th>
-                                <th class="py-3">Propiedad</th>
-                                <th class="py-3">Checklist</th>
-                                <th class="py-3">Estado</th>
-                                <th class="px-4 py-3">Acciones</th>
+                                <th class="px-4 py-3">{{ _('Fecha / Hora') }}</th>
+                                <th class="py-3">{{ _('Propiedad') }}</th>
+                                <th class="py-3">{{ _('Checklist') }}</th>
+                                <th class="py-3">{{ _('Estado') }}</th>
+                                <th class="px-4 py-3">{{ _('Acciones') }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -37,23 +37,23 @@
                                     <div class="fw-bold">{{ item.execution.fecha }}</div>
                                     <div class="small text-muted">{{ item.execution.hora }}</div>
                                 </td>
-                                <td data-label="Propiedad">
-                                    <div class="fw-semibold">{{ item.property.nombre if item.property else 'Eliminada' }}</div>
+                                <td data-label="{{ _('Propiedad') }}">
+                                    <div class="fw-semibold">{{ item.property.nombre if item.property else _('Eliminada') }}</div>
                                     <div class="small text-muted">{{ item.property.tipo }}</div>
                                 </td>
-                                <td data-label="Checklist">
-                                    <span class="text-dark">{{ item.checklist.titulo if item.checklist else 'Eliminado' }}</span>
+                                <td data-label="{{ _('Checklist') }}">
+                                    <span class="text-dark">{{ item.checklist.titulo if item.checklist else _('Eliminado') }}</span>
                                 </td>
-                                <td data-label="Estado">
-                                    <span class="badge bg-success-subtle text-success border border-success-subtle px-3 rounded-pill">Completado</span>
+                                <td data-label="{{ _('Estado') }}">
+                                    <span class="badge bg-success-subtle text-success border border-success-subtle px-3 rounded-pill">{{ _('Completado') }}</span>
                                 </td>
-                                <td class="px-4" data-label="Acciones">
+                                <td class="px-4" data-label="{{ _('Acciones') }}">
                                     <div class="d-flex gap-2">
                                         <a href="{{ url_for('executions.detail', id=item.execution.id) }}" class="btn btn-sm btn-outline-primary px-3">
-                                            <i class="bi bi-eye"></i> <span class="d-md-none">Ver</span>
+                                            <i class="bi bi-eye"></i> <span class="d-md-none">{{ _('Ver') }}</span>
                                         </a>
                                         <a href="{{ url_for('executions.edit', id=item.execution.id) }}" class="btn btn-sm btn-outline-warning px-3">
-                                            <i class="bi bi-pencil"></i> <span class="d-md-none">Editar</span>
+                                            <i class="bi bi-pencil"></i> <span class="d-md-none">{{ _('Editar') }}</span>
                                         </a>
                                     </div>
                                 </td>
@@ -69,8 +69,8 @@
         <div class="card border-0 shadow-sm rounded-4 py-5 text-center">
             <div class="card-body">
                 <i class="bi bi-journal-x display-4 text-light d-block mb-3"></i>
-                <p class="text-muted">Aún no has completado ningún checklist.</p>
-                <a href="{{ url_for('executions.select_property') }}" class="btn btn-primary rounded-pill px-4">Comenzar Ahora</a>
+                <p class="text-muted">{{ _('Aún no has completado ningún checklist.') }}</p>
+                <a href="{{ url_for('executions.select_property') }}" class="btn btn-primary rounded-pill px-4">{{ _('Comenzar Ahora') }}</a>
             </div>
         </div>
         {% endif %}

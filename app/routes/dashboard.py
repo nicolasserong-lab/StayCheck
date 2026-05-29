@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, redirect, url_for
+from flask_babel import _
 from flask_login import login_required, current_user
 
 dashboard_bp = Blueprint('dashboard', __name__)
@@ -11,8 +12,6 @@ def index():
     elif current_user.is_admin():
         return render_template('dashboard/admin.html')
     elif current_user.is_operator():
-        from app.models.task import get_pending_tasks_by_user
-        tasks = get_pending_tasks_by_user(current_user.id)
-        return render_template('dashboard/operator.html', tasks=tasks)
+        return render_template('dashboard/operator.html', tasks=[])
     else:
-        return "Rol no reconocido", 403
+        return _("Rol no reconocido"), 403

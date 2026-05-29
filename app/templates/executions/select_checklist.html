@@ -1,16 +1,16 @@
 {% extends "base.html" %}
 
-{% block title %}Seleccionar Checklist - StayCheck{% endblock %}
+{% block title %}{{ _('Seleccionar Checklist') }} - StayCheck{% endblock %}
 
 {% block content %}
 <div class="row mb-4 align-items-center">
     <div class="col-12 col-md-6">
-        <h2 class="fw-bold"><i class="bi bi-card-checklist text-success"></i> Seleccionar Tarea</h2>
-        <p class="text-muted">Propiedad: <span class="fw-bold text-dark">{{ property.nombre }}</span></p>
+        <h2 class="fw-bold"><i class="bi bi-card-checklist text-success"></i> {{ _('Seleccionar Tarea') }}</h2>
+        <p class="text-muted">{{ _('Propiedad:') }} <span class="fw-bold text-dark">{{ property.nombre }}</span></p>
     </div>
     <div class="col-12 col-md-6 text-md-end">
         <a href="{{ url_for('executions.select_property') }}" class="btn btn-outline-secondary rounded-pill">
-            <i class="bi bi-arrow-left"></i> Cambiar Propiedad
+            <i class="bi bi-arrow-left"></i> {{ _('Cambiar Propiedad') }}
         </a>
     </div>
 </div>
@@ -28,7 +28,7 @@
                 
                 <div class="mt-auto">
                     <div class="d-flex align-items-center mb-3">
-                        <span class="badge bg-light text-dark border px-3 py-2 rounded-pill"><i class="bi bi-list-task text-primary"></i> {{ chk.items|length }} items</span>
+                        <span class="badge bg-light text-dark border px-3 py-2 rounded-pill"><i class="bi bi-list-task text-primary"></i> {{ chk.items|length }} {{ _('items') }}</span>
                         {% if lockout.is_locked %}
                         <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle ms-2 px-3 py-2 rounded-pill">
                             <i class="bi bi-clock-history"></i> <span class="countdown" data-seconds="{{ lockout.seconds_left }}">--:--:--</span>
@@ -37,13 +37,13 @@
                     </div>
                     
                     {% if lockout.is_locked %}
-                    <button type="button" class="btn btn-secondary rounded-pill fw-semibold w-100 disabled" title="Ya completado hoy">
-                        <i class="bi bi-check-circle-fill me-1"></i> Bloqueado
+                    <button type="button" class="btn btn-secondary rounded-pill fw-semibold w-100 disabled" title="{{ _('Ya completado hoy') }}">
+                        <i class="bi bi-check-circle-fill me-1"></i> {{ _('Bloqueado') }}
                     </button>
                     {% else %}
                     <form action="{{ url_for('executions.start', property_id=property.id, checklist_id=chk.id) }}" method="POST">
                         <button type="submit" class="btn btn-success rounded-pill fw-semibold w-100 shadow-sm">
-                            <i class="bi bi-play-fill me-1"></i> Iniciar Checklist
+                            <i class="bi bi-play-fill me-1"></i> {{ _('Iniciar Checklist') }}
                         </button>
                     </form>
                     {% endif %}
@@ -56,8 +56,8 @@
     <div class="col-12 text-center py-5">
         <div class="bg-white p-5 rounded-4 shadow-sm d-inline-block">
             <i class="bi bi-journal-x display-4 text-muted mb-3 d-block"></i>
-            <h5 class="fw-bold">No hay checklists activos disponibles.</h5>
-            <p class="text-muted mb-0">Contacta al administrador para crear plantillas.</p>
+            <h5 class="fw-bold">{{ _('No hay checklists activos disponibles.') }}</h5>
+            <p class="text-muted mb-0">{{ _('Contacta al administrador para crear plantillas.') }}</p>
         </div>
     </div>
     {% endif %}

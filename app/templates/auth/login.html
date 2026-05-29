@@ -1,22 +1,48 @@
 {% extends "base.html" %}
 
-{% block title %}Iniciar Sesión - StayCheck{% endblock %}
+{% block title %}{{ _('Iniciar Sesión') }} - StayCheck{% endblock %}
 
 {% block content %}
+<div class="position-fixed top-0 end-0 p-4 z-3">
+    <div class="d-flex gap-3 bg-white p-2 rounded-pill shadow-sm border">
+        <a href="{{ url_for('auth.set_language', lang='es') }}" class="btn btn-link p-0 border-0 d-flex align-items-center opacity-hover {% if get_locale() == 'es' %}selected-lang{% else %}opacity-50{% endif %}" title="Español">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 750 500" class="rounded-circle shadow-sm" style="object-fit: cover; width: 32px; height: 32px;">
+                <rect width="750" height="500" fill="#c60b1e"/>
+                <rect width="750" height="250" y="125" fill="#ffc400"/>
+            </svg>
+        </a>
+        <a href="{{ url_for('auth.set_language', lang='en') }}" class="btn btn-link p-0 border-0 d-flex align-items-center opacity-hover {% if get_locale() == 'en' %}selected-lang{% else %}opacity-50{% endif %}" title="English">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 60 30" class="rounded-circle shadow-sm" style="object-fit: cover; width: 32px; height: 32px;">
+                <clipPath id="s"><path d="M0,0 v30 h60 v-30 z"/></clipPath>
+                <path d="M0,0 v30 h60 v-30 z" fill="#012169"/>
+                <path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" stroke-width="6" clip-path="url(#s)"/>
+                <path d="M0,0 L60,30 M60,0 L0,30" stroke="#C8102E" stroke-width="4" clip-path="url(#s)"/>
+                <path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"/>
+                <path d="M30,0 v30 M0,15 h60" stroke="#C8102E" stroke-width="6"/>
+            </svg>
+        </a>
+    </div>
+</div>
+
+<style>
+    .opacity-hover:hover { opacity: 1 !important; transform: scale(1.1); transition: all 0.2s ease; }
+    .selected-lang { opacity: 1 !important; transform: scale(1.1); pointer-events: none; border: 2px solid #0d6efd !important; border-radius: 50%; }
+</style>
+
 <div class="row justify-content-center align-items-center mt-md-5 pt-md-4" style="min-height: 80vh;">
     <div class="col-12 col-md-6 col-lg-4">
         <div class="text-center mb-4">
             <h1 class="display-5 text-primary fw-bold"><i class="bi bi-check2-square"></i> StayCheck</h1>
-            <p class="text-muted">Gestión de Checklists Operacionales</p>
+            <p class="text-muted">{{ _('Gestión de Checklists Operacionales') }}</p>
         </div>
         
         <div class="card border-0 shadow-sm rounded-4 login-card">
             <div class="card-body p-4 p-md-5">
-                <h4 class="card-title text-center mb-4 fw-bold">Iniciar Sesión</h4>
+                <h4 class="card-title text-center mb-4 fw-bold">{{ _('Iniciar Sesión') }}</h4>
                 
                 <form method="POST" action="{{ url_for('auth.login') }}">
                     <div class="mb-3">
-                        <label for="username" class="form-label">Nombre de Usuario</label>
+                        <label for="username" class="form-label">{{ _('Nombre de Usuario') }}</label>
                         <div class="input-group">
                             <span class="input-group-text bg-light border-end-0"><i class="bi bi-person"></i></span>
                             <input type="text" class="form-control bg-light border-start-0" id="username" name="username" required placeholder="tu_usuario">
@@ -24,7 +50,7 @@
                     </div>
                     
                     <div class="mb-4">
-                        <label for="password" class="form-label">Contraseña</label>
+                        <label for="password" class="form-label">{{ _('Contraseña') }}</label>
                         <div class="input-group">
                             <span class="input-group-text bg-light border-end-0"><i class="bi bi-lock"></i></span>
                             <input type="password" class="form-control bg-light border-start-0" id="password" name="password" required placeholder="••••••••">
@@ -32,7 +58,7 @@
                     </div>
                     
                     <div class="d-grid gap-2">
-                        <button type="submit" class="btn btn-primary btn-lg rounded-pill fw-semibold">Ingresar</button>
+                        <button type="submit" class="btn btn-primary btn-lg rounded-pill fw-semibold">{{ _('Ingresar') }}</button>
                     </div>
                 </form>
             </div>

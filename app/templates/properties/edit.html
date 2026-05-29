@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 
-{% block title %}Editar Propiedad - StayCheck{% endblock %}
+{% block title %}{{ _('Editar Propiedad') }} - StayCheck{% endblock %}
 
 {% block content %}
 <div class="row mb-4">
     <div class="col-12">
-        <h2 class="fw-bold"><i class="bi bi-pencil text-primary"></i> Editar Propiedad</h2>
-        <p class="text-muted">Modifica los detalles o el estado de la propiedad.</p>
+        <h2 class="fw-bold"><i class="bi bi-pencil text-primary"></i> {{ _('Editar Propiedad') }}</h2>
+        <p class="text-muted">{{ _('Modifica los detalles o el estado de la propiedad.') }}</p>
     </div>
 </div>
 
@@ -16,38 +16,38 @@
             <div class="card-body p-4">
                 <form method="POST">
                     <div class="mb-3">
-                        <label for="nombre" class="form-label">Nombre / Identificador</label>
+                        <label for="nombre" class="form-label">{{ _('Nombre / Identificador') }}</label>
                         <input type="text" class="form-control bg-light" id="nombre" name="nombre" value="{{ prop.nombre }}" required>
                     </div>
                     
                     <div class="mb-3">
-                        <label for="direccion" class="form-label">Dirección (Opcional)</label>
+                        <label for="direccion" class="form-label">{{ _('Dirección (Opcional)') }}</label>
                         <input type="text" class="form-control bg-light" id="direccion" name="direccion" value="{{ prop.direccion }}">
                     </div>
                     
                     <div class="row">
                         <div class="col-md-6 mb-4">
-                            <label for="tipo" class="form-label">Tipo de Propiedad</label>
+                            <label for="tipo" class="form-label">{{ _('Tipo de Propiedad') }}</label>
                             <select class="form-select bg-light" id="tipo" name="tipo" required>
-                                <option value="Departamento" {% if prop.tipo == 'Departamento' %}selected{% endif %}>Departamento</option>
-                                <option value="Hotel" {% if prop.tipo == 'Hotel' %}selected{% endif %}>Habitación de Hotel</option>
-                                <option value="Casa" {% if prop.tipo == 'Casa' %}selected{% endif %}>Casa</option>
-                                <option value="Cabaña" {% if prop.tipo == 'Cabaña' %}selected{% endif %}>Cabaña</option>
-                                <option value="Otro" {% if prop.tipo == 'Otro' %}selected{% endif %}>Otro</option>
+                                <option value="Departamento" {% if prop.tipo == 'Departamento' %}selected{% endif %}>{{ _('Departamento') }}</option>
+                                <option value="Hotel" {% if prop.tipo == 'Hotel' %}selected{% endif %}>{{ _('Habitación de Hotel') }}</option>
+                                <option value="Casa" {% if prop.tipo == 'Casa' %}selected{% endif %}>{{ _('Casa') }}</option>
+                                <option value="Cabaña" {% if prop.tipo == 'Cabaña' %}selected{% endif %}>{{ _('Cabaña') }}</option>
+                                <option value="Otro" {% if prop.tipo == 'Otro' %}selected{% endif %}>{{ _('Otro') }}</option>
                             </select>
                         </div>
                         <div class="col-md-6 mb-4">
-                            <label for="estado" class="form-label">Estado</label>
+                            <label for="estado" class="form-label">{{ _('Estado') }}</label>
                             <select class="form-select bg-light" id="estado" name="estado" required>
-                                <option value="Activa" {% if prop.estado == 'Activa' %}selected{% endif %}>Activa</option>
-                                <option value="Inactiva" {% if prop.estado == 'Inactiva' %}selected{% endif %}>Inactiva</option>
+                                <option value="Activa" {% if prop.estado == 'Activa' %}selected{% endif %}>{{ _('Activa') }}</option>
+                                <option value="Inactiva" {% if prop.estado == 'Inactiva' %}selected{% endif %}>{{ _('Inactiva') }}</option>
                             </select>
                         </div>
                     </div>
                     
                     <div class="d-flex gap-2">
-                        <button type="submit" class="btn btn-primary rounded-pill fw-semibold px-4">Actualizar Propiedad</button>
-                        <a href="{{ url_for('properties.index') }}" class="btn btn-outline-secondary rounded-pill px-4">Cancelar</a>
+                        <button type="submit" class="btn btn-primary rounded-pill fw-semibold px-4">{{ _('Actualizar Propiedad') }}</button>
+                        <a href="{{ url_for('properties.index') }}" class="btn btn-outline-secondary rounded-pill px-4">{{ _('Cancelar') }}</a>
                     </div>
                 </form>
             </div>

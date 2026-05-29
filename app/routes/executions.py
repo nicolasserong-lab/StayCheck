@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request
+from flask_babel import _
 from flask_login import login_required, current_user
 from datetime import datetime, timedelta
 from app.routes.users import admin_required
@@ -17,18 +18,28 @@ def history():
     if current_user.is_operator():
         return redirect(url_for('executions.my_history'))
         
-    # El Admin ve solo sus reportes
-    executions = get_all_executions_by_admin(current_user.id)
+    from app.models.execution import Execution
+    from app.models.property import Property
+    from app.models.checklist import Checklist
+    from app.models.user import User
+    from app.extensions import db
+
+    # El Admin ve solo sus reportes, traemos todo en una sola consulta SQL optimizada con JOIN
+    results = db.session.query(Execution, Property, Checklist, User)\
+        .join(Property, Execution.property_id == Property.id)\
+        .join(Checklist, Execution.checklist_id == Checklist.id)\
+        .join(User, Execution.user_id == User.id)\
+        .filter(Execution.admin_id == current_user.id)\
+        .order_by(Execution.fecha.desc(), Execution.hora.desc())\
+        .all()
+
     history_data = []
-    for ex in executions:
-        prop = get_property_by_id(ex.property_id)
-        chk = get_checklist_by_id(ex.checklist_id)
-        user = get_user_by_id(ex.user_id)
+    for ex, prop, chk, usr in results:
         history_data.append({
             'execution': ex,
             'property': prop,
             'checklist': chk,
-            'user': user
+            'user': usr
         })
     return render_template('executions/history.html', history=history_data)
 
@@ -36,12 +47,20 @@ def history():
 @login_required
 def my_history():
     from app.models.execution import Execution
-    # Filtrar solo las ejecuciones realizadas por el usuario actual
-    executions = Execution.query.filter_by(user_id=current_user.id).order_by(Execution.fecha.desc(), Execution.hora.desc()).all()
+    from app.models.property import Property
+    from app.models.checklist import Checklist
+    from app.extensions import db
+
+    # El Operador ve solo sus reportes, traemos todo en una sola consulta SQL optimizada con JOIN
+    results = db.session.query(Execution, Property, Checklist)\
+        .join(Property, Execution.property_id == Property.id)\
+        .join(Checklist, Execution.checklist_id == Checklist.id)\
+        .filter(Execution.user_id == current_user.id)\
+        .order_by(Execution.fecha.desc(), Execution.hora.desc())\
+        .all()
+
     history_data = []
-    for ex in executions:
-        prop = get_property_by_id(ex.property_id)
-        chk = get_checklist_by_id(ex.checklist_id)
+    for ex, prop, chk in results:
         history_data.append({
             'execution': ex,
             'property': prop,
@@ -54,12 +73,12 @@ def my_history():
 def edit(id):
     execution = get_execution_by_id(id)
     if not execution:
-        flash('Ejecución no encontrada.', 'danger')
+        flash(_('Ejecución no encontrada.'), 'danger')
         return redirect(url_for('dashboard.index'))
     
     # Solo el autor o su admin pueden editar
     if execution.user_id != current_user.id and current_user.id != execution.admin_id:
-        flash('No tienes permiso para editar este reporte.', 'danger')
+        flash(_('No tienes permiso para editar este reporte.'), 'danger')
         return redirect(url_for('dashboard.index'))
     
     prop = get_property_by_id(execution.property_id)
@@ -77,7 +96,7 @@ def edit(id):
         # Re-sincronizar con Google Sheets para actualizar el registro existente
         sync_execution_to_sheet(execution, prop, chk, current_user)
         
-        flash('Reporte actualizado y sincronizado exitosamente.', 'success')
+        flash(_('Reporte actualizado y sincronizado exitosamente.'), 'success')
         return redirect(url_for('executions.my_history'))
     
     return render_template('executions/fill.html', execution=execution, property=prop, checklist=chk, is_edit=True)
@@ -87,7 +106,7 @@ def edit(id):
 def detail(id):
     ex = get_execution_by_id(id)
     if not ex or (current_user.rol == 'admin' and ex.admin_id != current_user.id):
-        flash('Ejecución no encontrada o sin acceso.', 'danger')
+        flash(_('Ejecución no encontrada o sin acceso.'), 'danger')
         return redirect(url_for('dashboard.index'))
     
     prop = get_property_by_id(ex.property_id)
@@ -116,7 +135,7 @@ def select_checklist(property_id):
     owner_id = current_user.admin_id if current_user.is_operator() else current_user.id
     
     if not prop or prop.admin_id != owner_id:
-        flash('Propiedad no encontrada.', 'danger')
+        flash(_('Propiedad no encontrada.'), 'danger')
         return redirect(url_for('dashboard.index'))
     
     checklists = [c for c in get_all_checklists_by_admin(owner_id) if c.estado == 'Activo']
@@ -180,7 +199,7 @@ def fill(id):
     task_id = request.args.get('task_id') # Viene del redirect de start
     
     if not execution:
-        flash('Ejecución no encontrada.', 'danger')
+        flash(_('Ejecución no encontrada.'), 'danger')
         return redirect(url_for('dashboard.index'))
     
     prop = get_property_by_id(execution.property_id)
@@ -198,17 +217,9 @@ def fill(id):
         # Sincronización automática con Google Sheets
         sync_execution_to_sheet(execution, prop, chk, current_user)
         
-        # Si había una tarea asociada, marcarla como completada
-        submitted_task_id = request.form.get('task_id')
-        if submitted_task_id:
-            from app.models.task import Task
-            from app.extensions import db
-            task = Task.query.get(submitted_task_id)
-            if task:
-                task.status = 'Completada'
-                db.session.commit()
+
         
-        flash('Checklist finalizado exitosamente y sincronizado con la nube.', 'success')
+        flash(_('Checklist finalizado exitosamente y sincronizado con la nube.'), 'success')
         return redirect(url_for('executions.select_checklist', property_id=execution.property_id))
     
     return render_template('executions/fill.html', execution=execution, property=prop, checklist=chk, task_id=task_id)
@@ -221,23 +232,23 @@ def delete(id):
     
     # Solo superadmin o admin pueden eliminar
     if current_user.rol not in ['superadmin', 'admin']:
-        flash('No tienes permisos para eliminar registros.', 'danger')
+        flash(_('No tienes permisos para eliminar registros.'), 'danger')
         return redirect(url_for('executions.history'))
         
     execution = Execution.query.get(id)
     if not execution:
-        flash('Registro no encontrado.', 'danger')
+        flash(_('Registro no encontrado.'), 'danger')
         return redirect(url_for('executions.history'))
     
     # Validar que pertenece a este admin (el admin original o el superadmin de esos admins)
     if current_user.rol == 'admin' and execution.admin_id != current_user.id:
-        flash('No tienes permiso para eliminar este registro.', 'danger')
+        flash(_('No tienes permiso para eliminar este registro.'), 'danger')
         return redirect(url_for('executions.history'))
         
     db.session.delete(execution)
     db.session.commit()
     
-    flash('Registro de checklist eliminado exitosamente del historial.', 'success')
+    flash(_('Registro de checklist eliminado exitosamente del historial.'), 'success')
     return redirect(url_for('executions.history'))
 
 @executions_bp.route('/cancel/<id>')

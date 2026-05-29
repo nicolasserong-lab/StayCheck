@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 
-{% block title %}Panel SuperAdmin - StayCheck{% endblock %}
+{% block title %}{{ _('Panel SuperAdmin') }} - StayCheck{% endblock %}
 
 {% block content %}
 <div class="row mb-4">
     <div class="col-12">
-        <h2 class="fw-bold">Panel de Super Administrador</h2>
-        <p class="text-muted">Hola, {{ current_user.nombre }}. Aquí gestionas tus clientes (Administradores).</p>
+        <h2 class="fw-bold">{{ _('Panel de Super Administrador') }}</h2>
+        <p class="text-muted">{{ _('Hola') }}, {{ current_user.nombre }}. {{ _('Aquí gestionas tus clientes (Administradores).') }}</p>
     </div>
 </div>
 
@@ -15,9 +15,9 @@
     <div class="col-12 col-md-6">
         <div class="card border-0 shadow-sm h-100 p-4 rounded-4">
 
-            <h4 class="fw-bold">Cuentas de Administrador</h4>
-            <p class="text-muted">Crea y supervisa las cuentas de tus clientes.</p>
-            <a href="{{ url_for('users.index') }}" class="btn btn-primary rounded-pill px-4 mt-auto">Gestionar Clientes</a>
+            <h4 class="fw-bold">{{ _('Cuentas de Administrador') }}</h4>
+            <p class="text-muted">{{ _('Crea y supervisa las cuentas de tus clientes.') }}</p>
+            <a href="{{ url_for('users.index') }}" class="btn btn-primary rounded-pill px-4 mt-auto">{{ _('Gestionar Clientes') }}</a>
         </div>
     </div>
 
@@ -25,9 +25,9 @@
     <div class="col-12 col-md-6">
         <div class="card border-0 shadow-sm h-100 p-4 rounded-4">
 
-            <h4 class="fw-bold">Mis Datos</h4>
-            <p class="text-muted">Actualiza tu contraseña y nombre de perfil.</p>
-            <a href="{{ url_for('users.profile') }}" class="btn btn-outline-primary rounded-pill px-4 mt-auto">Mi Perfil</a>
+            <h4 class="fw-bold">{{ _('Mis Datos') }}</h4>
+            <p class="text-muted">{{ _('Actualiza tu contraseña y nombre de perfil.') }}</p>
+            <a href="{{ url_for('users.profile') }}" class="btn btn-outline-primary rounded-pill px-4 mt-auto">{{ _('Mi Perfil') }}</a>
         </div>
     </div>
 </div>

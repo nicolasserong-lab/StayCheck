@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request
+from flask_babel import _
 from flask_login import login_required, current_user
 from app.routes.users import admin_required
 from app.models.property import (
@@ -27,7 +28,7 @@ def create():
         
         # Asociar automáticamente al Admin logueado
         add_property(nombre, direccion, tipo, current_user.id)
-        flash('Propiedad creada exitosamente.', 'success')
+        flash(_('Propiedad creada exitosamente.'), 'success')
         return redirect(url_for('properties.index'))
         
     return render_template('properties/create.html')
@@ -38,7 +39,7 @@ def create():
 def edit(id):
     prop = get_property_by_id(id)
     if not prop or prop.admin_id != current_user.id:
-        flash('Propiedad no encontrada o sin acceso.', 'danger')
+        flash(_('Propiedad no encontrada o sin acceso.'), 'danger')
         return redirect(url_for('properties.index'))
         
     if request.method == 'POST':
@@ -48,7 +49,7 @@ def edit(id):
         estado = request.form.get('estado')
         
         update_property(id, nombre, direccion, tipo, estado)
-        flash('Propiedad actualizada exitosamente.', 'success')
+        flash(_('Propiedad actualizada exitosamente.'), 'success')
         return redirect(url_for('properties.index'))
         
     return render_template('properties/edit.html', prop=prop)
@@ -58,7 +59,7 @@ def edit(id):
 @admin_required
 def delete(id):
     if delete_property(id):
-        flash('Propiedad eliminada exitosamente.', 'success')
+        flash(_('Propiedad eliminada exitosamente.'), 'success')
     else:
-        flash('Propiedad no encontrada.', 'danger')
+        flash(_('Propiedad no encontrada.'), 'danger')
     return redirect(url_for('properties.index'))

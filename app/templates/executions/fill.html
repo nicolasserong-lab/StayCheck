@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Completar Checklist - StayCheck{% endblock %}
+{% block title %}{{ _('Completar Checklist') }} - StayCheck{% endblock %}
 
 {% block content %}
 <div class="row mb-4">
@@ -8,12 +8,12 @@
         <div class="bg-white p-4 rounded-4 shadow-sm border-start border-{{ 'warning' if is_edit else 'success' }} border-4 mb-4">
             <div class="d-flex justify-content-between align-items-start">
                 <div>
-                    <h2 class="fw-bold mb-1">{{ 'Editando:' if is_edit else '' }} {{ checklist.titulo }}</h2>
+                    <h2 class="fw-bold mb-1">{{ _('Editando:') if is_edit else '' }} {{ checklist.titulo }}</h2>
                     <p class="text-muted mb-0"><i class="bi bi-building"></i> {{ property.nombre }}</p>
-                    <p class="text-muted small"><i class="bi bi-geo-alt"></i> {{ property.direccion or 'Sin dirección' }}</p>
+                    <p class="text-muted small"><i class="bi bi-geo-alt"></i> {{ property.direccion or _('Sin dirección') }}</p>
                 </div>
                 <span class="badge bg-{{ 'warning' if is_edit else 'success' }}-subtle text-{{ 'warning' if is_edit else 'success' }} rounded-pill px-3 py-2">
-                    {{ 'Modo Edición' if is_edit else 'En Progreso' }}
+                    {{ _('Modo Edición') if is_edit else _('En Progreso') }}
                 </span>
             </div>
         </div>
@@ -30,41 +30,56 @@
                 <div class="card-body p-4">
                     {% for item in checklist.items %}
                     {% set existing_val = execution.responses.get(item.id|string) or execution.responses.get(item.id) if execution and execution.responses else '' %}
+                    
+                    {% if item.tipo_respuesta == 'header' %}
+                    <div class="mt-5 mb-4 p-3 bg-light rounded-3 border-start border-primary border-4">
+                        <h4 class="fw-bold mb-0 text-primary"><i class="bi bi-bookmark-fill me-2"></i> {{ item.texto }}</h4>
+                    </div>
+                    {% else %}
                     <div class="mb-4 pb-3 border-bottom last-child-no-border">
-                        <label class="form-label fw-bold d-block mb-3">{{ loop.index }}. {{ item.texto }}</label>
+                        <label class="form-label fw-bold d-block mb-3">{{ loop.index }}. {{ item.texto.split('|')[0] if '|' in item.texto else item.texto }}</label>
                         
                         {% if item.tipo_respuesta == 'checkbox' %}
                         <div class="d-flex flex-wrap gap-2">
                             <input type="radio" class="btn-check" name="item_{{ item.id }}" id="item_{{ item.id }}_si" value="Sí" required autocomplete="off" {{ 'checked' if existing_val == 'Sí' else '' }}>
-                            <label class="btn btn-outline-success rounded-pill px-4 flex-grow-1 flex-md-grow-0" for="item_{{ item.id }}_si">Sí</label>
+                            <label class="btn btn-outline-success rounded-pill px-4 flex-grow-1 flex-md-grow-0" for="item_{{ item.id }}_si">{{ _('Sí') }}</label>
 
                             <input type="radio" class="btn-check" name="item_{{ item.id }}" id="item_{{ item.id }}_no" value="No" required autocomplete="off" {{ 'checked' if existing_val == 'No' else '' }}>
-                            <label class="btn btn-outline-danger rounded-pill px-4 flex-grow-1 flex-md-grow-0" for="item_{{ item.id }}_no">No</label>
+                            <label class="btn btn-outline-danger rounded-pill px-4 flex-grow-1 flex-md-grow-0" for="item_{{ item.id }}_no">{{ _('No') }}</label>
                         </div>
                         {% elif item.tipo_respuesta == 'texto' %}
-                        <input type="text" class="form-control bg-light rounded-3" name="item_{{ item.id }}" required placeholder="Escribe aquí..." value="{{ existing_val }}">
+                        <input type="text" class="form-control bg-light rounded-3" name="item_{{ item.id }}" required placeholder="{{ _('Escribe aquí...') }}" value="{{ existing_val }}">
                         {% elif item.tipo_respuesta == 'numero' %}
                         <input type="number" class="form-control bg-light rounded-3" name="item_{{ item.id }}" required placeholder="0" value="{{ existing_val }}">
                         {% elif item.tipo_respuesta == 'observaciones' %}
-                        <textarea class="form-control bg-light rounded-3" name="item_{{ item.id }}" rows="3" placeholder="Detalles adicionales...">{{ existing_val }}</textarea>
+                        <textarea class="form-control bg-light rounded-3" name="item_{{ item.id }}" rows="3" placeholder="{{ _('Detalles adicionales...') }}">{{ existing_val }}</textarea>
+                        {% elif item.tipo_respuesta == 'select' %}
+                        {% set options = item.texto.split('|')[1].split(',') if '|' in item.texto else [] %}
+                        <select class="form-select bg-light rounded-3" name="item_{{ item.id }}" required>
+                            <option value="" disabled {{ 'selected' if not existing_val else '' }}>{{ _('Selecciona una opción...') }}</option>
+                            {% for opt in options %}
+                            <option value="{{ opt.strip() }}" {{ 'selected' if existing_val == opt.strip() else '' }}>{{ opt.strip() }}</option>
+                            {% endfor %}
+                        </select>
                         {% endif %}
                     </div>
+                    {% endif %}
                     {% endfor %}
                     
                     <div class="mt-4">
-                        <label for="observations" class="form-label fw-bold">Observaciones Finales (Opcional)</label>
-                        <textarea class="form-control bg-light rounded-3" id="observations" name="observations" rows="4" placeholder="Algún comentario general sobre la propiedad o el proceso...">{{ execution.observations if execution else '' }}</textarea>
+                        <label for="observations" class="form-label fw-bold">{{ _('Observaciones Finales (Opcional)') }}</label>
+                        <textarea class="form-control bg-light rounded-3" id="observations" name="observations" rows="4" placeholder="{{ _('Algún comentario general sobre la propiedad o el proceso...') }}">{{ execution.observations if execution else '' }}</textarea>
                     </div>
                 </div>
             </div>
             
             <div class="d-flex flex-column flex-md-row gap-3 justify-content-between mb-5">
-                <a href="{{ url_for('executions.cancel', id=execution.id) }}" class="btn btn-light rounded-pill px-4 shadow-sm order-2 order-md-1" onclick="return confirm('¿Seguro que quieres salir? Se perderán los avances no guardados.')">
-                    Cancelar ejecución
+                <a href="{{ url_for('executions.cancel', id=execution.id) }}" class="btn btn-light rounded-pill px-4 shadow-sm order-2 order-md-1" onclick="return confirm('{{ _('¿Seguro que quieres salir? Se perderán los avances no guardados.') }}')">
+                    {{ _('Cancelar ejecución') }}
                 </a>
                 <button type="submit" class="btn btn-{{ 'warning' if is_edit else 'success' }} btn-lg rounded-pill fw-bold shadow-sm order-1 order-md-2 px-5">
                     <i class="bi bi-{{ 'save' if is_edit else 'check-circle-fill' }} me-2"></i> 
-                    {{ 'Actualizar' if is_edit else 'Finalizar y Guardar' }}
+                    {{ _('Actualizar') if is_edit else _('Finalizar y Guardar') }}
                 </button>
             </div>
         </div>

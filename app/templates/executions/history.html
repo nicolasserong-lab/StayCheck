@@ -1,16 +1,16 @@
 {% extends "base.html" %}
 
-{% block title %}Historial de Checklists - StayCheck{% endblock %}
+{% block title %}{{ _('Historial de Checklists') }} - StayCheck{% endblock %}
 
 {% block content %}
 <div class="row mb-4 align-items-center">
     <div class="col-12 col-md-6">
-        <h2 class="fw-bold"><i class="bi bi-clock-history text-info"></i> Historial Operativo</h2>
-        <p class="text-muted">Revisa todos los checklists completados por el personal.</p>
+        <h2 class="fw-bold"><i class="bi bi-clock-history text-info"></i> {{ _('Historial Operativo') }}</h2>
+        <p class="text-muted">{{ _('Revisa todos los checklists completados por el personal.') }}</p>
     </div>
     <div class="col-12 col-md-6 text-md-end">
         <a href="{{ url_for('dashboard.index') }}" class="btn btn-outline-secondary rounded-pill">
-            Volver al Panel
+            {{ _('Volver al Panel') }}
         </a>
     </div>
 </div>
@@ -21,12 +21,12 @@
             <table class="table table-hover align-middle mb-0">
                 <thead class="table-light">
                     <tr>
-                        <th class="ps-md-4">Fecha / Hora</th>
-                        <th>Operador</th>
-                        <th>Propiedad</th>
-                        <th>Checklist</th>
-                        <th>Estado</th>
-                        <th>Acciones</th>
+                        <th class="ps-md-4">{{ _('Fecha / Hora') }}</th>
+                        <th>{{ _('Operador') }}</th>
+                        <th>{{ _('Propiedad') }}</th>
+                        <th>{{ _('Checklist') }}</th>
+                        <th>{{ _('Estado') }}</th>
+                        <th>{{ _('Acciones') }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -36,30 +36,30 @@
                             <div class="fw-bold text-dark">{{ item.execution.fecha }}</div>
                             <div class="small text-muted">{{ item.execution.hora }}</div>
                         </td>
-                        <td data-label="Operador">
+                        <td data-label="{{ _('Operador') }}">
                             <div class="d-flex align-items-center">
                                 <div class="avatar-sm bg-info-subtle text-info rounded-circle me-2 d-none d-md-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
                                     <i class="bi bi-person small"></i>
                                 </div>
-                                <span class="fw-semibold">{{ item.user.nombre if item.user else 'Eliminado' }}</span>
+                                <span class="fw-semibold">{{ item.user.nombre if item.user else _('Eliminado') }}</span>
                             </div>
                         </td>
-                        <td data-label="Propiedad">{{ item.property.nombre if item.property else 'Eliminada' }}</td>
-                        <td data-label="Checklist"><span class="fw-bold text-dark">{{ item.checklist.titulo if item.checklist else 'Eliminado' }}</span></td>
-                        <td data-label="Estado">
+                        <td data-label="{{ _('Propiedad') }}">{{ item.property.nombre if item.property else _('Eliminada') }}</td>
+                        <td data-label="{{ _('Checklist') }}"><span class="fw-bold text-dark">{{ item.checklist.titulo if item.checklist else _('Eliminado') }}</span></td>
+                        <td data-label="{{ _('Estado') }}">
                             <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3">
-                                Completado
+                                {{ _('Completado') }}
                             </span>
                         </td>
-                        <td data-label="Acciones">
+                        <td data-label="{{ _('Acciones') }}">
                             <div class="d-flex gap-2">
                                 <a href="{{ url_for('executions.detail', id=item.execution.id) }}" class="btn btn-sm btn-outline-info px-3">
-                                    <i class="bi bi-eye"></i> <span class="d-md-none">Ver Detalles</span>
+                                    <i class="bi bi-eye"></i> <span class="d-md-none">{{ _('Ver Detalles') }}</span>
                                 </a>
                                 {% if current_user.rol == 'superadmin' or current_user.rol == 'admin' %}
-                                <form action="{{ url_for('executions.delete', id=item.execution.id) }}" method="POST" class="d-inline" onsubmit="return confirm('¿Estás seguro de eliminar este registro del historial? Esta acción no se puede deshacer.');">
+                                <form action="{{ url_for('executions.delete', id=item.execution.id) }}" method="POST" class="d-inline" onsubmit="return confirm('{{ _('¿Estás seguro de eliminar este registro del historial? Esta acción no se puede deshacer.') }}');">
                                     <button type="submit" class="btn btn-sm btn-outline-danger px-3">
-                                        <i class="bi bi-trash"></i> <span class="d-md-none">Eliminar</span>
+                                        <i class="bi bi-trash"></i> <span class="d-md-none">{{ _('Eliminar') }}</span>
                                     </button>
                                 </form>
                                 {% endif %}
@@ -77,8 +77,8 @@
 <div class="card border-0 shadow-sm rounded-4 py-5 text-center mt-4">
     <div class="card-body">
         <i class="bi bi-inbox fs-1 d-block mb-3 text-muted"></i>
-        <h5 class="fw-bold">No hay registros de ejecución todavía.</h5>
-        <p class="text-muted mb-0">Cuando el personal complete tareas, aparecerán aquí.</p>
+        <h5 class="fw-bold">{{ _('No hay registros de ejecución todavía.') }}</h5>
+        <p class="text-muted mb-0">{{ _('Cuando el personal complete tareas, aparecerán aquí.') }}</p>
     </div>
 </div>
 {% endif %}

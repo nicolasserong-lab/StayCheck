@@ -1,20 +1,25 @@
 {% extends "base.html" %}
 
-{% block title %}Checklists Dinámicos - StayCheck{% endblock %}
+{% block title %}{{ _('Checklists Dinámicos') }} - StayCheck{% endblock %}
 
 {% block content %}
 <div class="row mb-4 align-items-center">
-    <div class="col-12 col-md-6">
-        <h2 class="fw-bold"><i class="bi bi-card-checklist text-success"></i> Checklists</h2>
-        <p class="text-muted">Administra las plantillas de tareas operacionales.</p>
+    <div class="col-12 col-md-auto">
+        <h2 class="fw-bold mb-0"><i class="bi bi-card-checklist text-success"></i> {{ _('Checklists') }}</h2>
+        <p class="text-muted mb-0">{{ _('Administra las plantillas de tareas operacionales.') }}</p>
     </div>
-    <div class="col-12 col-md-6 text-md-end mt-3 mt-md-0">
-        <a href="{{ url_for('checklists.create') }}" class="btn btn-success rounded-pill fw-semibold">
-            <i class="bi bi-plus-lg"></i> Nuevo Checklist
-        </a>
-        <a href="{{ url_for('dashboard.index') }}" class="btn btn-outline-secondary rounded-pill ms-2">
-            Volver
-        </a>
+    <div class="col-12 col-md mt-3 mt-md-0">
+        <div class="d-flex flex-nowrap gap-1 gap-md-2 justify-content-start justify-content-md-end">
+            <a href="{{ url_for('checklists.import_excel') }}" class="btn btn-outline-success rounded-pill px-2 px-md-4">
+                <i class="bi bi-file-earmark-excel"></i> {{ _('Importar Excel') }}
+            </a>
+            <a href="{{ url_for('checklists.create') }}" class="btn btn-success rounded-pill px-2 px-md-4 shadow-sm">
+                <i class="bi bi-plus-circle"></i> {{ _('Nuevo Checklist') }}
+            </a>
+            <a href="{{ url_for('dashboard.index') }}" class="btn btn-outline-secondary rounded-pill px-2 px-md-4">
+                {{ _('Volver') }}
+            </a>
+        </div>
     </div>
 </div>
 
@@ -24,11 +29,11 @@
             <table class="table table-hover align-middle mb-0">
                 <thead class="table-light">
                     <tr>
-                        <th class="ps-md-4">Título de Plantilla</th>
-                        <th>Descripción</th>
-                        <th class="text-md-center">Items</th>
-                        <th>Estado</th>
-                        <th>Acciones</th>
+                        <th class="ps-md-4">{{ _('Título de Plantilla') }}</th>
+                        <th>{{ _('Descripción') }}</th>
+                        <th class="text-md-center">{{ _('Items') }}</th>
+                        <th>{{ _('Estado') }}</th>
+                        <th>{{ _('Acciones') }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -41,19 +46,19 @@
                         </td>
                         <td data-label="Estado">
                             {% if chk.estado == 'Activo' %}
-                                <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3">Activo</span>
+                                <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3">{{ _('Activo') }}</span>
                             {% else %}
-                                <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle rounded-pill px-3">Inactivo</span>
+                                <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle rounded-pill px-3">{{ _('Inactivo') }}</span>
                             {% endif %}
                         </td>
                         <td data-label="Acciones">
                             <div class="d-flex gap-2">
                                 <a href="{{ url_for('checklists.edit', id=chk.id) }}" class="btn btn-sm btn-outline-primary px-3">
-                                    <i class="bi bi-pencil"></i> <span class="d-md-none">Editar</span>
+                                    <i class="bi bi-pencil"></i> <span class="d-md-none">{{ _('Editar') }}</span>
                                 </a>
-                                <form action="{{ url_for('checklists.delete', id=chk.id) }}" method="POST" class="d-inline" onsubmit="return confirm('¿Estás seguro de eliminar este checklist?');">
+                                <form action="{{ url_for('checklists.delete', id=chk.id) }}" method="POST" class="d-inline" onsubmit="return confirm('{{ _('¿Estás seguro de eliminar este checklist?') }}');">
                                     <button type="submit" class="btn btn-sm btn-outline-danger px-3">
-                                        <i class="bi bi-trash"></i> <span class="d-md-none">Eliminar</span>
+                                        <i class="bi bi-trash"></i> <span class="d-md-none">{{ _('Eliminar') }}</span>
                                     </button>
                                 </form>
                             </div>
@@ -62,7 +67,7 @@
                     {% endfor %}
                     {% if not checklists %}
                     <tr>
-                        <td colspan="5" class="text-center py-4 text-muted">No hay plantillas de checklist registradas.</td>
+                        <td colspan="5" class="text-center py-4 text-muted">{{ _('No hay plantillas de checklist registradas.') }}</td>
                     </tr>
                     {% endif %}
                 </tbody>

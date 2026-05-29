@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 
-{% block title %}Crear Propiedad - StayCheck{% endblock %}
+{% block title %}{{ _('Crear Propiedad') }} - StayCheck{% endblock %}
 
 {% block content %}
 <div class="row mb-4">
     <div class="col-12">
-        <h2 class="fw-bold"><i class="bi bi-plus-square text-primary"></i> Nueva Propiedad</h2>
-        <p class="text-muted">Registra un nuevo departamento u hotel en el sistema.</p>
+        <h2 class="fw-bold"><i class="bi bi-plus-square text-primary"></i> {{ _('Nueva Propiedad') }}</h2>
+        <p class="text-muted">{{ _('Registra un nuevo departamento u hotel en el sistema.') }}</p>
     </div>
 </div>
 
@@ -16,29 +16,29 @@
             <div class="card-body p-4">
                 <form method="POST">
                     <div class="mb-3">
-                        <label for="nombre" class="form-label">Nombre / Identificador</label>
-                        <input type="text" class="form-control bg-light" id="nombre" name="nombre" required placeholder="Ej. Dpto 504 - Edificio B">
+                        <label for="nombre" class="form-label">{{ _('Nombre / Identificador') }}</label>
+                        <input type="text" class="form-control bg-light" id="nombre" name="nombre" required placeholder="{{ _('Ej. Dpto 504 - Edificio B') }}">
                     </div>
                     
                     <div class="mb-3">
-                        <label for="direccion" class="form-label">Dirección (Opcional)</label>
-                        <input type="text" class="form-control bg-light" id="direccion" name="direccion" placeholder="Av. Providencia 1234">
+                        <label for="direccion" class="form-label">{{ _('Dirección (Opcional)') }}</label>
+                        <input type="text" class="form-control bg-light" id="direccion" name="direccion" placeholder="{{ _('Av. Providencia 1234') }}">
                     </div>
                     
                     <div class="mb-4">
-                        <label for="tipo" class="form-label">Tipo de Propiedad</label>
+                        <label for="tipo" class="form-label">{{ _('Tipo de Propiedad') }}</label>
                         <select class="form-select bg-light" id="tipo" name="tipo" required>
-                            <option value="Departamento" selected>Departamento (Airbnb/Rent)</option>
-                            <option value="Hotel">Habitación de Hotel</option>
-                            <option value="Casa">Casa</option>
-                            <option value="Cabaña">Cabaña</option>
-                            <option value="Otro">Otro</option>
+                            <option value="Departamento" selected>{{ _('Departamento') }} (Airbnb/Rent)</option>
+                            <option value="Hotel">{{ _('Habitación de Hotel') }}</option>
+                            <option value="Casa">{{ _('Casa') }}</option>
+                            <option value="Cabaña">{{ _('Cabaña') }}</option>
+                            <option value="Otro">{{ _('Otro') }}</option>
                         </select>
                     </div>
                     
                     <div class="d-flex gap-2">
-                        <button type="submit" class="btn btn-primary rounded-pill fw-semibold px-4">Guardar Propiedad</button>
-                        <a href="{{ url_for('properties.index') }}" class="btn btn-outline-secondary rounded-pill px-4">Cancelar</a>
+                        <button type="submit" class="btn btn-primary rounded-pill fw-semibold px-4">{{ _('Guardar Propiedad') }}</button>
+                        <a href="{{ url_for('properties.index') }}" class="btn btn-outline-secondary rounded-pill px-4">{{ _('Cancelar') }}</a>
                     </div>
                 </form>
             </div>

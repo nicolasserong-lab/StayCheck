@@ -70,29 +70,93 @@ def sync_execution_to_sheet(execution, prop, checklist, user):
             except:
                 pass
         
-        # 2. Si la hoja está totalmente vacía (no hay nada en A1), poner cabeceras
-        if not worksheet.acell('A1').value:
-            headers = ["Fecha", "Hora", "Usuario", "Propiedad", "Checklist", "Estado", "Observación", "Detalles JSON"]
-            worksheet.append_row(headers)
-            # Poner cabeceras en Negrita (Formato premium)
-            worksheet.format("A1:H1", {
+        # Helper para convertir número de columna a letra de Excel (ej: 1 -> A, 27 -> AA)
+        def col_num_to_letter(n):
+            string = ""
+            while n > 0:
+                n, remainder = divmod(n - 1, 26)
+                string = chr(65 + remainder) + string
+            return string
+
+        # 1. Obtener cabeceras actuales en la primera fila de la hoja
+        existing_headers = worksheet.row_values(1)
+        base_headers = ["Fecha", "Hora", "Usuario", "Propiedad", "Checklist", "Estado", "Observación"]
+        
+        if not existing_headers or not existing_headers[0]:
+            updated_headers = list(base_headers)
+        else:
+            updated_headers = list(existing_headers)
+            
+        # 2. Obtener los ítems del checklist ordenados
+        sorted_items = sorted(checklist.items, key=lambda x: x.id)
+        non_header_items = [i for i in sorted_items if i.tipo_respuesta != 'header']
+        
+        # 3. Detectar dinámicamente si hay nuevas tareas para agregar como columnas
+        has_new = False
+        if not existing_headers or not existing_headers[0]:
+            has_new = True
+            
+        for item in non_header_items:
+            # Limpiar opciones del nombre de la tarea (si tiene formato "Tarea|Opciones")
+            clean_name = item.texto.split('|')[0] if '|' in item.texto else item.texto
+            if clean_name not in updated_headers:
+                updated_headers.append(clean_name)
+                has_new = True
+                
+        # 4. Si hay nuevas columnas o la hoja estaba vacía, actualizar la cabecera (Fila 1) en un solo viaje
+        if has_new:
+            worksheet.update([updated_headers], 'A1')
+            # Aplicar formato estético a toda la fila de cabecera en Negrita y fondo verde pastel premium
+            last_col_letter = col_num_to_letter(len(updated_headers))
+            worksheet.format(f"A1:{last_col_letter}1", {
                 "textFormat": {"bold": True},
-                "backgroundColor": {"red": 0.9, "green": 0.9, "blue": 0.9}
+                "backgroundColor": {"red": 0.88, "green": 0.95, "blue": 0.88}
             })
+            existing_headers = updated_headers
+            
+        # Crear mapa de índices de las columnas (cabecera -> índice)
+        header_indices = {header: idx for idx, header in enumerate(existing_headers)}
         
-        # 3. Preparar fila con los datos
-        row = [
-            execution.fecha,
-            execution.hora,
-            user.nombre,
-            prop.nombre,
-            checklist.titulo,
-            execution.status,
-            execution.observations,
-            json.dumps(execution.responses)
-        ]
+        # 5. Inicializar la fila de datos con valores vacíos coincidiendo con la longitud de las columnas
+        row_data = [""] * len(existing_headers)
         
-        worksheet.append_row(row)
+        # Rellenar datos base de la inspección
+        row_data[header_indices["Fecha"]] = execution.fecha
+        row_data[header_indices["Hora"]] = execution.hora
+        row_data[header_indices["Usuario"]] = user.nombre
+        row_data[header_indices["Propiedad"]] = prop.nombre
+        row_data[header_indices["Checklist"]] = checklist.titulo
+        row_data[header_indices["Estado"]] = execution.status
+        row_data[header_indices["Observación"]] = execution.observations or ""
+        
+        # Rellenar cada una de las respuestas en su celda e ítem correspondiente
+        for item in non_header_items:
+            clean_name = item.texto.split('|')[0] if '|' in item.texto else item.texto
+            
+            # Obtener la respuesta guardada
+            raw_resp = execution.responses.get(str(item.id))
+            
+            # Formatear la respuesta de manera elegante y comprensible para el usuario
+            if raw_resp is None:
+                respuesta_str = "Sin responder"
+            elif isinstance(raw_resp, bool):
+                respuesta_str = "Sí" if raw_resp else "No"
+            else:
+                # Normalizar booleanos en formato string
+                val_lower = str(raw_resp).strip().lower()
+                if val_lower == "true":
+                    respuesta_str = "Sí"
+                elif val_lower == "false":
+                    respuesta_str = "No"
+                else:
+                    respuesta_str = str(raw_resp)
+            
+            # Insertar la respuesta en la celda/columna correcta
+            if clean_name in header_indices:
+                row_data[header_indices[clean_name]] = respuesta_str
+                
+        # 6. Registrar la fila completa en Google Sheets
+        worksheet.append_row(row_data)
         return True
     except Exception as e:
         print(f"Error sincronizando con Google Sheets: {e}")

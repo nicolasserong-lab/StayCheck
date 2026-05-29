@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 
-{% block title %}Editar Checklist - StayCheck{% endblock %}
+{% block title %}{{ _('Editar Checklist') }} - StayCheck{% endblock %}
 
 {% block content %}
 <div class="row mb-4">
     <div class="col-12">
-        <h2 class="fw-bold"><i class="bi bi-pencil-square text-success"></i> Editar Checklist</h2>
-        <p class="text-muted">Modifica la plantilla dinámica existente.</p>
+        <h2 class="fw-bold"><i class="bi bi-pencil-square text-success"></i> {{ _('Editar Checklist') }}</h2>
+        <p class="text-muted">{{ _('Modifica la plantilla dinámica existente.') }}</p>
     </div>
 </div>
 
@@ -15,7 +15,7 @@
         <div class="col-12 col-lg-5 mb-4">
             <div class="card border-0 shadow-sm rounded-4 h-100">
                 <div class="card-header bg-white border-0 pt-4 pb-0">
-                    <h5 class="fw-bold">1. Información General</h5>
+                    <h5 class="fw-bold">1. {{ _('Información General') }}</h5>
                 </div>
                 <div class="card-body">
                     <div class="mb-3">
@@ -27,20 +27,20 @@
                         <textarea class="form-control bg-light" id="descripcion" name="descripcion" rows="3">{{ chk.descripcion }}</textarea>
                     </div>
                     <div class="mb-3">
-                        <label for="estado" class="form-label">Estado de la Plantilla</label>
+                        <label for="estado" class="form-label">{{ _('Estado de la Plantilla') }}</label>
                         <select class="form-select bg-light" id="estado" name="estado" required>
-                            <option value="Activo" {% if chk.estado == 'Activo' %}selected{% endif %}>Activo (Visible para Operadores)</option>
-                            <option value="Inactivo" {% if chk.estado == 'Inactivo' %}selected{% endif %}>Inactivo (Oculto)</option>
+                            <option value="Activo" {% if chk.estado == 'Activo' %}selected{% endif %}>{{ _('Activo (Visible para Operadores)') }}</option>
+                            <option value="Inactivo" {% if chk.estado == 'Inactivo' %}selected{% endif %}>{{ _('Inactivo (Oculto)') }}</option>
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="horas_bloqueo" class="form-label">Horas de Bloqueo (Post-envío)</label>
+                        <label for="horas_bloqueo" class="form-label">{{ _('Horas de Bloqueo (Post-envío)') }}</label>
                         <div class="input-group">
                             <span class="input-group-text bg-white"><i class="bi bi-clock"></i></span>
                             <input type="number" class="form-control bg-light" id="horas_bloqueo" name="horas_bloqueo" value="{{ chk.horas_bloqueo }}" min="0" required>
-                            <span class="input-group-text bg-white">horas</span>
+                            <span class="input-group-text bg-white">{{ _('horas') }}</span>
                         </div>
-                        <div class="form-text small">Tiempo que el checklist estará desactivado para el operador después de enviarlo.</div>
+                        <div class="form-text">{{ _('Tiempo que el checklist estará desactivado para el operador después de enviarlo.') }}</div>
                     </div>
                 </div>
             </div>
@@ -49,55 +49,61 @@
         <div class="col-12 col-lg-7 mb-4">
             <div class="card border-0 shadow-sm rounded-4 h-100">
                 <div class="card-header bg-white border-0 pt-4 pb-0 d-flex justify-content-between align-items-center">
-                    <h5 class="fw-bold mb-0">2. Constructor de Items</h5>
+                    <h5 class="fw-bold mb-0">2. {{ _('Constructor de Items') }}</h5>
                     <button type="button" class="btn btn-sm btn-outline-success rounded-pill" onclick="agregarItem()">
-                        <i class="bi bi-plus"></i> Añadir Fila
+                        <i class="bi bi-plus"></i> {{ _('Añadir Fila') }}
                     </button>
                 </div>
                 <div class="card-body">
                     <div id="items-container">
-                        <div class="item-row row g-2 align-items-end mb-3 d-none" id="item-template">
-                            <div class="col-7 col-md-8">
-                                <label class="form-label small text-muted mb-1">Pregunta / Tarea</label>
+                        <div class="item-row row g-2 align-items-end mb-4 d-none" id="item-template">
+                            <div class="col-12 col-md-7">
+                                <label class="form-label small text-muted mb-1">{{ _('Pregunta / Tarea') }}</label>
                                 <input type="text" class="form-control item-texto" disabled>
                             </div>
-                            <div class="col-4 col-md-3">
-                                <label class="form-label small text-muted mb-1">Tipo</label>
-                                <select class="form-select item-tipo" disabled>
-                                    <option value="checkbox">Checkbox (Sí/No)</option>
-                                    <option value="texto">Texto Corto</option>
-                                    <option value="numero">Número</option>
-                                    <option value="observaciones">Observación Larga</option>
-                                </select>
-                            </div>
-                            <div class="col-1 col-md-1 text-end">
-                                <button type="button" class="btn btn-outline-danger btn-sm rounded-circle" onclick="eliminarItem(this)">
-                                    <i class="bi bi-x"></i>
-                                </button>
+                            <div class="col-12 col-md-5 d-flex align-items-end gap-2">
+                                <div class="flex-grow-1">
+                                    <label class="form-label small text-muted mb-1">{{ _('Tipo') }}</label>
+                                    <select class="form-select item-tipo" disabled>
+                                        <option value="checkbox">{{ _('Checkbox (Sí/No)') }}</option>
+                                        <option value="texto">{{ _('Texto Corto') }}</option>
+                                        <option value="numero">{{ _('Número') }}</option>
+                                        <option value="observaciones">{{ _('Observación Larga') }}</option>
+                                        <option value="header">--- {{ _('Título de Sección') }} ---</option>
+                                    </select>
+                                </div>
+                                <div class="flex-shrink-0">
+                                    <button type="button" class="btn rounded-circle d-inline-flex align-items-center justify-content-center" onclick="eliminarItem(this)" style="width: 42px; height: 42px; background: linear-gradient(135deg, #ff4757, #c0392b); color: white; border: none; box-shadow: 0 4px 12px rgba(255,71,87,0.4);">
+                                        <i class="bi bi-trash3-fill fs-6"></i>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
                     
                     <div id="items-list">
                         {% for item in chk.items %}
-                        <div class="item-row row g-2 align-items-end mb-3">
-                            <div class="col-7 col-md-8">
+                        <div class="item-row row g-2 align-items-end mb-4">
+                            <div class="col-12 col-md-7">
                                 <label class="form-label small text-muted mb-1">Pregunta / Tarea</label>
                                 <input type="text" class="form-control item-texto" name="item_texto[]" value="{{ item.texto }}" required>
                             </div>
-                            <div class="col-4 col-md-3">
-                                <label class="form-label small text-muted mb-1">Tipo</label>
-                                <select class="form-select item-tipo" name="item_tipo[]">
-                                    <option value="checkbox" {% if item.tipo_respuesta == 'checkbox' %}selected{% endif %}>Checkbox (Sí/No)</option>
-                                    <option value="texto" {% if item.tipo_respuesta == 'texto' %}selected{% endif %}>Texto Corto</option>
-                                    <option value="numero" {% if item.tipo_respuesta == 'numero' %}selected{% endif %}>Número</option>
-                                    <option value="observaciones" {% if item.tipo_respuesta == 'observaciones' %}selected{% endif %}>Observación Larga</option>
-                                </select>
-                            </div>
-                            <div class="col-1 col-md-1 text-end">
-                                <button type="button" class="btn btn-outline-danger btn-sm rounded-circle" onclick="eliminarItem(this)">
-                                    <i class="bi bi-x"></i>
-                                </button>
+                            <div class="col-12 col-md-5 d-flex align-items-end gap-2">
+                                <div class="flex-grow-1">
+                                    <label class="form-label small text-muted mb-1">{{ _('Tipo') }}</label>
+                                    <select class="form-select item-tipo" name="item_tipo[]">
+                                        <option value="checkbox" {% if item.tipo_respuesta == 'checkbox' %}selected{% endif %}>{{ _('Checkbox (Sí/No)') }}</option>
+                                        <option value="texto" {% if item.tipo_respuesta == 'texto' %}selected{% endif %}>{{ _('Texto Corto') }}</option>
+                                        <option value="numero" {% if item.tipo_respuesta == 'numero' %}selected{% endif %}>{{ _('Número') }}</option>
+                                        <option value="observaciones" {% if item.tipo_respuesta == 'observaciones' %}selected{% endif %}>{{ _('Observación Larga') }}</option>
+                                        <option value="header" {% if item.tipo_respuesta == 'header' %}selected{% endif %}>--- {{ _('Título de Sección') }} ---</option>
+                                    </select>
+                                </div>
+                                <div class="flex-shrink-0">
+                                    <button type="button" class="btn rounded-circle d-inline-flex align-items-center justify-content-center" onclick="eliminarItem(this)" style="width: 42px; height: 42px; background: linear-gradient(135deg, #ff4757, #c0392b); color: white; border: none; box-shadow: 0 4px 12px rgba(255,71,87,0.4);">
+                                        <i class="bi bi-trash3-fill fs-6"></i>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                         {% endfor %}
@@ -105,7 +111,7 @@
                     
                     <div id="empty-state" class="text-center py-4 text-muted {% if chk.items %}d-none{% endif %}">
                         <i class="bi bi-list-task fs-1"></i>
-                        <p class="mb-0">No hay tareas en esta plantilla.</p>
+                        <p class="mb-0">{{ _('No hay tareas en esta plantilla.') }}</p>
                     </div>
                 </div>
             </div>
@@ -115,8 +121,8 @@
     <!-- Acciones -->
     <div class="row">
         <div class="col-12 text-end">
-            <a href="{{ url_for('checklists.index') }}" class="btn btn-outline-secondary rounded-pill px-4">Cancelar</a>
-            <button type="submit" class="btn btn-success rounded-pill fw-semibold px-4 ms-2">Actualizar Plantilla</button>
+            <a href="{{ url_for('checklists.index') }}" class="btn btn-outline-secondary rounded-pill px-4">{{ _('Cancelar') }}</a>
+            <button type="submit" class="btn btn-success rounded-pill fw-semibold px-4 ms-2">{{ _('Actualizar Plantilla') }}</button>
         </div>
     </div>
 </form>

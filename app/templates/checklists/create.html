@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 
-{% block title %}Crear Checklist - StayCheck{% endblock %}
+{% block title %}{{ _('Crear Checklist') }} - StayCheck{% endblock %}
 
 {% block content %}
 <div class="row mb-4">
     <div class="col-12">
-        <h2 class="fw-bold"><i class="bi bi-file-earmark-plus text-success"></i> Nuevo Checklist</h2>
-        <p class="text-muted">Diseña una nueva plantilla de tareas.</p>
+        <h2 class="fw-bold"><i class="bi bi-file-earmark-plus text-success"></i> {{ _('Nuevo Checklist') }}</h2>
+        <p class="text-muted">{{ _('Diseña una nueva plantilla de tareas.') }}</p>
     </div>
 </div>
 
@@ -16,25 +16,25 @@
         <div class="col-12 col-lg-5 mb-4">
             <div class="card border-0 shadow-sm rounded-4 h-100">
                 <div class="card-header bg-white border-0 pt-4 pb-0">
-                    <h5 class="fw-bold">1. Información General</h5>
+                    <h5 class="fw-bold">1. {{ _('Información General') }}</h5>
                 </div>
                 <div class="card-body">
                     <div class="mb-3">
-                        <label for="titulo" class="form-label">Título de la Tarea</label>
-                        <input type="text" class="form-control bg-light" id="titulo" name="titulo" required placeholder="Ej. Limpieza Profunda">
+                        <label for="titulo" class="form-label">{{ _('Título de la Tarea') }}</label>
+                        <input type="text" class="form-control bg-light" id="titulo" name="titulo" required placeholder="{{ _('Ej. Limpieza Profunda') }}">
                     </div>
                     <div class="mb-3">
-                        <label for="descripcion" class="form-label">Descripción</label>
-                        <textarea class="form-control bg-light" id="descripcion" name="descripcion" rows="2" placeholder="Breve instrucción para el operador..."></textarea>
+                        <label for="descripcion" class="form-label">{{ _('Descripción') }}</label>
+                        <textarea class="form-control bg-light" id="descripcion" name="descripcion" rows="2" placeholder="{{ _('Breve instrucción para el operador...') }}"></textarea>
                     </div>
                     <div class="mb-3">
-                        <label for="horas_bloqueo" class="form-label">Horas de Bloqueo (Post-envío)</label>
+                        <label for="horas_bloqueo" class="form-label">{{ _('Horas de Bloqueo (Post-envío)') }}</label>
                         <div class="input-group">
                             <span class="input-group-text bg-white"><i class="bi bi-clock"></i></span>
                             <input type="number" class="form-control bg-light" id="horas_bloqueo" name="horas_bloqueo" value="24" min="0" required>
-                            <span class="input-group-text bg-white">horas</span>
+                            <span class="input-group-text bg-white">{{ _('horas') }}</span>
                         </div>
-                        <div class="form-text small">Tiempo que el checklist estará desactivado para el operador después de enviarlo.</div>
+                        <div class="form-text">{{ _('Tiempo que el checklist estará desactivado para el operador después de enviarlo.') }}</div>
                     </div>
                 </div>
             </div>
@@ -44,32 +44,35 @@
         <div class="col-12 col-lg-7 mb-4">
             <div class="card border-0 shadow-sm rounded-4 h-100">
                 <div class="card-header bg-white border-0 pt-4 pb-0 d-flex justify-content-between align-items-center">
-                    <h5 class="fw-bold mb-0">2. Constructor de Items</h5>
+                    <h5 class="fw-bold mb-0">2. {{ _('Constructor de Items') }}</h5>
                     <button type="button" class="btn btn-sm btn-outline-success rounded-pill" onclick="agregarItem()">
-                        <i class="bi bi-plus"></i> Añadir Fila
+                        <i class="bi bi-plus"></i> {{ _('Añadir Fila') }}
                     </button>
                 </div>
                 <div class="card-body">
                     <div id="items-container">
                         <!-- Item base oculto para clonar -->
-                        <div class="item-row row g-2 align-items-end mb-3 d-none" id="item-template">
-                            <div class="col-7 col-md-8">
-                                <label class="form-label small text-muted mb-1">Pregunta / Tarea</label>
-                                <input type="text" class="form-control item-texto" disabled placeholder="Ej. Verificar sábanas">
+                        <div class="item-row row g-2 align-items-end mb-4 d-none" id="item-template">
+                            <div class="col-12 col-md-7">
+                                <label class="form-label small text-muted mb-1">{{ _('Pregunta / Tarea') }}</label>
+                                <input type="text" class="form-control item-texto" disabled placeholder="{{ _('Ej. Verificar sábanas') }}">
                             </div>
-                            <div class="col-4 col-md-3">
-                                <label class="form-label small text-muted mb-1">Tipo</label>
-                                <select class="form-select item-tipo" disabled>
-                                    <option value="checkbox">Checkbox (Sí/No)</option>
-                                    <option value="texto">Texto Corto</option>
-                                    <option value="numero">Número</option>
-                                    <option value="observaciones">Observación Larga</option>
-                                </select>
-                            </div>
-                            <div class="col-1 col-md-1 text-end">
-                                <button type="button" class="btn btn-outline-danger btn-sm rounded-circle" onclick="eliminarItem(this)">
-                                    <i class="bi bi-x"></i>
-                                </button>
+                            <div class="col-12 col-md-5 d-flex align-items-end gap-2">
+                                <div class="flex-grow-1">
+                                    <label class="form-label small text-muted mb-1">{{ _('Tipo') }}</label>
+                                    <select class="form-select item-tipo" disabled>
+                                        <option value="checkbox">{{ _('Checkbox (Sí/No)') }}</option>
+                                        <option value="texto">{{ _('Texto Corto') }}</option>
+                                        <option value="numero">{{ _('Número') }}</option>
+                                        <option value="observaciones">{{ _('Observación Larga') }}</option>
+                                        <option value="header">--- {{ _('Título de Sección') }} ---</option>
+                                    </select>
+                                </div>
+                                <div class="flex-shrink-0">
+                                    <button type="button" class="btn rounded-circle d-inline-flex align-items-center justify-content-center" onclick="eliminarItem(this)" style="width: 42px; height: 42px; background: linear-gradient(135deg, #ff4757, #c0392b); color: white; border: none; box-shadow: 0 4px 12px rgba(255,71,87,0.4);">
+                                        <i class="bi bi-trash3-fill fs-6"></i>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -80,7 +83,7 @@
                     
                     <div id="empty-state" class="text-center py-4 text-muted">
                         <i class="bi bi-list-task fs-1"></i>
-                        <p class="mb-0">Agrega tareas a esta plantilla.</p>
+                        <p class="mb-0">{{ _('Agrega tareas a esta plantilla.') }}</p>
                     </div>
                 </div>
             </div>
@@ -90,8 +93,8 @@
     <!-- Acciones -->
     <div class="row">
         <div class="col-12 text-end">
-            <a href="{{ url_for('checklists.index') }}" class="btn btn-outline-secondary rounded-pill px-4">Cancelar</a>
-            <button type="submit" class="btn btn-success rounded-pill fw-semibold px-4 ms-2">Guardar Plantilla</button>
+            <a href="{{ url_for('checklists.index') }}" class="btn btn-outline-secondary rounded-pill px-4">{{ _('Cancelar') }}</a>
+            <button type="submit" class="btn btn-success rounded-pill fw-semibold px-4 ms-2">{{ _('Guardar Plantilla') }}</button>
         </div>
     </div>
 </form>
@@ -125,7 +128,7 @@
             document.getElementById('empty-state').classList.remove('d-none');
         }
     }
-    
+
     // Iniciar con un item por defecto
     window.onload = function() {
         agregarItem();

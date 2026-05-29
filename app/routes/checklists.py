@@ -1,4 +1,7 @@
-from flask import Blueprint, render_template, redirect, url_for, flash, request
+from flask import Blueprint, render_template, redirect, url_for, flash, request, send_file
+from flask_babel import _
+import pandas as pd
+import io
 from flask_login import login_required, current_user
 from app.routes.users import admin_required
 from app.models.checklist import (
@@ -39,7 +42,7 @@ def create():
                 
         update_checklist_items(chk.id, items_data)
         
-        flash('Checklist creado exitosamente.', 'success')
+        flash(_('Checklist creado exitosamente.'), 'success')
         return redirect(url_for('checklists.index'))
         
     return render_template('checklists/create.html')
@@ -50,7 +53,7 @@ def create():
 def edit(id):
     chk = get_checklist_by_id(id)
     if not chk or chk.admin_id != current_user.id:
-        flash('Checklist no encontrado o sin acceso.', 'danger')
+        flash(_('Checklist no encontrado o sin acceso.'), 'danger')
         return redirect(url_for('checklists.index'))
         
     if request.method == 'POST':
@@ -72,7 +75,7 @@ def edit(id):
                 
         update_checklist_items(chk.id, items_data)
         
-        flash('Checklist actualizado exitosamente.', 'success')
+        flash(_('Checklist actualizado exitosamente.'), 'success')
         return redirect(url_for('checklists.index'))
         
     return render_template('checklists/edit.html', chk=chk)
@@ -82,7 +85,85 @@ def edit(id):
 @admin_required
 def delete(id):
     if delete_checklist(id):
-        flash('Checklist eliminado exitosamente.', 'success')
+        flash(_('Checklist eliminado exitosamente.'), 'success')
     else:
-        flash('Checklist no encontrado.', 'danger')
+        flash(_('Checklist no encontrado.'), 'danger')
     return redirect(url_for('checklists.index'))
+
+@checklists_bp.route('/template')
+@login_required
+@admin_required
+def template():
+    # Crear un Excel de ejemplo en memoria
+    data = {
+        'Sección': ['Dormitorios', 'Dormitorios', 'Cocina', 'Estado General'],
+        'Tarea / Item': ['Hacer camas', 'Revisar almohadas', 'Limpiar horno', 'Evaluación Propiedad'],
+        'Tipo': ['checkbox', 'checkbox', 'checkbox', 'select'],
+        'Opciones (solo para select)': ['', '', '', 'Excelente, Buena, Regular, Requiere Mantención']
+    }
+    df = pd.DataFrame(data)
+    
+    output = io.BytesIO()
+    with pd.ExcelWriter(output, engine='openpyxl') as writer:
+        df.to_excel(writer, index=False, sheet_name='Plantilla')
+    
+    output.seek(0)
+    return send_file(output, mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 
+                     as_attachment=True, download_name='plantilla_staycheck.xlsx')
+
+@checklists_bp.route('/import', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def import_excel():
+    if request.method == 'POST':
+        file = request.files.get('file')
+        titulo = request.form.get('titulo')
+        descripcion = request.form.get('descripcion')
+        horas_bloqueo = request.form.get('horas_bloqueo', 24, type=int)
+        
+        if not file or not titulo:
+            flash(_('Faltan datos obligatorios.'), 'danger')
+            return redirect(url_for('checklists.import_excel'))
+            
+        try:
+            df = pd.read_excel(file)
+            # Validar columnas
+            expected_cols = ['Sección', 'Tarea / Item', 'Tipo']
+            for col in expected_cols:
+                if col not in df.columns:
+                    flash(_('Error: El archivo debe contener la columna "%(col)s"', col=col), 'danger')
+                    return redirect(url_for('checklists.import_excel'))
+            
+            # Crear el checklist base
+            chk = add_checklist(titulo, descripcion, current_user.id, horas_bloqueo=horas_bloqueo)
+            
+            items_data = []
+            current_section = None
+            
+            for idx, row in df.iterrows():
+                section = str(row['Sección']).strip() if pd.notna(row['Sección']) else None
+                tarea = str(row['Tarea / Item']).strip()
+                tipo = str(row['Tipo']).strip().lower()
+                opciones = str(row.get('Opciones (solo para select)', '')).strip() if pd.notna(row.get('Opciones (solo para select)')) else ''
+
+                # Si cambia la sección, añadir un header
+                if section and section != current_section:
+                    items_data.append({'texto': section, 'tipo': 'header'})
+                    current_section = section
+                
+                # Procesar el item
+                final_texto = tarea
+                if tipo == 'select' and opciones:
+                    final_texto = f"{tarea}|{opciones}"
+                
+                items_data.append({'texto': final_texto, 'tipo': tipo})
+            
+            update_checklist_items(chk.id, items_data)
+            flash(_('Checklist "%(titulo)s" importado exitosamente con %(count)s items.', titulo=titulo, count=len(items_data)), 'success')
+            return redirect(url_for('checklists.index'))
+            
+        except Exception as e:
+            flash(_('Error al procesar el archivo: %(error)s', error=str(e)), 'danger')
+            return redirect(url_for('checklists.import_excel'))
+            
+    return render_template('checklists/import.html')

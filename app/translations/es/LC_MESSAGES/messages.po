@@ -1,0 +1,1483 @@
+
+msgid ""
+msgstr ""
+"Project-Id-Version:  \n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2026-05-16 02:17-0400\n"
+"PO-Revision-Date: 2026-05-16 01:30-0400\n"
+"Last-Translator: \n"
+"Language: es\n"
+"Language-Team: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: app/routes/auth.py:22
+msgid "Tu cuenta está inactiva. Contacta al administrador."
+msgstr ""
+
+#: app/routes/auth.py:29
+msgid "Usuario o contraseña incorrectos."
+msgstr ""
+
+#: app/routes/checklists.py:45
+msgid "Checklist creado exitosamente."
+msgstr ""
+
+#: app/routes/checklists.py:56
+msgid "Checklist no encontrado o sin acceso."
+msgstr ""
+
+#: app/routes/checklists.py:78
+msgid "Checklist actualizado exitosamente."
+msgstr ""
+
+#: app/routes/checklists.py:88
+msgid "Checklist eliminado exitosamente."
+msgstr ""
+
+#: app/routes/checklists.py:90
+msgid "Checklist no encontrado."
+msgstr ""
+
+#: app/routes/checklists.py:125
+msgid "Faltan datos obligatorios."
+msgstr ""
+
+#: app/routes/checklists.py:134
+#, python-format
+msgid "Error: El archivo debe contener la columna \"%(col)s\""
+msgstr ""
+
+#: app/routes/checklists.py:162
+#, python-format
+msgid "Checklist \"%(titulo)s\" importado exitosamente con %(count)s items."
+msgstr ""
+
+#: app/routes/checklists.py:166
+#, python-format
+msgid "Error al procesar el archivo: %(error)s"
+msgstr ""
+
+#: app/routes/dashboard.py:19
+msgid "Rol no reconocido"
+msgstr ""
+
+#: app/routes/executions.py:58 app/routes/executions.py:184
+msgid "Ejecución no encontrada."
+msgstr ""
+
+#: app/routes/executions.py:63
+msgid "No tienes permiso para editar este reporte."
+msgstr ""
+
+#: app/routes/executions.py:81
+msgid "Reporte actualizado y sincronizado exitosamente."
+msgstr ""
+
+#: app/routes/executions.py:91
+msgid "Ejecución no encontrada o sin acceso."
+msgstr ""
+
+#: app/routes/executions.py:120 app/routes/properties.py:64
+msgid "Propiedad no encontrada."
+msgstr ""
+
+#: app/routes/executions.py:212
+msgid "Checklist finalizado exitosamente y sincronizado con la nube."
+msgstr ""
+
+#: app/routes/executions.py:225
+msgid "No tienes permisos para eliminar registros."
+msgstr ""
+
+#: app/routes/executions.py:230
+msgid "Registro no encontrado."
+msgstr ""
+
+#: app/routes/executions.py:235
+msgid "No tienes permiso para eliminar este registro."
+msgstr ""
+
+#: app/routes/executions.py:241
+msgid "Registro de checklist eliminado exitosamente del historial."
+msgstr ""
+
+#: app/routes/properties.py:31
+msgid "Propiedad creada exitosamente."
+msgstr ""
+
+#: app/routes/properties.py:42
+msgid "Propiedad no encontrada o sin acceso."
+msgstr ""
+
+#: app/routes/properties.py:52
+msgid "Propiedad actualizada exitosamente."
+msgstr ""
+
+#: app/routes/properties.py:62
+msgid "Propiedad eliminada exitosamente."
+msgstr ""
+
+#: app/routes/settings.py:25
+msgid "Configuración de Google Drive/Sheets actualizada."
+msgstr ""
+
+#: app/routes/users.py:19
+msgid "No tienes permisos para acceder a esta área."
+msgstr ""
+
+#: app/routes/users.py:49 app/routes/users.py:101 app/routes/users.py:146
+msgid "El nombre de usuario ya está en uso."
+msgstr ""
+
+#: app/routes/users.py:69
+msgid "Usuario creado exitosamente."
+msgstr ""
+
+#: app/routes/users.py:80 app/routes/users.py:132
+msgid "Usuario no encontrado."
+msgstr ""
+
+#: app/routes/users.py:85
+msgid "No tienes permiso para editar este usuario."
+msgstr ""
+
+#: app/routes/users.py:117
+msgid "Usuario actualizado exitosamente."
+msgstr ""
+
+#: app/routes/users.py:127
+msgid "No puedes eliminar tu propio usuario activo."
+msgstr ""
+
+#: app/routes/users.py:130
+msgid "Usuario eliminado exitosamente."
+msgstr ""
+
+#: app/routes/users.py:154
+msgid "Tus datos han sido actualizados exitosamente."
+msgstr ""
+
+#: app/templates/base.html:37
+msgid "Dashboard"
+msgstr "Dashboard"
+
+#: app/templates/base.html:46 app/templates/users/index.html:29
+msgid "Rol"
+msgstr "Rol"
+
+#: app/templates/base.html:47 app/templates/dashboard/superadmin.html:30
+#: app/templates/users/profile.html:3
+msgid "Mi Perfil"
+msgstr "Mi Perfil"
+
+#: app/templates/base.html:50
+msgid "Idioma"
+msgstr "Idioma"
+
+#: app/templates/base.html:58
+msgid "Cerrar Sesión"
+msgstr "Cerrar Sesión"
+
+#: app/templates/auth/login.html:3 app/templates/auth/login.html:15
+#, fuzzy
+msgid "Iniciar Sesión"
+msgstr "Cerrar Sesión"
+
+#: app/templates/auth/login.html:10
+msgid "Gestión de Checklists Operacionales"
+msgstr ""
+
+#: app/templates/auth/login.html:19 app/templates/users/create.html:24
+#: app/templates/users/edit.html:24 app/templates/users/index.html:28
+#: app/templates/users/profile.html:24
+msgid "Nombre de Usuario"
+msgstr ""
+
+#: app/templates/auth/login.html:27 app/templates/users/create.html:43
+msgid "Contraseña"
+msgstr ""
+
+#: app/templates/auth/login.html:35
+msgid "Ingresar"
+msgstr ""
+
+#: app/templates/checklists/create.html:3
+msgid "Crear Checklist"
+msgstr ""
+
+#: app/templates/checklists/create.html:8
+#: app/templates/checklists/index.html:17
+msgid "Nuevo Checklist"
+msgstr ""
+
+#: app/templates/checklists/create.html:9
+msgid "Diseña una nueva plantilla de tareas."
+msgstr ""
+
+#: app/templates/checklists/create.html:19
+#: app/templates/checklists/edit.html:18
+msgid "Información General"
+msgstr ""
+
+#: app/templates/checklists/create.html:23
+msgid "Título de la Tarea"
+msgstr ""
+
+#: app/templates/checklists/create.html:24
+msgid "Ej. Limpieza Profunda"
+msgstr ""
+
+#: app/templates/checklists/create.html:27
+#: app/templates/checklists/index.html:33
+msgid "Descripción"
+msgstr ""
+
+#: app/templates/checklists/create.html:28
+msgid "Breve instrucción para el operador..."
+msgstr ""
+
+#: app/templates/checklists/create.html:31
+#: app/templates/checklists/edit.html:37
+msgid "Horas de Bloqueo (Post-envío)"
+msgstr ""
+
+#: app/templates/checklists/create.html:35
+#: app/templates/checklists/edit.html:41
+msgid "horas"
+msgstr ""
+
+#: app/templates/checklists/create.html:37
+#: app/templates/checklists/edit.html:43
+msgid ""
+"Tiempo que el checklist estará desactivado para el operador después de "
+"enviarlo."
+msgstr ""
+
+#: app/templates/checklists/create.html:47
+#: app/templates/checklists/edit.html:52
+msgid "Constructor de Items"
+msgstr ""
+
+#: app/templates/checklists/create.html:49
+#: app/templates/checklists/edit.html:54
+msgid "Añadir Fila"
+msgstr ""
+
+#: app/templates/checklists/create.html:57
+#: app/templates/checklists/edit.html:61
+msgid "Pregunta / Tarea"
+msgstr ""
+
+#: app/templates/checklists/create.html:58
+msgid "Ej. Verificar sábanas"
+msgstr ""
+
+#: app/templates/checklists/create.html:62
+#: app/templates/checklists/edit.html:66 app/templates/checklists/edit.html:93
+#: app/templates/properties/index.html:29
+msgid "Tipo"
+msgstr ""
+
+#: app/templates/checklists/create.html:64
+#: app/templates/checklists/edit.html:68 app/templates/checklists/edit.html:95
+msgid "Checkbox (Sí/No)"
+msgstr ""
+
+#: app/templates/checklists/create.html:65
+#: app/templates/checklists/edit.html:69 app/templates/checklists/edit.html:96
+msgid "Texto Corto"
+msgstr ""
+
+#: app/templates/checklists/create.html:66
+#: app/templates/checklists/edit.html:70 app/templates/checklists/edit.html:97
+msgid "Número"
+msgstr ""
+
+#: app/templates/checklists/create.html:67
+#: app/templates/checklists/edit.html:71 app/templates/checklists/edit.html:98
+msgid "Observación Larga"
+msgstr ""
+
+#: app/templates/checklists/create.html:68
+#: app/templates/checklists/edit.html:72 app/templates/checklists/edit.html:99
+msgid "Título de Sección"
+msgstr ""
+
+#: app/templates/checklists/create.html:86
+msgid "Agrega tareas a esta plantilla."
+msgstr ""
+
+#: app/templates/checklists/create.html:96
+#: app/templates/checklists/edit.html:124
+#: app/templates/checklists/import.html:62
+#: app/templates/properties/create.html:41
+#: app/templates/properties/edit.html:50 app/templates/users/create.html:70
+#: app/templates/users/edit.html:74 app/templates/users/profile.html:44
+msgid "Cancelar"
+msgstr ""
+
+#: app/templates/checklists/create.html:97
+msgid "Guardar Plantilla"
+msgstr ""
+
+#: app/templates/checklists/edit.html:3 app/templates/checklists/edit.html:8
+msgid "Editar Checklist"
+msgstr ""
+
+#: app/templates/checklists/edit.html:9
+msgid "Modifica la plantilla dinámica existente."
+msgstr ""
+
+#: app/templates/checklists/edit.html:30
+msgid "Estado de la Plantilla"
+msgstr ""
+
+#: app/templates/checklists/edit.html:32
+msgid "Activo (Visible para Operadores)"
+msgstr ""
+
+#: app/templates/checklists/edit.html:33
+msgid "Inactivo (Oculto)"
+msgstr ""
+
+#: app/templates/checklists/edit.html:114
+msgid "No hay tareas en esta plantilla."
+msgstr ""
+
+#: app/templates/checklists/edit.html:125
+msgid "Actualizar Plantilla"
+msgstr ""
+
+#: app/templates/checklists/import.html:3
+msgid "Importar Checklist"
+msgstr ""
+
+#: app/templates/checklists/import.html:8
+msgid "Importar desde Excel"
+msgstr ""
+
+#: app/templates/checklists/import.html:9
+msgid "Sube un archivo .xlsx para crear un checklist masivamente."
+msgstr ""
+
+#: app/templates/checklists/import.html:17
+msgid "Instrucciones de Carga"
+msgstr ""
+
+#: app/templates/checklists/import.html:22
+msgid ""
+"Para que la carga funcione, tu archivo debe seguir el formato de nuestra "
+"plantilla."
+msgstr ""
+
+#: app/templates/checklists/import.html:26
+msgid "Descarga la plantilla de ejemplo abajo."
+msgstr ""
+
+#: app/templates/checklists/import.html:27
+msgid "Completa las columnas:"
+msgstr ""
+
+#: app/templates/checklists/import.html:27
+msgid "Sección, Tarea, Tipo"
+msgstr ""
+
+#: app/templates/checklists/import.html:27
+#: app/templates/settings/index.html:224
+msgid "y"
+msgstr ""
+
+#: app/templates/checklists/import.html:27
+msgid "Opciones"
+msgstr ""
+
+#: app/templates/checklists/import.html:28
+msgid "Tipos válidos:"
+msgstr ""
+
+#: app/templates/checklists/import.html:29
+msgid "Sube el archivo y presiona \"Importar\"."
+msgstr ""
+
+#: app/templates/checklists/import.html:34
+msgid "Descargar Plantilla Excel"
+msgstr ""
+
+#: app/templates/checklists/import.html:42
+msgid "Título del Nuevo Checklist"
+msgstr ""
+
+#: app/templates/checklists/import.html:43
+msgid "Ej. Limpieza General Semanal"
+msgstr ""
+
+#: app/templates/checklists/import.html:47
+msgid "Descripción (Opcional)"
+msgstr ""
+
+#: app/templates/checklists/import.html:48
+msgid "Detalles sobre este checklist..."
+msgstr ""
+
+#: app/templates/checklists/import.html:52
+msgid "Horas de Bloqueo"
+msgstr ""
+
+#: app/templates/checklists/import.html:57
+msgid "Seleccionar Archivo Excel (.xlsx)"
+msgstr ""
+
+#: app/templates/checklists/import.html:64
+msgid "Comenzar Importación"
+msgstr ""
+
+#: app/templates/checklists/index.html:3
+msgid "Checklists Dinámicos"
+msgstr ""
+
+#: app/templates/checklists/index.html:8 app/templates/dashboard/admin.html:35
+msgid "Checklists"
+msgstr ""
+
+#: app/templates/checklists/index.html:9
+msgid "Administra las plantillas de tareas operacionales."
+msgstr ""
+
+#: app/templates/checklists/index.html:14
+msgid "Importar Excel"
+msgstr ""
+
+#: app/templates/checklists/index.html:20
+#: app/templates/properties/index.html:16 app/templates/users/index.html:16
+msgid "Volver"
+msgstr ""
+
+#: app/templates/checklists/index.html:32
+msgid "Título de Plantilla"
+msgstr ""
+
+#: app/templates/checklists/index.html:34
+msgid "Items"
+msgstr ""
+
+#: app/templates/checklists/index.html:35
+#: app/templates/executions/history.html:28
+#: app/templates/executions/history.html:49
+#: app/templates/executions/my_history.html:29
+#: app/templates/executions/my_history.html:47
+#: app/templates/properties/edit.html:40 app/templates/properties/index.html:30
+#: app/templates/users/edit.html:34 app/templates/users/index.html:30
+msgid "Estado"
+msgstr ""
+
+#: app/templates/checklists/index.html:36
+#: app/templates/executions/history.html:29
+#: app/templates/executions/history.html:54
+#: app/templates/executions/my_history.html:30
+#: app/templates/executions/my_history.html:50
+#: app/templates/properties/index.html:31 app/templates/users/index.html:31
+msgid "Acciones"
+msgstr ""
+
+#: app/templates/checklists/index.html:49 app/templates/users/edit.html:36
+#: app/templates/users/index.html:50
+msgid "Activo"
+msgstr ""
+
+#: app/templates/checklists/index.html:51 app/templates/users/edit.html:37
+#: app/templates/users/index.html:52
+msgid "Inactivo"
+msgstr ""
+
+#: app/templates/checklists/index.html:57
+#: app/templates/executions/my_history.html:56
+#: app/templates/properties/index.html:50
+msgid "Editar"
+msgstr ""
+
+#: app/templates/checklists/index.html:59
+msgid "¿Estás seguro de eliminar este checklist?"
+msgstr ""
+
+#: app/templates/checklists/index.html:61
+#: app/templates/executions/history.html:62
+#: app/templates/properties/index.html:54 app/templates/users/index.html:63
+msgid "Eliminar"
+msgstr ""
+
+#: app/templates/checklists/index.html:70
+msgid "No hay plantillas de checklist registradas."
+msgstr ""
+
+#: app/templates/dashboard/admin.html:3
+msgid "Dashboard Administrador"
+msgstr ""
+
+#: app/templates/dashboard/admin.html:8
+msgid "Panel de Administrador"
+msgstr ""
+
+#: app/templates/dashboard/admin.html:9 app/templates/dashboard/operator.html:9
+msgid "Bienvenido"
+msgstr ""
+
+#: app/templates/dashboard/admin.html:9
+msgid "Aquí podrás gestionar todo el sistema."
+msgstr ""
+
+#: app/templates/dashboard/admin.html:21 app/templates/properties/index.html:8
+msgid "Propiedades"
+msgstr ""
+
+#: app/templates/dashboard/admin.html:22
+msgid "Gestiona los departamentos y hoteles"
+msgstr ""
+
+#: app/templates/dashboard/admin.html:23
+msgid "Gestionar Propiedades"
+msgstr ""
+
+#: app/templates/dashboard/admin.html:36
+msgid "Crea y edita checklists dinámicos"
+msgstr ""
+
+#: app/templates/dashboard/admin.html:37
+msgid "Gestionar Checklists"
+msgstr ""
+
+#: app/templates/dashboard/admin.html:49
+msgid "Usuarios"
+msgstr ""
+
+#: app/templates/dashboard/admin.html:50
+msgid "Gestiona operadores y accesos"
+msgstr ""
+
+#: app/templates/dashboard/admin.html:51
+msgid "Gestionar Usuarios"
+msgstr ""
+
+#: app/templates/dashboard/admin.html:63
+msgid "Configuración"
+msgstr ""
+
+#: app/templates/dashboard/admin.html:64
+msgid "Enlazar Google Drive / Sheets"
+msgstr ""
+
+#: app/templates/dashboard/admin.html:65
+msgid "Configurar Cloud"
+msgstr ""
+
+#: app/templates/dashboard/admin.html:77
+msgid "Historial de Operaciones"
+msgstr ""
+
+#: app/templates/dashboard/admin.html:78
+msgid "Revisa los últimos checklists completados en la nube."
+msgstr ""
+
+#: app/templates/dashboard/admin.html:80
+#: app/templates/dashboard/operator.html:42
+msgid "Ver Historial"
+msgstr ""
+
+#: app/templates/dashboard/operator.html:3
+#, fuzzy
+msgid "Dashboard Operador"
+msgstr "Dashboard"
+
+#: app/templates/dashboard/operator.html:8
+msgid "Panel Operacional"
+msgstr ""
+
+#: app/templates/dashboard/operator.html:9
+msgid "Selecciona una tarea para comenzar."
+msgstr ""
+
+#: app/templates/dashboard/operator.html:21
+msgid "Iniciar Nuevo Checklist"
+msgstr ""
+
+#: app/templates/dashboard/operator.html:23
+msgid "Selecciona una propiedad y comienza un nuevo reporte."
+msgstr ""
+
+#: app/templates/dashboard/operator.html:25
+msgid "Comenzar"
+msgstr ""
+
+#: app/templates/dashboard/operator.html:38
+#: app/templates/executions/my_history.html:3
+#: app/templates/executions/my_history.html:8
+msgid "Mi Historial"
+msgstr ""
+
+#: app/templates/dashboard/operator.html:40
+msgid "Revisa los reportes que has completado recientemente."
+msgstr ""
+
+#: app/templates/dashboard/operator.html:53
+msgid "Mis Tareas Pendientes"
+msgstr ""
+
+#: app/templates/dashboard/operator.html:69
+msgid "Realizar"
+msgstr ""
+
+#: app/templates/dashboard/superadmin.html:3
+msgid "Panel SuperAdmin"
+msgstr ""
+
+#: app/templates/dashboard/superadmin.html:8
+msgid "Panel de Super Administrador"
+msgstr ""
+
+#: app/templates/dashboard/superadmin.html:9
+msgid "Hola"
+msgstr ""
+
+#: app/templates/dashboard/superadmin.html:9
+msgid "Aquí gestionas tus clientes (Administradores)."
+msgstr ""
+
+#: app/templates/dashboard/superadmin.html:18
+msgid "Cuentas de Administrador"
+msgstr ""
+
+#: app/templates/dashboard/superadmin.html:19
+msgid "Crea y supervisa las cuentas de tus clientes."
+msgstr ""
+
+#: app/templates/dashboard/superadmin.html:20
+msgid "Gestionar Clientes"
+msgstr ""
+
+#: app/templates/dashboard/superadmin.html:28
+#: app/templates/users/profile.html:8
+msgid "Mis Datos"
+msgstr ""
+
+#: app/templates/dashboard/superadmin.html:29
+msgid "Actualiza tu contraseña y nombre de perfil."
+msgstr ""
+
+#: app/templates/executions/detail.html:3
+msgid "Detalle de Ejecución"
+msgstr ""
+
+#: app/templates/executions/detail.html:10
+msgid "Volver al historial"
+msgstr ""
+
+#: app/templates/executions/detail.html:12
+msgid "Sincronizado"
+msgstr ""
+
+#: app/templates/executions/detail.html:17
+msgid "Checklist Eliminado"
+msgstr ""
+
+#: app/templates/executions/detail.html:18
+msgid "Completado por"
+msgstr ""
+
+#: app/templates/executions/detail.html:18
+msgid "Usuario eliminado"
+msgstr ""
+
+#: app/templates/executions/detail.html:23
+msgid "Fecha"
+msgstr ""
+
+#: app/templates/executions/detail.html:27
+msgid "Hora"
+msgstr ""
+
+#: app/templates/executions/detail.html:31
+#: app/templates/executions/history.html:26
+#: app/templates/executions/history.html:47
+#: app/templates/executions/my_history.html:27
+#: app/templates/executions/my_history.html:40
+msgid "Propiedad"
+msgstr ""
+
+#: app/templates/executions/detail.html:32
+#: app/templates/executions/history.html:47
+#: app/templates/executions/my_history.html:41
+msgid "Eliminada"
+msgstr ""
+
+#: app/templates/executions/detail.html:36
+msgid "Respuestas del Checklist"
+msgstr ""
+
+#: app/templates/executions/detail.html:49
+#: app/templates/executions/fill.html:45
+msgid "Sí"
+msgstr ""
+
+#: app/templates/executions/detail.html:51
+#: app/templates/executions/fill.html:48
+msgid "No"
+msgstr ""
+
+#: app/templates/executions/detail.html:53
+msgid "N/A"
+msgstr ""
+
+#: app/templates/executions/detail.html:60
+msgid "La plantilla original de este checklist fue eliminada."
+msgstr ""
+
+#: app/templates/executions/detail.html:65
+msgid "Observaciones del Operador"
+msgstr ""
+
+#: app/templates/executions/detail.html:66
+msgid "Sin observaciones adicionales."
+msgstr ""
+
+#: app/templates/executions/detail.html:73
+msgid "Imprimir Reporte"
+msgstr ""
+
+#: app/templates/executions/fill.html:3
+msgid "Completar Checklist"
+msgstr ""
+
+#: app/templates/executions/fill.html:11
+msgid "Editando:"
+msgstr ""
+
+#: app/templates/executions/fill.html:13
+msgid "Sin dirección"
+msgstr ""
+
+#: app/templates/executions/fill.html:16
+msgid "Modo Edición"
+msgstr ""
+
+#: app/templates/executions/fill.html:16
+msgid "En Progreso"
+msgstr ""
+
+#: app/templates/executions/fill.html:51
+msgid "Escribe aquí..."
+msgstr ""
+
+#: app/templates/executions/fill.html:55
+msgid "Detalles adicionales..."
+msgstr ""
+
+#: app/templates/executions/fill.html:59
+msgid "Selecciona una opción..."
+msgstr ""
+
+#: app/templates/executions/fill.html:70
+msgid "Observaciones Finales (Opcional)"
+msgstr ""
+
+#: app/templates/executions/fill.html:71
+msgid "Algún comentario general sobre la propiedad o el proceso..."
+msgstr ""
+
+#: app/templates/executions/fill.html:77
+msgid "¿Seguro que quieres salir? Se perderán los avances no guardados."
+msgstr ""
+
+#: app/templates/executions/fill.html:78
+msgid "Cancelar ejecución"
+msgstr ""
+
+#: app/templates/executions/fill.html:82
+msgid "Actualizar"
+msgstr ""
+
+#: app/templates/executions/fill.html:82
+msgid "Finalizar y Guardar"
+msgstr ""
+
+#: app/templates/executions/history.html:3
+msgid "Historial de Checklists"
+msgstr ""
+
+#: app/templates/executions/history.html:8
+msgid "Historial Operativo"
+msgstr ""
+
+#: app/templates/executions/history.html:9
+msgid "Revisa todos los checklists completados por el personal."
+msgstr ""
+
+#: app/templates/executions/history.html:13
+#: app/templates/executions/my_history.html:13
+#: app/templates/executions/select_property.html:13
+#: app/templates/settings/index.html:169
+msgid "Volver al Panel"
+msgstr ""
+
+#: app/templates/executions/history.html:24
+#: app/templates/executions/my_history.html:26
+msgid "Fecha / Hora"
+msgstr ""
+
+#: app/templates/executions/history.html:25
+#: app/templates/executions/history.html:39 app/templates/users/create.html:37
+#: app/templates/users/index.html:45
+msgid "Operador"
+msgstr ""
+
+#: app/templates/executions/history.html:27
+#: app/templates/executions/history.html:48
+#: app/templates/executions/my_history.html:28
+#: app/templates/executions/my_history.html:44
+msgid "Checklist"
+msgstr ""
+
+#: app/templates/executions/history.html:44
+#: app/templates/executions/history.html:48
+#: app/templates/executions/my_history.html:45
+msgid "Eliminado"
+msgstr ""
+
+#: app/templates/executions/history.html:51
+#: app/templates/executions/my_history.html:48
+msgid "Completado"
+msgstr ""
+
+#: app/templates/executions/history.html:57
+msgid "Ver Detalles"
+msgstr ""
+
+#: app/templates/executions/history.html:60
+msgid ""
+"¿Estás seguro de eliminar este registro del historial? Esta acción no se "
+"puede deshacer."
+msgstr ""
+
+#: app/templates/executions/history.html:80
+msgid "No hay registros de ejecución todavía."
+msgstr ""
+
+#: app/templates/executions/history.html:81
+msgid "Cuando el personal complete tareas, aparecerán aquí."
+msgstr ""
+
+#: app/templates/executions/my_history.html:9
+msgid "Revisa y edita tus checklists completados recientemente."
+msgstr ""
+
+#: app/templates/executions/my_history.html:53
+msgid "Ver"
+msgstr ""
+
+#: app/templates/executions/my_history.html:72
+msgid "Aún no has completado ningún checklist."
+msgstr ""
+
+#: app/templates/executions/my_history.html:73
+msgid "Comenzar Ahora"
+msgstr ""
+
+#: app/templates/executions/select_checklist.html:3
+msgid "Seleccionar Checklist"
+msgstr ""
+
+#: app/templates/executions/select_checklist.html:8
+msgid "Seleccionar Tarea"
+msgstr ""
+
+#: app/templates/executions/select_checklist.html:9
+msgid "Propiedad:"
+msgstr ""
+
+#: app/templates/executions/select_checklist.html:13
+msgid "Cambiar Propiedad"
+msgstr ""
+
+#: app/templates/executions/select_checklist.html:31
+msgid "items"
+msgstr ""
+
+#: app/templates/executions/select_checklist.html:40
+msgid "Ya completado hoy"
+msgstr ""
+
+#: app/templates/executions/select_checklist.html:41
+msgid "Bloqueado"
+msgstr ""
+
+#: app/templates/executions/select_checklist.html:46
+msgid "Iniciar Checklist"
+msgstr ""
+
+#: app/templates/executions/select_checklist.html:59
+msgid "No hay checklists activos disponibles."
+msgstr ""
+
+#: app/templates/executions/select_checklist.html:60
+msgid "Contacta al administrador para crear plantillas."
+msgstr ""
+
+#: app/templates/executions/select_property.html:3
+#: app/templates/executions/select_property.html:8
+msgid "Seleccionar Propiedad"
+msgstr ""
+
+#: app/templates/executions/select_property.html:9
+msgid "¿En qué propiedad vas a trabajar hoy?"
+msgstr ""
+
+#: app/templates/executions/select_property.html:32
+msgid "Sin dirección registrada"
+msgstr ""
+
+#: app/templates/executions/select_property.html:34
+msgid "Seleccionar"
+msgstr ""
+
+#: app/templates/executions/select_property.html:43
+msgid "No hay propiedades activas registradas."
+msgstr ""
+
+#: app/templates/executions/select_property.html:44
+msgid "Contacta al administrador para habilitar propiedades."
+msgstr ""
+
+#: app/templates/properties/create.html:3
+msgid "Crear Propiedad"
+msgstr ""
+
+#: app/templates/properties/create.html:8
+#: app/templates/properties/index.html:13
+msgid "Nueva Propiedad"
+msgstr ""
+
+#: app/templates/properties/create.html:9
+msgid "Registra un nuevo departamento u hotel en el sistema."
+msgstr ""
+
+#: app/templates/properties/create.html:19
+#: app/templates/properties/edit.html:19 app/templates/properties/index.html:27
+msgid "Nombre / Identificador"
+msgstr ""
+
+#: app/templates/properties/create.html:20
+msgid "Ej. Dpto 504 - Edificio B"
+msgstr ""
+
+#: app/templates/properties/create.html:24
+#: app/templates/properties/edit.html:24
+msgid "Dirección (Opcional)"
+msgstr ""
+
+#: app/templates/properties/create.html:25
+msgid "Av. Providencia 1234"
+msgstr ""
+
+#: app/templates/properties/create.html:29
+#: app/templates/properties/edit.html:30
+msgid "Tipo de Propiedad"
+msgstr ""
+
+#: app/templates/properties/create.html:31
+#: app/templates/properties/edit.html:32
+msgid "Departamento"
+msgstr ""
+
+#: app/templates/properties/create.html:32
+#: app/templates/properties/edit.html:33
+msgid "Habitación de Hotel"
+msgstr ""
+
+#: app/templates/properties/create.html:33
+#: app/templates/properties/edit.html:34
+msgid "Casa"
+msgstr ""
+
+#: app/templates/properties/create.html:34
+#: app/templates/properties/edit.html:35
+msgid "Cabaña"
+msgstr ""
+
+#: app/templates/properties/create.html:35
+#: app/templates/properties/edit.html:36
+msgid "Otro"
+msgstr ""
+
+#: app/templates/properties/create.html:40
+msgid "Guardar Propiedad"
+msgstr ""
+
+#: app/templates/properties/edit.html:3 app/templates/properties/edit.html:8
+msgid "Editar Propiedad"
+msgstr ""
+
+#: app/templates/properties/edit.html:9
+msgid "Modifica los detalles o el estado de la propiedad."
+msgstr ""
+
+#: app/templates/properties/edit.html:42 app/templates/properties/index.html:42
+msgid "Activa"
+msgstr ""
+
+#: app/templates/properties/edit.html:43 app/templates/properties/index.html:44
+msgid "Inactiva"
+msgstr ""
+
+#: app/templates/properties/edit.html:49
+msgid "Actualizar Propiedad"
+msgstr ""
+
+#: app/templates/properties/index.html:3
+msgid "Gestión de Propiedades"
+msgstr ""
+
+#: app/templates/properties/index.html:9
+msgid "Administra los departamentos, casas y hoteles."
+msgstr ""
+
+#: app/templates/properties/index.html:28
+msgid "Dirección"
+msgstr ""
+
+#: app/templates/properties/index.html:52
+msgid ""
+"¿Estás seguro de eliminar esta propiedad? Se perderá el historial "
+"asociado."
+msgstr ""
+
+#: app/templates/properties/index.html:63
+msgid "No hay propiedades registradas."
+msgstr ""
+
+#: app/templates/settings/index.html:3
+msgid "Configuración Cloud"
+msgstr ""
+
+#: app/templates/settings/index.html:144
+msgid "Configuración de Google Drive / Sheets"
+msgstr ""
+
+#: app/templates/settings/index.html:145
+msgid "Sincroniza tus registros con la nube de forma privada."
+msgstr ""
+
+#: app/templates/settings/index.html:152
+msgid "Panel de Conexión"
+msgstr ""
+
+#: app/templates/settings/index.html:154
+msgid "JSON de Credenciales"
+msgstr ""
+
+#: app/templates/settings/index.html:156
+msgid "Pega aquí el contenido de tu archivo .json"
+msgstr ""
+
+#: app/templates/settings/index.html:158
+msgid "Spreadsheet ID"
+msgstr ""
+
+#: app/templates/settings/index.html:161
+msgid "Ej: 1aBCdeFGHijkLMN..."
+msgstr ""
+
+#: app/templates/settings/index.html:164
+msgid "Guardar Configuración"
+msgstr ""
+
+#: app/templates/settings/index.html:183
+msgid "PASO 1: Crear tu \"Llave\" en Google Cloud (Gratis)"
+msgstr ""
+
+#: app/templates/settings/index.html:184
+msgid ""
+"Google necesita saber que StayCheck tiene permiso para escribir en tus "
+"hojas."
+msgstr ""
+
+#: app/templates/settings/index.html:186
+msgid "Ve a"
+msgstr ""
+
+#: app/templates/settings/index.html:187
+msgid ""
+"Si no tienes un proyecto, haz clic en \"Seleccionar un proyecto\" arriba "
+"a la izquierda y luego en \"Proyecto Nuevo\". Ponle de nombre"
+msgstr ""
+
+#: app/templates/settings/index.html:188
+msgid ""
+"En el buscador de arriba, escribe \"Google Sheets API\" y haz clic en el "
+"resultado. Presiona el botón azul"
+msgstr ""
+
+#: app/templates/settings/index.html:188 app/templates/settings/index.html:189
+msgid "HABILITAR"
+msgstr ""
+
+#: app/templates/settings/index.html:189
+msgid "Haz lo mismo con \"Google Drive API\": búscala y presiona"
+msgstr ""
+
+#: app/templates/settings/index.html:198
+msgid "PASO 2: Crear la \"Cuenta de Servicio\""
+msgstr ""
+
+#: app/templates/settings/index.html:199
+msgid "Esta es una identidad digital que usará el sistema."
+msgstr ""
+
+#: app/templates/settings/index.html:201
+msgid "En el menú lateral izquierdo de Google Cloud, ve a"
+msgstr ""
+
+#: app/templates/settings/index.html:201
+msgid "IAM y administración > Cuentas de servicio"
+msgstr ""
+
+#: app/templates/settings/index.html:202 app/templates/settings/index.html:207
+msgid "Haz clic en"
+msgstr ""
+
+#: app/templates/settings/index.html:202
+msgid "+ CREAR CUENTA DE SERVICIO"
+msgstr ""
+
+#: app/templates/settings/index.html:202
+msgid "arriba"
+msgstr ""
+
+#: app/templates/settings/index.html:203
+msgid "Ponle nombre"
+msgstr ""
+
+#: app/templates/settings/index.html:203
+msgid "y dale a Crear y Continuar."
+msgstr ""
+
+#: app/templates/settings/index.html:204
+msgid "En \"Seleccionar un rol\", elige"
+msgstr ""
+
+#: app/templates/settings/index.html:204
+msgid "Básico > Editor"
+msgstr ""
+
+#: app/templates/settings/index.html:204
+msgid "esto permite que pueda escribir"
+msgstr ""
+
+#: app/templates/settings/index.html:204
+msgid "Dale a Listo."
+msgstr ""
+
+#: app/templates/settings/index.html:205
+msgid "Ahora verás tu cuenta en una lista. Verás un correo que termina en"
+msgstr ""
+
+#: app/templates/settings/index.html:205
+msgid "CÓPIALO"
+msgstr ""
+
+#: app/templates/settings/index.html:205
+msgid "lo necesitaremos en el paso 4."
+msgstr ""
+
+#: app/templates/settings/index.html:206
+msgid "Haz clic en los tres puntitos"
+msgstr ""
+
+#: app/templates/settings/index.html:206
+msgid "a la derecha de esa cuenta y elige"
+msgstr ""
+
+#: app/templates/settings/index.html:206
+msgid "Administrar claves"
+msgstr ""
+
+#: app/templates/settings/index.html:207
+msgid "AGREGAR CLAVE > Crear clave nueva"
+msgstr ""
+
+#: app/templates/settings/index.html:207
+msgid "Elige formato"
+msgstr ""
+
+#: app/templates/settings/index.html:207
+msgid "y dale a Crear."
+msgstr ""
+
+#: app/templates/settings/index.html:208
+msgid ""
+"Se descargará un archivo .json a tu computadora. Ábrelo con el Bloc de "
+"notas o VS Code."
+msgstr ""
+
+#: app/templates/settings/index.html:217
+msgid "PASO 3: Configurar en StayCheck"
+msgstr ""
+
+#: app/templates/settings/index.html:218
+msgid "Ahora llevamos esos datos al sistema que construimos."
+msgstr ""
+
+#: app/templates/settings/index.html:220
+msgid "Inicia sesión en StayCheck como Administrador."
+msgstr ""
+
+#: app/templates/settings/index.html:221
+msgid "Ve a esta sección de Configuración."
+msgstr ""
+
+#: app/templates/settings/index.html:222
+msgid "JSON de Credenciales:"
+msgstr ""
+
+#: app/templates/settings/index.html:222
+msgid ""
+"Abre el archivo que descargaste en el paso anterior, copia TODO su "
+"contenido y pégalo tal cual en el cuadro de texto grande."
+msgstr ""
+
+#: app/templates/settings/index.html:223
+msgid "Spreadsheet ID:"
+msgstr ""
+
+#: app/templates/settings/index.html:223
+msgid ""
+"Crea una hoja de cálculo nueva en tu Google Drive. Mira la URL en tu "
+"navegador:"
+msgstr ""
+
+#: app/templates/settings/index.html:224
+msgid "Si la URL es:"
+msgstr ""
+
+#: app/templates/settings/index.html:224
+msgid "el ID es lo que está entre"
+msgstr ""
+
+#: app/templates/settings/index.html:233
+msgid "PASO 4: El paso más importante (Permiso de acceso)"
+msgstr ""
+
+#: app/templates/settings/index.html:235
+msgid ""
+"Incluso con la llave, Google no deja que nadie entre a tu hoja si no lo "
+"invitas."
+msgstr ""
+
+#: app/templates/settings/index.html:237
+msgid "Abre tu hoja de Google Sheets."
+msgstr ""
+
+#: app/templates/settings/index.html:238
+msgid "Haz clic en el botón azul"
+msgstr ""
+
+#: app/templates/settings/index.html:238
+msgid "Compartir"
+msgstr ""
+
+#: app/templates/settings/index.html:238
+msgid "arriba a la derecha"
+msgstr ""
+
+#: app/templates/settings/index.html:239
+msgid ""
+"Pega el correo de la cuenta de servicio que copiaste en el Paso 2 (el que"
+" termina en"
+msgstr ""
+
+#: app/templates/settings/index.html:240
+msgid "Asegúrate de que esté en modo"
+msgstr ""
+
+#: app/templates/settings/index.html:240
+msgid "Editor"
+msgstr ""
+
+#: app/templates/settings/index.html:240
+msgid "y dale a Enviar."
+msgstr ""
+
+#: app/templates/users/create.html:3
+msgid "Crear Usuario"
+msgstr ""
+
+#: app/templates/users/create.html:8 app/templates/users/index.html:13
+msgid "Nuevo Usuario"
+msgstr ""
+
+#: app/templates/users/create.html:9
+msgid "Crea un nuevo administrador u operador."
+msgstr ""
+
+#: app/templates/users/create.html:19 app/templates/users/edit.html:19
+#: app/templates/users/profile.html:19
+msgid "Nombre Completo"
+msgstr ""
+
+#: app/templates/users/create.html:20
+msgid "Ej. Juan Pérez"
+msgstr ""
+
+#: app/templates/users/create.html:25
+msgid "Ej. juan_perez"
+msgstr ""
+
+#: app/templates/users/create.html:26
+msgid "Este nombre será usado para iniciar sesión."
+msgstr ""
+
+#: app/templates/users/create.html:30
+msgid "Rol que se asignará"
+msgstr ""
+
+#: app/templates/users/create.html:33 app/templates/users/create.html:37
+msgid "Estás creando una cuenta de"
+msgstr ""
+
+#: app/templates/users/create.html:33
+msgid "Administrador"
+msgstr ""
+
+#: app/templates/users/create.html:33
+msgid "para un nuevo cliente."
+msgstr ""
+
+#: app/templates/users/create.html:37
+msgid "para tu equipo."
+msgstr ""
+
+#: app/templates/users/create.html:49
+msgid "Asignar Propiedades"
+msgstr ""
+
+#: app/templates/users/create.html:61
+msgid "No tienes propiedades creadas para asignar."
+msgstr ""
+
+#: app/templates/users/create.html:64
+msgid "Selecciona las propiedades que este operador tendrá permitidas."
+msgstr ""
+
+#: app/templates/users/create.html:69
+msgid "Guardar Usuario"
+msgstr ""
+
+#: app/templates/users/edit.html:3 app/templates/users/edit.html:8
+msgid "Editar Usuario"
+msgstr ""
+
+#: app/templates/users/edit.html:9
+msgid "Modifica los datos y accesos del usuario."
+msgstr ""
+
+#: app/templates/users/edit.html:30
+msgid "Rol del Sistema"
+msgstr ""
+
+#: app/templates/users/edit.html:46
+msgid "Nueva Contraseña (Opcional)"
+msgstr ""
+
+#: app/templates/users/edit.html:47
+msgid "Dejar en blanco para no cambiar"
+msgstr ""
+
+#: app/templates/users/edit.html:52
+msgid "Propiedades Asignadas"
+msgstr ""
+
+#: app/templates/users/edit.html:65
+msgid "No hay propiedades creadas para asignar."
+msgstr ""
+
+#: app/templates/users/edit.html:68
+msgid ""
+"El operador solo podrá ver y realizar checklists en las propiedades "
+"marcadas."
+msgstr ""
+
+#: app/templates/users/edit.html:73
+msgid "Actualizar Usuario"
+msgstr ""
+
+#: app/templates/users/index.html:3
+msgid "Gestión de Usuarios"
+msgstr ""
+
+#: app/templates/users/index.html:8
+msgid "Usuarios y Roles"
+msgstr ""
+
+#: app/templates/users/index.html:9
+msgid "Administra los usuarios del sistema."
+msgstr ""
+
+#: app/templates/users/index.html:27
+msgid "Nombre"
+msgstr ""
+
+#: app/templates/users/index.html:41
+msgid "Super Admin"
+msgstr ""
+
+#: app/templates/users/index.html:43
+msgid "Admin"
+msgstr ""
+
+#: app/templates/users/index.html:61
+msgid "¿Estás seguro de eliminar este usuario?"
+msgstr ""
+
+#: app/templates/users/index.html:73
+msgid "No hay usuarios registrados."
+msgstr ""
+
+#: app/templates/users/profile.html:9
+msgid "Actualiza tu información personal y contraseña de acceso."
+msgstr ""
+
+#: app/templates/users/profile.html:29
+msgid "Rol en el Sistema"
+msgstr ""
+
+#: app/templates/users/profile.html:31
+msgid "Tu rol es gestionado jerárquicamente."
+msgstr ""
+
+#: app/templates/users/profile.html:37
+msgid "Cambiar Contraseña"
+msgstr ""
+
+#: app/templates/users/profile.html:38
+msgid "Dejar en blanco para mantener la actual"
+msgstr ""
+
+#: app/templates/users/profile.html:39
+msgid "Solo completa este campo si deseas cambiar tu clave de acceso."
+msgstr ""
+
+#: app/templates/users/profile.html:43
+msgid "Actualizar Mis Datos"
+msgstr ""
+
+#: app/templates/users/profile.html:53
+msgid "Seguridad"
+msgstr ""
+
+#: app/templates/users/profile.html:54
+msgid ""
+"Recuerda usar una contraseña segura. Tus datos están encriptados y solo "
+"tú tienes acceso a esta configuración personal."
+msgstr ""
+
